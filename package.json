@@ -10,10 +10,13 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^6.32.0",
+    "@clerk/themes": "^2.4.19",
     "@hookform/resolvers": "^5.2.1",
+    "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "input-otp": "^1.4.2",
     "lucide-react": "^0.543.0",
     "next": "15.5.3",
     "react": "19.1.0",
