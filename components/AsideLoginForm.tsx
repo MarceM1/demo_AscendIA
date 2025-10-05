@@ -12,8 +12,8 @@ const AsideLoginForm = () => {
             className=""
           />
           <div className="flex flex-col gap-5">
-            <h3 className="text-3xl font-inter text-foreground">Lorem ipsum dolor sit amet consectetur.</h3>
-            <p className="text-xl text-foreground-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit.<br /> Esse nulla ab molestiae reprehenderit officiis earum mollitia.</p>
+            <h3 className="text-3xl font-inter text-foreground-base">Lorem ipsum dolor sit amet consectetur.</h3>
+            <p className="text-xl text-foreground-muted">Lorem ipsum dolor sit amet consectetur adipisicing elit.<br /> Esse nulla ab molestiae reprehenderit officiis earum mollitia.</p>
           </div>
         </div>
 

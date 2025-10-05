@@ -54,6 +54,7 @@ export function LoginForm({
       await signUp.create({
         emailAddress: (event.target as HTMLFormElement).email.value,
         password: (event.target as HTMLFormElement).password.value,
+        
       })
 
       await signUp.prepareEmailAddressVerification({ strategy: 'email_code' })
@@ -135,14 +136,14 @@ export function LoginForm({
 
     return (
       <form onSubmit={handleVerify}>
-        <Card className='bg-background !outline-foreground-tertiary'>
+        <Card className='bg-background-dark !outline-foreground-muted'>
           <CardHeader>
-            <CardTitle className='text-foreground'>Verificá tu correo</CardTitle>
-            <CardDescription className='text-foreground-secondary'>Ingresa tu código de verificación</CardDescription>
+            <CardTitle className='text-foreground-base'>Verificá tu correo</CardTitle>
+            <CardDescription className='text-foreground-muted'>Ingresa tu código de verificación</CardDescription>
           </CardHeader>
           <CardContent>
             <InputOTP maxLength={6} value={code} id="code" name="code" onChange={(value) => setCode(value)} >
-              <InputOTPGroup className='font-inter font-bold text-accent-muted'>
+              <InputOTPGroup className='font-inter font-bold text-accent'>
                 <InputOTPSlot index={0} />
                 <InputOTPSlot index={1} />
                 <InputOTPSlot index={2} />
@@ -156,7 +157,7 @@ export function LoginForm({
             </InputOTP>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full text-foreground bg-foreground-tertiary hover:bg-background-secondary transition-all duration-300">
+            <Button type="submit" className="w-full text-foreground-base bg-foreground-light hover:bg-background-base transition-all duration-300">
               Verify
             </Button>
           </CardFooter>
@@ -170,14 +171,14 @@ export function LoginForm({
   return (
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={path === '/sign-in' ? handleSubmit : handleSignUp}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold">{path === '/sign-in' ? 'Ingresa a tu cuenta' : 'Crea una nueva cuenta'}</h1>
-        <p className="text-neutral-400text-sm text-balance">
+        <h1 className="text-2xl font-bold text-foreground-base">{path === '/sign-in' ? 'Ingresa a tu cuenta' : 'Crea una nueva cuenta'}</h1>
+        <p className="text-foreground-muted text-sm text-balance">
           {path === '/sign-in' ? 'Ingresa tu email debajo para iniciar sesión' : 'Ingresa tu email para crear una nueva cuenta'}
         </p>
       </div>
       <div className="grid gap-6">
         <div className="grid gap-3">
-          <Label htmlFor="email">Email</Label>
+          <Label htmlFor="email" className='text-foreground-base'>Email</Label>
           <Input
             id="email"
             type="email"
@@ -190,10 +191,10 @@ export function LoginForm({
         </div>
         <div className="grid gap-3">
           <div className="flex items-center">
-            <Label htmlFor="password">Contraseña</Label>
+            <Label htmlFor="password" className='text-foreground-base'>Contraseña</Label>
             <a
               href="#"
-              className="ml-auto text-sm underline-offset-4 hover:underline"
+              className="ml-auto text-sm underline-offset-4 hover:underline text-foreground-muted"
             >
               ¿Olvidaste tu contraseña?
             </a>
@@ -207,15 +208,16 @@ export function LoginForm({
             required
           />
         </div>
-        <Button type="submit" className="w-full text-foreground bg-background hover:bg-background-muted transition-all duration-300">
+        <Button type="submit" className="w-full text-foreground-base bg-background-light gradient-hover shadow_sm-hover">
           {path === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta'}
         </Button>
-        <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-          <span className="bg-background-secondary relative z-10 px-2">
+        <div className="after:border-base-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t ">
+          <span className="bg-background-base relative z-10 px-2">
             O continua con
           </span>
         </div>
-        <Button variant="outline" className="w-full flex items-center gap-2 group !bg-foreground-tertiary hover:!bg-foreground-secondary transition-all duration-300">
+
+        <Button className="w-full flex items-center gap-2 group bg-background-light gradient-hover shadow_sm-hover ">
 
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"  >
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -225,13 +227,14 @@ export function LoginForm({
             <path fill="none" d="M0 0h48v48H0z"></path>
           </svg>
 
-          <p className='text-foreground group-hover:text-background transition-all duration-300'>{path === '/sign-in' ? 'Inicio' : 'Registro'} con Google</p>
+          <p className='text-foreground-muted group-hover:text-foreground-base'>{path === '/sign-in' ? 'Inicio' : 'Registro'} con Google</p>
 
         </Button>
       </div>
-      <div className="text-center text-sm">
+      
+      <div className="text-center text-sm text-foreground-muted">
         {path === '/sign-in' ? '¿No tienés una cuenta?' : '¿Ya tenés una cuenta?'}{" "}
-        <Link href={path === '/sign-in' ? '/sign-up' : '/sign-in'} className="underline underline-offset-4 underline-accent-muted hover:underline-accent">
+        <Link href={path === '/sign-in' ? '/sign-up' : '/sign-in'} className="underline underline-offset-4  hover:text-foreground-base">
           {path === '/sign-in' ? 'Crear Cuenta' : 'Iniciar Sesión'}
         </Link>
       </div>

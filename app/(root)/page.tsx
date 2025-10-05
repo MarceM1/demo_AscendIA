@@ -34,7 +34,7 @@ export default async function Home() {
           height={121}
           priority
         />
-        <h2 className=" text-2xl font-inter text-foreground">Bienvenido, {user?.firstName === null || undefined ? user?.emailAddresses[0].emailAddress?.split('')[0].toUpperCase() : user?.firstName}</h2>
+        <h2 className=" text-2xl font-inter text-foreground-100">Bienvenido, {user?.firstName === null || undefined ? user?.emailAddresses[0].emailAddress?.split('')[0].toUpperCase() : user?.firstName}</h2>
           </div>
         </div>
       </main>

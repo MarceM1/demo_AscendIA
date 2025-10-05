@@ -17,13 +17,13 @@ const Navbar = ({ firstName, lastName, userEmail, userImg }: UserProps) => {
                     className="rounded-full"
                 />
                 <div className="flex flex-col justify-center ml-4">
-                    <span className="font-bold text-lg text-foreground font-kodchasan">{firstName} {lastName}</span>
-                    <span className="text-sm text-foreground-secondary font-inter">{userEmail}</span>
+                    <span className="font-bold text-lg text-foreground-100 font-kodchasan">{firstName} {lastName}</span>
+                    <span className="text-sm text-foreground-300 font-inter">{userEmail}</span>
                 </div>
                 
             </div>
             <SignOutButton >
-                    <Button className="group flex items-center  cursor-pointer text-foreground !bg-foreground-tertiary hover:!bg-background-secondary hover:text-foreground-secondary transition-all duration-300" variant="outline">
+                    <Button className="group flex items-center  cursor-pointer text-foreground-100 !bg-foreground-tertiary hover:!bg-background-600 hover:text-foreground-300 transition-all duration-300" variant="outline">
                         <LogOutIcon  className="group-hover:text-red-400 transition-all duration-300"/>
                         
                     </Button>               
