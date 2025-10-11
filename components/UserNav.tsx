@@ -15,7 +15,7 @@ type User = {
 // TODO Conventri en dropdown 
 
 const UserNav = ({ user }: { user: User | null }) => {
-    //  console.log('user in userNav: ', user)
+    //   console.log('user in userNav: ', user)
     const { username, imageUrl, emailAddresses, firstName, lastName, id } = user as User
     return (
         <section className='w-full h-fit'>

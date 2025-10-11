@@ -1,8 +1,8 @@
-import { Card } from "@/components/ui/card"
-import { SidebarTrigger } from "@/components/ui/sidebar"
+
+
+import DashboardHeader from "@/components/DashboardHeader"
+import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
 import { currentUser, auth } from '@clerk/nextjs/server'
-import { Slash } from 'lucide-react'
-import Image from "next/image"
 import { redirect } from "next/navigation"
 
 const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
@@ -19,29 +19,19 @@ const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
 
 
   return (
-    < section className="w-full h-full flex flex-col gap-5">
+    < section className="w-full h-full pr-2">
 
-      <div className="flex flex-row gap-2 items-center">
-        <SidebarTrigger size={"lg"}  className=""/>
-        <p className="font-inter font-light text-xl "> {">"}{"  "}Perfil</p>
-      </div>
-
-      <section className="container mx-auto">
-        <div className="flex flex-row gap-2 w-full">
-          <Card className=" bg-background-base !border-base-border shadow-lg px-4 w-2/3 max-sm:w-full">
-          <Image
-            src={user?.imageUrl || '/file.png'}
-            alt="User Avatar"
-            width={64}
-            height={64}
-            className="size-16 rounded-full "
-          />
-        </Card>
-        <Card className="w-1/3 bg-background-base !border-base-border shadow-lg px-2 max-sm:w-full">
-          
-        </Card>
+      <SidebarInset>
+        <DashboardHeader userImg={user?.imageUrl || ''}/>
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+            <div className="bg-background-base aspect-video rounded-xl" />
+            <div className="bg-background-base aspect-video rounded-xl" />
+            <div className="bg-background-base aspect-video rounded-xl" />
+          </div>
+          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
         </div>
-      </section>
+      </SidebarInset>
     </section >
   )
 }

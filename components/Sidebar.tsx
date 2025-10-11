@@ -1,42 +1,57 @@
-// 'use client'
+'use client'
 
 import {
     Sidebar,
     SidebarContent,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarMenuSub
 } from "@/components/ui/sidebar"
-import { items, navItems } from "@/lib/utils"
+import { homeSubItems, lowNavItems, myInterviewsSubitems, navItems, newInterviewSubitems, profileSubitems } from "@/lib/utils"
 import { Separator } from "./ui/separator"
-import { LogOut, LoaderCircle, User, Send, } from "lucide-react"
-import { SignOutButton, useUser } from '@clerk/nextjs';
+import { LogOut } from "lucide-react"
 import Link from "next/link";
-import Image from "next/image"
 import UserNav from "./UserNav";
-import { Card, CardContent } from "./ui/card";
+import { useEffect, useState } from "react"
+import { usePathname } from "next/navigation"
+import { profile } from "console"
 
-export function DashSidebar({ imgUrl, user }: { imgUrl: string | null, user?: object | null }) {
-    // const { user, isLoaded } = useUser()
+export function DashSidebar({ user }: { imgUrl: string | null, user?: string | null }) {
+    const [selectedNavItem, setSelectedNavItem] = useState('Inicio')
+    const [currentSubItems, setCurrentSubItems] = useState(homeSubItems);
+    const userData = JSON.parse(user || '')
 
-    // if (!isLoaded) return <LoaderCircle className="animate-spin" />;
+
+    const pathname = usePathname();
+
+    useEffect(() => {
+        if (pathname.includes("new-interview")) setSelectedNavItem("Nueva Entrevista");
+        else if (pathname.includes("my-interviews")) setSelectedNavItem("Mis Entrevistas");
+        else if (pathname.includes("my-stats")) setSelectedNavItem("Mis Estadísticas");
+        else if (pathname.includes("feedback")) setSelectedNavItem("Feedback");
+        else if (pathname.includes("profile")) setSelectedNavItem("Mi Cuenta");
+
+        else setSelectedNavItem("Inicio");
+    }, [pathname])
+
+    useEffect(() => {
+        if (selectedNavItem === "Nueva Entrevista") setCurrentSubItems(newInterviewSubitems);
+        else if (selectedNavItem === "Mis Entrevistas") setCurrentSubItems(myInterviewsSubitems);
+        else if (selectedNavItem === "Mis Estadísticas") setCurrentSubItems(myInterviewsSubitems);
+        else if (selectedNavItem === "Mis Estadísticas") setCurrentSubItems(myInterviewsSubitems);
+        else if (selectedNavItem === "Mi Cuenta") setCurrentSubItems(profileSubitems);
+
+        else setCurrentSubItems(homeSubItems);
+    }, [selectedNavItem]);
 
 
-    // console.log('isLoaded: ', isLoaded)
-    // console.log('user: ', user)
-    // console.log('user.imageUrl', user?.imageUrl)
 
 
     return (
-        //TODO Rediseño general del layout
         //TODO Cambiar los iconos por otros mas representativos
-        //TODO Rediseño 
 
-        //TODO Luego de implementar lo anterior, iterar y plantear nuevos TODO
         <Sidebar className="!bg-background-base !border-base-border h-screen" >
 
             {/* <SidebarGroup className="flex items-start justify-center py-4 mb-2">
@@ -51,9 +66,9 @@ export function DashSidebar({ imgUrl, user }: { imgUrl: string | null, user?: ob
                         <SidebarGroupContent className="!flex !flex-col items-center justify-between h-full">
                             <SidebarMenu>
                                 {
-                                    navItems.map((item, index) => (
-                                        <SidebarMenuItem key={index} className="flex flex-col gap-4 items-center justify-center text-foreground-base">
-                                            <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" asChild>
+                                    navItems.map((item) => (
+                                        <SidebarMenuItem key={item.id} className={`flex flex-col gap-4 items-center justify-center text-foreground-base ${selectedNavItem === item.id ? 'text-accent' : ''}`}>
+                                            <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
                                                 <Link href={item.href} className="">
                                                     <item.icon className="!size-6 " />
                                                 </Link>
@@ -63,11 +78,17 @@ export function DashSidebar({ imgUrl, user }: { imgUrl: string | null, user?: ob
                                 }
                             </SidebarMenu>
                             <SidebarMenu className="">
-                                <SidebarMenuItem className="flex flex-col gap-4 items-center justify-center text-foreground-base">
-                                    <SidebarMenuButton className="flex items-center justify-center  gradient-hover shadow_sm-hover">
-                                        <Send className="!size-6" />
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
+                                {
+                                    lowNavItems.map((item) => (
+                                        <SidebarMenuItem key={item.id} className={`flex flex-col gap-4 items-center justify-center text-foreground-base ${selectedNavItem === item.id ? 'text-accent' : ''}`}>
+                                            <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
+                                                <Link href={item.href} className="">
+                                                    <item.icon className="!size-6 " />
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))
+                                }
                                 <SidebarMenuItem className="flex flex-col gap-4 items-center justify-center text-foreground-base">
                                     <SidebarMenuButton className="flex items-center justify-center hover:text-destructive gradient-hover shadow_sm-hover">
                                         <LogOut className="!size-6" />
@@ -86,11 +107,11 @@ export function DashSidebar({ imgUrl, user }: { imgUrl: string | null, user?: ob
                     <SidebarGroup className="mt-2 flex flex-col gap-2">
                         <SidebarGroupContent className="flex flex-col pl-2 border-b border-base-border pb-4">
                             <h1 className="font-kodchasan text-2xl text-foreground-base">Ascend<span className="text-accent font-semibold">IA</span></h1>
-                            <h3 className="text-foreground-muted font-inter text-base">Nueva Entrevista</h3>
+                            <h3 className="text-foreground-muted font-inter text-base">{selectedNavItem}</h3>
                         </SidebarGroupContent>
                         <SidebarGroupContent className="mt-1">
                             <SidebarMenu>
-                                {items.map((item) => (
+                                {currentSubItems.map((item) => (
                                     <SidebarMenuItem key={item.title} className=" text-foreground-base font-inter rounded-lg shadow_sm-hover  gradient-hover ">
                                         <SidebarMenuButton asChild className="">
                                             <a href={item.href} className="flex items-center">
@@ -106,7 +127,7 @@ export function DashSidebar({ imgUrl, user }: { imgUrl: string | null, user?: ob
                 </section>
 
                 <SidebarGroup className="h-fit">
-                    <UserNav user={user ?? null} />
+                    <UserNav user={userData} />
                 </SidebarGroup>
             </SidebarContent>
 
