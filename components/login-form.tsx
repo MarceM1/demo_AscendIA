@@ -187,6 +187,7 @@ export function LoginForm({
             required
             value={emailAddress}
             onChange={(e) => setEmailAddress(e.target.value)}
+            className='!bg-background-base border-base-border'
           />
         </div>
         <div className="grid gap-3">
@@ -206,13 +207,14 @@ export function LoginForm({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className='!bg-background-base border-base-border'
           />
         </div>
         <Button type="submit" className="w-full text-foreground-base bg-background-light gradient-hover shadow_sm-hover">
           {path === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta'}
         </Button>
         <div className="after:border-base-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t ">
-          <span className="bg-background-base relative z-10 px-2">
+          <span className="bg-background-dark relative z-10 px-2">
             O continua con
           </span>
         </div>

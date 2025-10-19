@@ -1,0 +1,40 @@
+// AscendIA - Base General de Usuarios
+// TODO: Terminar el schema de usuarios
+// TODO: Agregar tablas de roles y permisos si es necesario
+// TODO: Agregar tabla de verificación de email y recuperación de contraseña
+// TODO: Agregar tabla de historial de actividades del usuario
+
+Table users {
+  id uuid [pk, unique, note: 'id']
+  clerkId varchar [not null, unique, note: "clerk_id"]
+  email text [not null,unique, note: 'email']
+  firstName varchar [note: 'first_name']
+  lastName varchar [note: 'last_name']
+  imgUrl text [note: 'img_url']
+  role enum [note: 'USER | SUBSCRIPTOR | ADMIN | RECRUITER | INSTITUTION', default: 'USER']
+  createdAt timestamp [note: 'created_at', not null]
+  updatedAt timestamp [note: 'updated_at']
+  lastActivityDate timestamp [note: 'last_activity_date']
+}
+
+Table user_sessions {
+  id varchar [pk]
+  userId varchar [ref: > users.id]
+  loginAt timestamp
+  logoutAt timestamp
+  deviceInfo json
+}
+
+Table user_profiles {
+  id varchar [pk]
+  userId varchar [ref: > users.id]
+  bio text
+  country varchar
+  skills text[]
+  preferences json
+}
+
+
+// Relaciones
+Ref: user_sessions.userId > users.id
+Ref: user_profiles.userId > users.id
