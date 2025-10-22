@@ -1,5 +1,7 @@
 'use client'
 
+import { usePathname } from "next/navigation"
+import Link from "next/link";
 import {
     Sidebar,
     SidebarContent,
@@ -9,15 +11,12 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { homeSubItems, lowNavItems, myInterviewsSubitems, navItems, newInterviewSubitems, profileSubitems } from "@/lib/utils"
 import { Separator } from "./ui/separator"
-import { LogOut } from "lucide-react"
-import Link from "next/link";
+import { homeSubItems, lowNavItems, myInterviewsSubitems, navItems, newInterviewSubitems, profileSubitems } from "@/lib/utils"
 import UserNav from "./UserNav";
 import { useEffect, useState } from "react"
-import { usePathname } from "next/navigation"
-import { profile } from "console"
-
+import { LogOut } from "lucide-react"
+import { SignOutButton } from "@clerk/nextjs";
 export function DashSidebar({ user }: { imgUrl: string | null, user?: string | null }) {
     const [selectedNavItem, setSelectedNavItem] = useState('Inicio')
     const [currentSubItems, setCurrentSubItems] = useState(homeSubItems);
@@ -50,18 +49,11 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: string | n
 
 
     return (
+
         //TODO Cambiar los iconos por otros mas representativos
-
         <Sidebar className="!bg-background-base !border-base-border h-screen" >
-
-            {/* <SidebarGroup className="flex items-start justify-center py-4 mb-2">
-                <h1 className="text-xl font-kodchasan">Ascend<span className="text-accent">IA</span></h1>
-            </SidebarGroup> */}
-
             <SidebarContent className="flex flex-col ">
-
                 <section className="!flex flex-row h-full">
-
                     <SidebarGroup className="flex flex-col w-fit  h-full  ml-3 mt-2  pt-2 bg-background-light rounded-xl shadow-xl ">
                         <SidebarGroupContent className="!flex !flex-col items-center justify-between h-full">
                             <SidebarMenu>
@@ -90,9 +82,11 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: string | n
                                     ))
                                 }
                                 <SidebarMenuItem className="flex flex-col gap-4 items-center justify-center text-foreground-base">
-                                    <SidebarMenuButton className="flex items-center justify-center hover:text-destructive gradient-hover shadow_sm-hover">
-                                        <LogOut className="!size-6" />
-                                    </SidebarMenuButton>
+                                    <SignOutButton>
+                                        <SidebarMenuButton className="flex items-center justify-center hover:text-destructive gradient-hover shadow_sm-hover">
+                                            <LogOut className="!size-6" />
+                                        </SidebarMenuButton>
+                                    </SignOutButton>
                                 </SidebarMenuItem>
                             </SidebarMenu>
                         </SidebarGroupContent>
