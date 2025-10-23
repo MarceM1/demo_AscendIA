@@ -3,10 +3,9 @@
 import { useEffect, useState } from 'react'
 import Script from 'next/script'
 import { useClerk, useSignIn, useSignUp } from '@clerk/nextjs'
-import { usePathname } from 'next/navigation'
 
-// import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
 declare global {
     interface Window {
@@ -21,8 +20,8 @@ export default function CustomGoogleAuth({ path }: { path: string }) {
     const { signUp } = useSignUp()
 
     const authMethod = path === '/sign-in' ? signIn : signUp
-    // const { authenticateWithGoogleOneTap, handleGoogleOneTapCallback } = useClerk()
-    // const router = useRouter()
+    const { authenticateWithGoogleOneTap, handleGoogleOneTapCallback } = useClerk()
+    const router = useRouter()
 
     const [debugInfo, setDebugInfo] = useState<string[]>([])
     const isDev = process.env.NODE_ENV !== 'production'
@@ -30,79 +29,73 @@ export default function CustomGoogleAuth({ path }: { path: string }) {
     //OAUTH REDIRECT
     const handleGoogleOAuth = async () => {
         try {
-            setDebugInfo((prev) => [...prev, '🟢 Iniciando flujo OAuth redirect con Google...'])
+            // setDebugInfo((prev) => [...prev, ' Iniciando flujo OAuth redirect con Google...'])
             await authMethod?.authenticateWithRedirect({
                 strategy: 'oauth_google',
                 redirectUrl: '/sso-callback',
                 redirectUrlComplete: '/dashboard',
             })
         } catch (err) {
-            console.error('❌ Error en OAuth Google:', err)
-            setDebugInfo((prev) => [...prev, '❌ Error en flujo OAuth clásico.'])
+            console.error(' Error en OAuth Google:', err)
+            // setDebugInfo((prev) => [...prev, ' Error en flujo OAuth clásico.'])
         }
     }
 
-    // TODO: Implementar mas adelante google one tap login
-    //GOOGLE ONE TAP 
-    // useEffect(() => {
-    //     const initializeOneTap = async () => {
-    //         const { google } = window
-    //         if (!google) {
-    //             setDebugInfo((prev) => [...prev, '⚠️ Google API no cargada todavía.'])
-    //             return
-    //         }
 
-    //         setDebugInfo((prev) => [...prev, '🚀 Inicializando Google One Tap...'])
 
-    //         google.accounts.id.initialize({
-    //             client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID!,
-    //             callback: async (response: any) => {
-    //                 try {
-    //                     setDebugInfo((prev) => [...prev, '✅ Token recibido desde One Tap, autenticando en Clerk...'])
-    //                     const res = await authenticateWithGoogleOneTap({ token: response.credential })
+    // TODO: Mover la inicialización de One Tap a un hook (useGoogleOneTap)
+    //TODO: Mostrar “Iniciando sesión…” o “Autenticado” según progreso.
+    // TODO: Si FedCM falla, mostrar un fallback UI claro (“Tu navegador bloqueó el inicio rápido”). 
 
-    //                     await handleGoogleOneTapCallback(res, {
-    //                         signInFallbackRedirectUrl: '/',
-    //                     })
+    //TODO: Controlar Entorno:
+    //     const isFedCMAvailable = typeof window.IdentityCredential !== 'undefined'
+    // if (isFedCMAvailable) initOneTap()
+    // else fallbackToOAuth()
 
-    //                     setDebugInfo((prev) => [...prev, '✅ Usuario autenticado correctamente con One Tap.'])
-    //                     router.push('/')
-    //                 } catch (error) {
-    //                     console.error('❌ Error en One Tap callback:', error)
-    //                     setDebugInfo((prev) => [...prev, '❌ Error durante el callback de Clerk con One Tap.'])
-    //                     router.push('/sign-in')
-    //                 }
-    //             },
-    //             ux_mode: 'popup',
-    //             cancel_on_tap_outside: false,
-    //         })
+    // TODO: Login avanzado solo en dev: Logs a consola en NODE_ENV=development o a Sentry en producción.
 
-    //         google.accounts.id.prompt((notification: any) => {
-    //             if (notification.isNotDisplayed()) {
-    //                 const reason = notification.getNotDisplayedReason()
-    //                 console.warn('🚫 One Tap no mostrado:', reason)
-    //                 setDebugInfo((prev) => [...prev, `🚫 One Tap no mostrado: ${reason}`])
-    //             }
-    //             if (notification.isSkippedMoment()) {
-    //                 const reason = notification.getSkippedReason()
-    //                 console.warn('⏩ One Tap omitido:', reason)
-    //                 setDebugInfo((prev) => [...prev, `⏩ One Tap omitido: ${reason}`])
-    //             }
-    //             if (notification.isDismissedMoment()) {
-    //                 const reason = notification.getDismissedReason()
-    //                 console.warn('❎ One Tap cerrado:', reason)
-    //                 setDebugInfo((prev) => [...prev, `❎ One Tap cerrado: ${reason}`])
-    //             }
-    //         })
-    //     }
+    ///GOOGLE ONE TAP 
+    useEffect(() => {
+        const initializeOneTap = async () => {
+            const { google } = window
+            if (!google) {
+                return
+            }
 
-    //     const timeout = setTimeout(() => initializeOneTap(), 1500)
-    //     return () => clearTimeout(timeout)
-    // }, [authenticateWithGoogleOneTap, handleGoogleOneTapCallback, router])
+            google.accounts.id.initialize({
+                client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID!,
+                callback: async (response: any) => {
+                    try {
+                        const res = await authenticateWithGoogleOneTap({ token: response.credential })
+
+                        await handleGoogleOneTapCallback(res, {
+                            signInFallbackRedirectUrl: '/',
+                        })
+
+                        router.push('/')
+                    } catch (error) {
+                        console.error('Error en One Tap callback:', error)
+                        router.push('/sign-in')
+                    }
+                },
+                ux_mode: 'popup',
+                cancel_on_tap_outside: false,
+            })
+
+            google.accounts.id.prompt((notification: any) => {
+
+                if (notification.isDismissedMoment()) {
+                    const reason = notification.getDismissedReason()
+                    console.warn('One Tap cerrado:', reason)
+                }
+            })
+        }
+        const timeout = setTimeout(() => initializeOneTap(), 1500)
+        return () => clearTimeout(timeout)
+    }, [authenticateWithGoogleOneTap, handleGoogleOneTapCallback, router])
 
     return (
         <>
-            <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
 
             <Button
                 type="button"
@@ -119,7 +112,7 @@ export default function CustomGoogleAuth({ path }: { path: string }) {
                     {path === '/sign-in' ? 'Inicia con Google' : 'Regístrate con Google'}
                 </p>
             </Button>
-{/* 
+            {/* 
             {isDev && debugInfo.length > 0 && (
                 <div className="p-3 rounded-md border border-base-border bg-background-dark text-xs font-mono text-foreground-muted overflow-auto max-h-[180px]">
                     <p className="text-foreground-base font-semibold mb-1">🧩 Google One Tap Debug:</p>

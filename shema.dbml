@@ -1,40 +1,180 @@
-// AscendIA - Base General de Usuarios
-// TODO: Terminar el schema de usuarios
-// TODO: Agregar tablas de roles y permisos si es necesario
-// TODO: Agregar tabla de verificación de email y recuperación de contraseña
-// TODO: Agregar tabla de historial de actividades del usuario
 
-Table users {
-  id uuid [pk, unique, note: 'id']
-  clerkId varchar [not null, unique, note: "clerk_id"]
-  email text [not null,unique, note: 'email']
-  firstName varchar [note: 'first_name']
-  lastName varchar [note: 'last_name']
-  imgUrl text [note: 'img_url']
-  role enum [note: 'USER | SUBSCRIPTOR | ADMIN | RECRUITER | INSTITUTION', default: 'USER']
-  createdAt timestamp [note: 'created_at', not null]
-  updatedAt timestamp [note: 'updated_at']
-  lastActivityDate timestamp [note: 'last_activity_date']
+//////////////////////////////////////////////////////////
+//  ASCENDIA - DATABASE SCHEMA (DBML VISUAL EDITION)
+//////////////////////////////////////////////////////////
+//  Stack: PostgreSQL + Drizzle ORM + Neon
+//  Author: Marcelo Melogno
+//  Context: User Management, Metrics, and Interview Flow
+//////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////
+// ENUMS
+//////////////////////////////////////////////////////////
+
+Enum ROLE_ENUM {
+  USER
+  SUBTOR
+  ADMIN
+  RECRUITER
+  INSTITUTION
 }
 
-Table user_sessions {
-  id varchar [pk]
-  userId varchar [ref: > users.id]
-  loginAt timestamp
-  logoutAt timestamp
-  deviceInfo json
+Enum AREA_ENUM {
+  IT
+  MARKETING
+  SALES
+  HR
+  FINANCE
 }
 
-Table user_profiles {
-  id varchar [pk]
-  userId varchar [ref: > users.id]
+Enum INTERVIEWER_ENUM {
+  BOB
+  LIZA
+  MICHAEL
+  MANUEL
+  LUCIANA
+}
+
+
+//////////////////////////////////////////////////////////
+// GROUP: AUTHENTICATION & USERS
+//////////////////////////////////////////////////////////
+
+Table users [headercolor: #1e293b] {
+  id uuid [pk, not null, default: `gen_random_uuid()`, note: 'Primary key for user']
+  clerk_id varchar(255) [unique, not null, note: 'Clerk external ID']
+  email text [unique, not null, note: 'User email (login identifier)']
+  first_name varchar(255)
+  last_name varchar(255)
+  img_url text [note: 'User avatar or profile picture']
+  role ROLE_ENUM [default: 'USER']
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [default: `now()`]
+  last_activity_date timestamp [default: `now()`]
+
+  Note: 'Central user registry synchronized with Clerk identity provider.'
+
+  Indexes {
+    email_idx [name: 'email_idx']
+    clerk_idx [name: 'clerk_idx']
+  }
+}
+
+Table user_profiles [headercolor: #334155] {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  user_id uuid [unique, not null, ref: > users.id]
   bio text
-  country varchar
-  skills text[]
-  preferences json
+  location varchar(255)
+  skills jsonb [note: 'Array of user skills (string[])']
+  preferences jsonb [note: '{ theme, notifications }']
+
+  Note: 'Extended user profile containing non-auth data (bio, preferences).'
+
+  Indexes {
+    user_profiles_user_idx [name: 'user_profiles_user_idx']
+  }
+}
+
+Table user_sessions [headercolor: #334155] {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  user_id uuid [not null, ref: > users.id]
+  session_token text [unique, not null]
+  expires_at timestamp [not null]
+  login_at timestamp [not null, default: `now()`]
+  logout_at timestamp
+  device_info jsonb [note: 'Device/browser/OS metadata']
+
+  Note: 'Tracks login sessions, devices, and expirations for audit or analytics.'
+
+  Indexes {
+    user_sessions_user_idx [name: 'user_sessions_user_idx']
+  }
+}
+
+Table user_skills [headercolor: #334155] {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  user_id uuid [not null, ref: > users.id]
+  skill varchar(255) [not null, note: 'Individual user skill label']
+
+  Note: 'Complementary normalized skill set table (1:N relationship).'
+
+  Indexes {
+    user_skills_user_idx [name: 'user_skills_user_idx']
+  }
 }
 
 
-// Relaciones
-Ref: user_sessions.userId > users.id
-Ref: user_profiles.userId > users.id
+//////////////////////////////////////////////////////////
+// GROUP: PERFORMANCE & ANALYTICS
+//////////////////////////////////////////////////////////
+
+Table metrics [headercolor: #0f172a] {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  user_id uuid [not null, ref: > users.id]
+  total_interviews int [default: 0]
+  avg_score int [default: 0]
+  last_improvement timestamp [note: 'Last improvement in performance metrics']
+
+  Note: 'Aggregated performance data related to interviews and evaluations.'
+
+  Indexes {
+    metrics_user_idx [name: 'metrics_user_idx']
+  }
+}
+
+
+//////////////////////////////////////////////////////////
+// GROUP: INTERVIEWS & EVALUATIONS
+//////////////////////////////////////////////////////////
+
+Table interviews_table [headercolor: #1e3a8a] {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  user_id uuid [not null, ref: > users.id]
+  area AREA_ENUM [default: 'IT']
+  interviewer INTERVIEWER_ENUM [default: 'LUCIANA']
+  position varchar(255)
+  feedback text [note: 'Evaluator notes or qualitative feedback']
+  score int [note: 'Numeric evaluation score']
+  created_at timestamp [not null, default: `now()`]
+
+  Note: 'Stores interview results, including area, interviewer, and performance.'
+
+  Indexes {
+    interviews_user_idx [name: 'interviews_user_idx']
+  }
+}
+
+Table feedbacks_table [headercolor: #1e3a8a] {
+  id uuid [pk, not null, default: `gen_random_uuid()`]
+  interview_id uuid [not null, ref: > interviews_table.id]
+  position varchar(255)
+  feedback text [note: 'Evaluator notes or qualitative feedback']
+  score int [note: 'Numeric evaluation score']
+  created_at timestamp [not null, default: `now()`]
+
+  Note: 'Stores interview results, including area, interviewer, and performance.'
+
+  Indexes {
+    interviews_user_idx [name: 'interviews_user_idx']
+  }
+}
+
+//////////////////////////////////////////////////////////
+// RELATIONS
+//////////////////////////////////////////////////////////
+
+Ref: user_profiles.user_id > users.id
+Ref: user_sessions.user_id > users.id
+Ref: user_skills.user_id > users.id
+Ref: metrics.user_id > users.id
+Ref: interviews_table.user_id > users.id
+
+//////////////////////////////////////////////////////////
+// META
+//////////////////////////////////////////////////////////
+//  - Designed for Drizzle ORM + Neon PostgreSQL
+//  - Synced via Clerk Webhooks or Server Actions
+//  - Supports full auth lifecycle: email/password, OTP, Google OAuth
+//  - Normalized for scalable analytics and relational access
+//////////////////////////////////////////////////////////
+

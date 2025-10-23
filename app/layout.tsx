@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Kodchasan } from "next/font/google";
 import "./globals.css";
-import '@clerk/themes/shadcn.css'; 
+import '@clerk/themes/shadcn.css';
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
+import Script from "next/script";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -30,6 +31,13 @@ export default function RootLayout({
   return (
     <ClerkProvider  >
       <html lang="en">
+        <head>
+          {/* Google Identity Services - One Tap (FedCM ready) */}
+          <Script
+            src="https://accounts.google.com/gsi/client"
+            strategy="beforeInteractive"
+          />
+        </head>
         <body
           className={`${interSans.variable} ${kodchasanSans.variable} antialiased`}
         >
