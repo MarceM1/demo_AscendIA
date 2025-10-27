@@ -35,7 +35,7 @@ export default function RootLayout({
           {/* Google Identity Services - One Tap (FedCM ready) */}
           <Script
             src="https://accounts.google.com/gsi/client"
-            strategy="beforeInteractive"
+            strategy="afterInteractive"
           />
         </head>
         <body

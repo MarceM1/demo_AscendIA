@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
-import { useSignIn, useSignUp, useClerk } from '@clerk/nextjs'
+import { useSignIn, useSignUp } from '@clerk/nextjs'
 
 import { useRouter } from 'next/navigation'
 import Link from "next/link"
@@ -28,6 +28,9 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp"
 import CustomGoogleAuth from './CustomGoogleAuth'
+import { useAuthFeedback } from '@/hooks/useAuthFeedback'
+import { AlertCircle } from 'lucide-react'
+import { Spinner } from './ui/spinner'
 
 interface LoginFormProps extends React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> {
   path: string;
@@ -51,52 +54,17 @@ export function LoginForm({
   const [password, setPassword] = useState('')
   const [verifying, setVerifying] = useState(false)
   const [code, setCode] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
 
-  // //Inicializa Google One Tap
-  // const initGoogleOneTap = async ()=>{
-  //   console.log('Initializing Google One Tap...')
-  //     const { google } = window
-  //   console.log('Google object:', google)
-  //     if (!google) return
-  //     console.log('client_id:', process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID)
-  //     google.accounts.id.initialize({
-  //       client_id: process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID,
-  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //       callback: async (response: any) => {
-  //         try {
-  //           const res = await authenticateWithGoogleOneTap({
-  //             token: response.credential,
-  //           })
+  const { handleClerkError, message } = useAuthFeedback()
 
-  //           await handleGoogleOneTapCallback(res, {
-  //             signInFallbackRedirectUrl: '/',
-  //           })
 
-  //           router.push('/')
-  //         } catch (error) {
-  //           console.error('Google One Tap Sign-In Error:', error)
-  //           router.push('/sign-in')
-  //         }
-  //       }
-  //     })
 
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     google.accounts.id.prompt((notification: any) => {
-  //       if (notification.isNotDisplayed())
-  //         console.error('Google One Tap not displayed:', notification.getNotDisplayedReason())
-  //       else if (notification.isSkippedMoment())
-  //         console.error('Google One Tap skipped:', notification.getSkippedReason())
-  //       else if (notification.isDismissedMoment())
-  //         console.error('Google One Tap dismissed:', notification.getDismissedReason())
-  //     })
-    
-  // }
-
-  
 
   //Registro nuevo usuario
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true)
 
     if (!isLoaded) return
 
@@ -113,7 +81,10 @@ export function LoginForm({
       setVerifying(true)
 
     } catch (err) {
+      handleClerkError(err)
       console.error('SignUp Error: ', JSON.stringify(err, null, 2));
+    }finally{
+        setIsLoading(false)
     }
 
   }
@@ -121,6 +92,7 @@ export function LoginForm({
   //Inicio de sesión usuario existente
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    setIsLoading(true)
 
     if (!isLoadedSignIn) return
 
@@ -145,8 +117,10 @@ export function LoginForm({
         console.error('SignIn incomplete: ', JSON.stringify(signInAttempt, null, 2))
       }
     } catch (err) {
+      handleClerkError(err)
       console.error('SignIn Error:', JSON.stringify(err, null, 2))
-
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -223,7 +197,7 @@ export function LoginForm({
 
   //Form Principal
   return (<>
-    <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" />
+    <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
 
     <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={path === '/sign-in' ? handleSubmit : handleSignUp}>
       <div className="flex flex-col items-center gap-2 text-center">
@@ -267,15 +241,30 @@ export function LoginForm({
           />
         </div>
         <Button type="submit" className="w-full text-foreground-base bg-background-light gradient-hover shadow_sm-hover">
-          {path === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta'}
+          {isLoading ? (path === '/sign-in' ?
+            <>
+              <Spinner />
+              <p>Iniciando sesión...</p>
+            </> :
+            <>
+              <Spinner />
+              <p>Creando cuenta...</p>
+            </>
+          ) : (path === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta')}
         </Button>
+        {message && (
+          <div className="flex items-top justify-start gap-2">
+            <AlertCircle className='size-5 m-0 p-0 text-destructive ' />
+            <p className='text-xs text-destructive'>{message}</p>
+          </div>
+        )}
         <div className="after:border-base-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t ">
           <span className="bg-background-dark relative z-10 px-2">
             O continua con
           </span>
         </div>
 
-        <CustomGoogleAuth path={path}/>
+        <CustomGoogleAuth path={path} />
       </div>
 
       <div className="text-center text-sm text-foreground-muted">
