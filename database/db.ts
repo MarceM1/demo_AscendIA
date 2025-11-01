@@ -9,13 +9,13 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false },
 });
 
-// Exportamos una instancia tipada
+// Exportacion de una instancia tipada
 export const db = drizzle(pool, { schema });
 
-// Exportamos también el pool por si necesitás cerrarlo en tests
+// Exportación del pool por si es necesario cerrarlo en tests
 export { pool };
 
-// Exportamos las tablas
+// Exportación de las tablas
 export const {
   users,
   userProfiles,

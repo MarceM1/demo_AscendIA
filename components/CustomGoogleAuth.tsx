@@ -43,7 +43,7 @@ export default function CustomGoogleAuth({ path }: { path: string }) {
             await authMethod?.authenticateWithRedirect({
                 strategy: 'oauth_google',
                 redirectUrl: '/sso-callback',
-                redirectUrlComplete: '/dashboard',
+                redirectUrlComplete: '/sso-callback',
             })
 
 
