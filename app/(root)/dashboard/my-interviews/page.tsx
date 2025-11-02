@@ -1,4 +1,3 @@
-'use server'
 import type { Metadata } from "next";
 import DashboardHeader from '@/components/DashboardHeader'
 import { SidebarInset } from '@/components/ui/sidebar'

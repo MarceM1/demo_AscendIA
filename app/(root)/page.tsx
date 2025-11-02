@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { auth, currentUser } from '@clerk/nextjs/server'
 import Navbar from "@/components/Navbar";

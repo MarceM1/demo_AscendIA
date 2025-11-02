@@ -1,4 +1,3 @@
-'use server'
 import DashboardHeader from '@/components/DashboardHeader'
 import Loader from '@/components/Loader'
 import { SidebarInset } from '@/components/ui/sidebar'
