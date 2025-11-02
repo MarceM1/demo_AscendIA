@@ -30,7 +30,7 @@ const DashboardHeader = ({ userImg, path }: DashboardHeaderProps) => {
 
       <div className=" h-fit w-fit overflow-hidden rounded-full">
         <Image
-          src={userImg ?? '/file.svg'}
+          src={userImg ?? '/user.svg'}
           alt="Profile"
           width={32}
           height={32}

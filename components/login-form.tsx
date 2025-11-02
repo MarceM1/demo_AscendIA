@@ -110,7 +110,7 @@ export function LoginForm({
               console.log(session?.currentTask)
               return
             }
-            await router.push('/dashboard')
+            await router.push('/sso-callback')
           }
         })
       } else {
