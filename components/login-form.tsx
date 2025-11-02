@@ -1,8 +1,10 @@
+'use client'
+
 import { useState } from 'react'
 
 import { useSignIn, useSignUp } from '@clerk/nextjs'
 
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from "next/link"
 import Script from 'next/script'
 
@@ -32,21 +34,20 @@ import { useAuthFeedback } from '@/hooks/useAuthFeedback'
 import { AlertCircle } from 'lucide-react'
 import { Spinner } from './ui/spinner'
 
-interface LoginFormProps extends React.DetailedHTMLProps<React.FormHTMLAttributes<HTMLFormElement>, HTMLFormElement> {
-  path: string;
-}
+
 
 
 
 export function LoginForm({
   className,
-  path,
   ...props
-}: LoginFormProps) {
+}: React.HTMLAttributes<HTMLFormElement>) {
 
   const { isLoaded, setActive, signUp } = useSignUp()
   const { isLoaded: isLoadedSignIn, signIn, setActive: setActiveSignIn } = useSignIn()
   // const { authenticateWithGoogleOneTap, handleGoogleOneTapCallback } = useClerk()
+
+  const currentPath= usePathname()
 
   const router = useRouter()
 
@@ -57,7 +58,6 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false)
 
   const { handleClerkError, message } = useAuthFeedback()
-
 
 
 
@@ -199,11 +199,11 @@ export function LoginForm({
   return (<>
     <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
 
-    <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={path === '/sign-in' ? handleSubmit : handleSignUp}>
+    <form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={currentPath === '/sign-in' ? handleSubmit : handleSignUp}>
       <div className="flex flex-col items-center gap-2 text-center">
-        <h1 className="text-2xl font-bold text-foreground-base">{path === '/sign-in' ? 'Ingresa a tu cuenta' : 'Crea una nueva cuenta'}</h1>
+        <h1 className="text-2xl font-bold text-foreground-base">{currentPath === '/sign-in' ? 'Ingresa a tu cuenta' : 'Crea una nueva cuenta'}</h1>
         <p className="text-foreground-muted text-sm text-balance">
-          {path === '/sign-in' ? 'Ingresa tu email debajo para iniciar sesión' : 'Ingresa tu email para crear una nueva cuenta'}
+          {currentPath === '/sign-in' ? 'Ingresa tu email debajo para iniciar sesión' : 'Ingresa tu email para crear una nueva cuenta'}
         </p>
       </div>
       <div className="grid gap-6">
@@ -241,7 +241,7 @@ export function LoginForm({
           />
         </div>
         <Button type="submit" className="w-full text-foreground-base bg-background-light gradient-hover shadow_sm-hover">
-          {isLoading ? (path === '/sign-in' ?
+          {isLoading ? (currentPath === '/sign-in' ?
             <>
               <Spinner />
               <p>Iniciando sesión...</p>
@@ -250,7 +250,7 @@ export function LoginForm({
               <Spinner />
               <p>Creando cuenta...</p>
             </>
-          ) : (path === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta')}
+          ) : (currentPath === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta')}
         </Button>
         {message && (
           <div className="flex items-top justify-start gap-2">
@@ -264,13 +264,13 @@ export function LoginForm({
           </span>
         </div>
 
-        <CustomGoogleAuth path={path} />
+        <CustomGoogleAuth path={currentPath} />
       </div>
 
       <div className="text-center text-sm text-foreground-muted">
-        {path === '/sign-in' ? '¿No tienés una cuenta?' : '¿Ya tenés una cuenta?'}{" "}
-        <Link href={path === '/sign-in' ? '/sign-up' : '/sign-in'} className="underline underline-offset-4  hover:text-foreground-base">
-          {path === '/sign-in' ? 'Crear Cuenta' : 'Iniciar Sesión'}
+        {currentPath === '/sign-in' ? '¿No tienés una cuenta?' : '¿Ya tenés una cuenta?'}{" "}
+        <Link href={currentPath === '/sign-in' ? '/sign-up' : '/sign-in'} className="underline underline-offset-4  hover:text-foreground-base">
+          {currentPath === '/sign-in' ? 'Crear Cuenta' : 'Iniciar Sesión'}
         </Link>
       </div>
     </form>

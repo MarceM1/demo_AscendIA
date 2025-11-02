@@ -21,6 +21,7 @@ const kodchasanSans = Kodchasan({
 export const metadata: Metadata = {
   title: "AscendIA",
   description: "Employment AI Assistant",
+  authors: [{ name: 'AscendIA', url: 'https://ascendia.ai' }],
 };
 
 export default function RootLayout({

@@ -1,9 +1,14 @@
+'use client'
+
 import { SidebarTrigger } from './ui/sidebar'
 import { Separator } from './ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './ui/breadcrumb'
 import Image from 'next/image'
+import { useDashboardPath } from '@/hooks/useDashboardPath'
 
-const DashboardHeader = ({ userImg, path }: DashboardHeaderProps) => {
+const DashboardHeader = ({ userImg }: DashboardHeaderProps) => {
+    const {cleanPath:path, cleanSubPath:subPath}= useDashboardPath()
+
   console.log('path: ', path)
   return (
     <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-base-border px-4">

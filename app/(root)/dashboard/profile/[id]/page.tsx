@@ -1,19 +1,26 @@
 
-
 import DashboardHeader from "@/components/DashboardHeader"
-import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarInset } from "@/components/ui/sidebar"
 import { currentUser, auth } from '@clerk/nextjs/server'
+import { Metadata } from "next"
 import { redirect } from "next/navigation"
+import { Suspense } from "react"
 
-const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params
-  const { isAuthenticated } = await auth()
-  const user = await currentUser()
-  // console.log('user in userProfile: ', user)
+export const metadata: Metadata = {
+  title: "AscendIA | Mi Perfil",
+  description: "Panel de control de mi perfil en AscendIA",
+  authors: [{ name: 'AscendIA', url: 'https://ascendia.ai' }],
+};
 
-  if (!id) return <div>no user id</div>
+const UserProfile = async ({ params }: { params: { id: string } }) => {
+  const { id } = params
+  const [authResult, user] = await Promise.all([auth(), currentUser()])
+  const { isAuthenticated } = authResult
+  
 
   if (!isAuthenticated) return redirect('/sign-in')
+  if (!id) return <div>no user id</div>
+
 
 
 
@@ -22,7 +29,9 @@ const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
     < section className="w-full h-full pr-2">
 
       <SidebarInset>
-        <DashboardHeader userImg={user?.imageUrl || ''}/>
+        <Suspense fallback={<div>Loading header...</div>}>
+          <DashboardHeader userImg={user?.imageUrl || ''} />
+        </Suspense>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
             <div className="bg-background-base aspect-video rounded-xl" />
