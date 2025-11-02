@@ -21,7 +21,7 @@ export default async function Home() {
         firstName={user?.firstName || user?.emailAddresses[0].emailAddress?.split('')[0].toUpperCase() || ''}
         lastName={user?.lastName || user?.emailAddresses[0].emailAddress?.split('')[0].toUpperCase() || ''}
         userEmail={user?.emailAddresses[0]?.emailAddress || ''}
-        userImg={user?.imageUrl || ''}
+        userImg={user?.imageUrl || '/user.svg'}
       />
       <div className="flex flex-col items-center justify-between h-2/4 ">
 

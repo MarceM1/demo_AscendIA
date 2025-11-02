@@ -10,7 +10,7 @@ const Navbar = ({ firstName, lastName, userEmail, userImg }: UserProps) => {
             
              <div className="flex items-center">
                  <Image
-                    src={userImg}
+                    src={userImg || '/user.svg'}
                     alt="User Avatar"
                     width={50}
                     height={50}
