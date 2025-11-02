@@ -5,6 +5,7 @@ import { SidebarInset } from '@/components/ui/sidebar'
 import { currentUser } from '@clerk/nextjs/server'
 
 import React, { Suspense } from 'react'
+import Loader from "@/components/Loader";
 
 export const metadata: Metadata = {
   title: "AscendIA | Mis Entrevistas",
@@ -18,7 +19,7 @@ const MisEntrevistas = async () => {
     < section className="w-full h-full pr-2">
 
       <SidebarInset>
-        <Suspense fallback={<div>Loading header...</div>}>
+        <Suspense fallback={<Loader/>}>
           <DashboardHeader  userImg={user?.imageUrl || null}/>
         </Suspense>
         <div className="flex flex-1 flex-col gap-4 p-4">

@@ -1,5 +1,6 @@
 
 import DashboardHeader from "@/components/DashboardHeader"
+import Loader from "@/components/Loader"
 import { SidebarInset } from "@/components/ui/sidebar"
 import { currentUser, auth } from '@clerk/nextjs/server'
 import { Metadata } from "next"
@@ -12,8 +13,8 @@ export const metadata: Metadata = {
   authors: [{ name: 'AscendIA', url: 'https://ascendia.ai' }],
 };
 
-const UserProfile = async ({ params }: { params: { id: string } }) => {
-  const { id } = params
+const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id } = await params
   const [authResult, user] = await Promise.all([auth(), currentUser()])
   const { isAuthenticated } = authResult
   
@@ -29,7 +30,7 @@ const UserProfile = async ({ params }: { params: { id: string } }) => {
     < section className="w-full h-full pr-2">
 
       <SidebarInset>
-        <Suspense fallback={<div>Loading header...</div>}>
+        <Suspense fallback={<Loader/>}>
           <DashboardHeader userImg={user?.imageUrl || ''} />
         </Suspense>
         <div className="flex flex-1 flex-col gap-4 p-4">

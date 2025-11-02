@@ -1,3 +1,4 @@
+import Loader from "@/components/Loader"
 import { DashSidebar } from "@/components/Sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { auth, currentUser } from "@clerk/nextjs/server"
@@ -17,7 +18,7 @@ export default async function DashboardLayout({ children, }: Readonly<{ children
 
   return (
     <SidebarProvider className="!min-h-dvh ">
-      <Suspense fallback={<div>Loading sidebar...</div>}>
+      <Suspense fallback={<Loader/>}>
         <DashSidebar imgUrl={user?.imageUrl || ''} user={userData || null || undefined} />
       </Suspense>
       <main className="w-full  !min-h-dvh ">

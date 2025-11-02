@@ -1,5 +1,6 @@
 'use server'
 import DashboardHeader from '@/components/DashboardHeader'
+import Loader from '@/components/Loader'
 import { SidebarInset } from '@/components/ui/sidebar'
 import { currentUser } from '@clerk/nextjs/server'
 import { Metadata } from 'next'
@@ -19,7 +20,7 @@ const NuevaEntrevista = async () => {
     < section className="w-full h-full pr-2">
 
       <SidebarInset>
-        <Suspense fallback={<div>Loading header...</div>}>
+        <Suspense fallback={<Loader/>}>
           <DashboardHeader userImg={user?.imageUrl || null} />
         </Suspense>
         <div className="flex flex-1 flex-col gap-4 p-4">
