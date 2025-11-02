@@ -270,8 +270,8 @@ export function LoginForm({
 
       <div className="text-center text-sm text-foreground-muted">
         {currentPath === '/sign-in' ? '¿No tienés una cuenta?' : '¿Ya tenés una cuenta?'}{" "}
-        <Link aria-hidden='false' aria-labelledby={IniciarOCrearsessionAccordingToPath} aria-label={IniciarOCrearsessionAccordingToPath} href={IniciarOCrearsessionAccordingToPath} className="underline underline-offset-4  hover:text-foreground-base">
-          {IniciarOCrearsessionAccordingToPath}
+        <Link aria-hidden='false' aria-labelledby={currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'} aria-label={currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'} href={currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'} className="underline underline-offset-4  hover:text-foreground-base">
+          {currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'}
         </Link>
       </div>
     </form>
