@@ -6,7 +6,7 @@ import { db, users } from "@/database/db"; // tabla de logs opcional
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET!;
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SIGNING_SECRET!;
   const wh = new Webhook(WEBHOOK_SECRET);
 
   const headersList = await headers();
@@ -70,7 +70,7 @@ export async function POST(req: Request) {
     //   status: "success",
     //   createdAt: new Date(),
     // });
-    
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("Webhook error:", err);
