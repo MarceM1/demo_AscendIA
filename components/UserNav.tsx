@@ -21,7 +21,7 @@ const UserNav = ({ user }: { user: User | null }) => {
         <section className='w-full h-fit'>
             <Card className='p-2 !bg-background-light  !border-none shadow-md shadow_sm-hover gradient-hover'>
 
-                <Link href={`/dashboard/profile/${id}`} className=''>
+                <Link aria-hidden='false' aria-label='Profile Access Card' href={`/dashboard/profile/${id}`} className=''>
                     <CardContent className='w-full h-fit flex flex-row gap-2 p-0'>
                         {user?.imageUrl ? (<Image
                             src={user?.imageUrl || '/file.png'}

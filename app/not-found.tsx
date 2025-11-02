@@ -10,7 +10,7 @@ export default function NotFound() {
             <div className="flex flex-col items-start justify-center gap-6 font-inter">
                 <p className="text-2xl font-regular text-foreground-base"><span className="font-bold">Ups...</span> esta página no existe.</p>
                 <div className="flex items-center justify-end w-full text-lg">
-                    <Link href="/" className="group text-foreground-muted font-inter">Volver a <span className="text-foreground-base font-medium group-hover:text-accent transition-all duration-75">Inicio</span></Link>
+                    <Link aria-hidden='false' href="/" className="group text-foreground-muted font-inter">Volver a <span className="text-foreground-base font-medium group-hover:text-accent transition-all duration-75">Inicio</span></Link>
                 </div>
             </div>
         </div>

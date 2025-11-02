@@ -272,6 +272,8 @@ function SidebarTrigger({
         toggleSidebar()
       }}
       {...props}
+      aria-label="Abrir o cerrar barra lateral de navegación" 
+      aria-labelledby="Abrir o cerrar barra lateral de navegación"
     >
       <PanelLeftIcon />
       <span className="sr-only">Toggle Sidebar</span>

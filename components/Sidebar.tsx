@@ -61,7 +61,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: string | n
                                     navItems.map((item) => (
                                         <SidebarMenuItem key={item.id} className={`flex flex-col gap-4 items-center justify-center text-foreground-base ${selectedNavItem === item.id ? 'text-accent' : ''}`}>
                                             <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
-                                                <Link href={item.href} className="">
+                                                <Link aria-hidden='false' aria-label={item.title} href={item.href} className="">
                                                     <item.icon className="!size-6 " />
                                                 </Link>
                                             </SidebarMenuButton>
@@ -74,7 +74,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: string | n
                                     lowNavItems.map((item) => (
                                         <SidebarMenuItem key={item.id} className={`flex flex-col gap-4 items-center justify-center text-foreground-base ${selectedNavItem === item.id ? 'text-accent' : ''}`}>
                                             <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
-                                                <Link href={item.href} className="">
+                                                <Link aria-hidden='false' aria-label={item.title} href={item.href} className="">
                                                     <item.icon className="!size-6 " />
                                                 </Link>
                                             </SidebarMenuButton>
@@ -101,14 +101,14 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: string | n
                     <SidebarGroup className="mt-2 flex flex-col gap-2">
                         <SidebarGroupContent className="flex flex-col pl-2 border-b border-base-border pb-4">
                             <h1 className="font-kodchasan text-2xl text-foreground-base">Ascend<span className="text-accent font-semibold">IA</span></h1>
-                            <h3 className="text-foreground-muted font-inter text-base">{selectedNavItem}</h3>
+                            <h2 className="text-foreground-muted font-inter text-base">{selectedNavItem}</h2>
                         </SidebarGroupContent>
                         <SidebarGroupContent className="mt-1">
                             <SidebarMenu>
                                 {currentSubItems.map((item) => (
                                     <SidebarMenuItem key={item.title} className=" text-foreground-base font-inter rounded-lg shadow_sm-hover  gradient-hover ">
                                         <SidebarMenuButton asChild className="">
-                                            <a href={item.href} className="flex items-center">
+                                            <a aria-hidden='false' aria-label={item.title} aria-labelledby={item.title} href={item.href} className="flex items-center">
                                                 <item.icon className="" />
                                                 <span>{item.title}</span>
                                             </a>
