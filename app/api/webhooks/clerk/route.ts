@@ -2,37 +2,51 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { syncUserWithDatabase } from "@/lib/actions/sync-user.action";
-import { db, users } from "@/database/db"; // tabla de logs opcional
+import { db, users, webhookLogs } from "@/database/db";
 import { eq } from "drizzle-orm";
 
+// Definir la interfaz del evento del webhook
+interface WebhookEvent {
+  id: string;
+  type: string;
+  data: {
+    id: string;
+    email: string;
+    email_addresses?: { email_address: string }[];
+    first_name?: string;
+    last_name?: string;
+    image_url?: string;
+  };
+}
+
 export async function POST(req: Request) {
+  // Verificar que la variable de entorno esté configurada
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SIGNING_SECRET!;
+
+  if (!WEBHOOK_SECRET) {
+    console.error("Missing CLERK_WEBHOOK_SIGNING_SECRET env variable");
+    return new Response("Server misconfiguration", { status: 500 });
+  }
+
+  // Crear una instancia del verificador de webhooks
   const wh = new Webhook(WEBHOOK_SECRET);
 
+  // Obtener los encabezados necesarios para la verificación
   const headersList = await headers();
   const svix_id = headersList.get("svix-id");
   const svix_timestamp = headersList.get("svix-timestamp");
   const svix_signature = headersList.get("svix-signature");
 
+  // Verificar que todos los encabezados estén presentes
   if (!svix_id || !svix_timestamp || !svix_signature) {
     return new Response("Missing svix headers", { status: 400 });
   }
 
+  // Leer el cuerpo de la solicitud
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-  interface WebhookEvent {
-    type: string;
-    data: {
-      id: string;
-      email:string,
-      email_addresses?: { email_address: string }[];
-      first_name?: string;
-      last_name?: string;
-      image_url?: string;
-    };
-  }
-  
+  // Verificar la firma del webhook
   let evt: WebhookEvent;
   try {
     evt = wh.verify(body, {
@@ -45,9 +59,30 @@ export async function POST(req: Request) {
     return new Response("Invalid signature", { status: 400 });
   }
 
+  // Extraer la información del evento
   const eventType = evt.type;
   const data = evt.data;
+  const eventId = evt.id;
+  const attempId = svix_id;
+  const userId = data.id;
 
+  // Registrar el evento del webhook en la base de datos
+  await db
+    .insert(webhookLogs)
+    .values({
+      eventId,
+      eventType,
+      userId,
+      status: "received",
+      errorMessage: null,
+      payload: evt as unknown as Record<string, JSON>,
+      processedAt: new Date(),
+      attempId,
+    })
+    .onConflictDoNothing({ target: webhookLogs.eventId })
+    .returning();
+
+  // Procesar el evento del webhook
   try {
     if (eventType === "user.created" || eventType === "user.updated") {
       await syncUserWithDatabase({
@@ -62,26 +97,29 @@ export async function POST(req: Request) {
       await db.delete(users).where(eq(users.clerkId, data.id));
     }
 
-    // log simple en la DB (opcional)
-    // await db.insert(webhookLogs).values({
-    //   eventId: svix_id,
-    //   eventType,
-    //   userId: data.id,
-    //   status: "success",
-    //   createdAt: new Date(),
-    // });
+    // Actualizar el estado del log del webhook a "processed"
+    await db
+      .update(webhookLogs)
+      .set({
+        status: "processed",
+        processedAt: new Date(),
+      })
+      .where(eq(webhookLogs.eventId, eventId));
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {
     console.error("Webhook error:", err);
 
-    // await db.insert(webhookLogs).values({
-    //   eventId: svix_id,
-    //   eventType,
-    //   userId: data.id,
-    //   status: "failed",
-    //   errorMessage: err.message,
-    // });
+    // Actualizar el estado del log del webhook a "error"
+    await db
+      .update(webhookLogs)
+      .set({
+        status: "error",
+        errorMessage: err.message,
+        processedAt: new Date(),
+      })
+      .where(eq(webhookLogs.eventId, eventId));
+
     return new Response("Error processing webhook", { status: 500 });
   }
 

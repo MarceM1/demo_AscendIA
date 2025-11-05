@@ -62,6 +62,19 @@ CREATE TABLE "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+CREATE TABLE "webhook_logs" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"event_id" varchar(255) NOT NULL,
+	"event_type" varchar(100) NOT NULL,
+	"user_id" varchar(255) NOT NULL,
+	"status" varchar(50) DEFAULT 'received' NOT NULL,
+	"error_message" text,
+	"payload" jsonb,
+	"processed_at" timestamp,
+	"attempt_id" varchar(255),
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
 ALTER TABLE "interviews_table" ADD CONSTRAINT "interviews_table_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE "metrics" ADD CONSTRAINT "metrics_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE "user_profiles" ADD CONSTRAINT "user_profiles_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
@@ -73,4 +86,7 @@ CREATE INDEX "user_profiles_user_idx" ON "user_profiles" USING btree ("user_id")
 CREATE INDEX "user_sessions_user_idx" ON "user_sessions" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "user_skills_user_idx" ON "user_skills" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "email_idx" ON "users" USING btree ("email");--> statement-breakpoint
-CREATE INDEX "clerk_idx" ON "users" USING btree ("clerk_id");
+CREATE INDEX "clerk_idx" ON "users" USING btree ("clerk_id");--> statement-breakpoint
+CREATE INDEX "webhook_logs_event_idx" ON "webhook_logs" USING btree ("event_id");--> statement-breakpoint
+CREATE INDEX "webhook_logs_user_idx" ON "webhook_logs" USING btree ("user_id");--> statement-breakpoint
+CREATE INDEX "webhook_logs_status_idx" ON "webhook_logs" USING btree ("status");

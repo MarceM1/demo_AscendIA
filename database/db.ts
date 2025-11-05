@@ -23,4 +23,5 @@ export const {
   userSkills,
   metrics,
   interviews,
+  webhookLogs,
 } = schema;

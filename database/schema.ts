@@ -10,6 +10,7 @@ import {
   varchar,
   jsonb,
 } from "drizzle-orm/pg-core";
+import { use } from "react";
 
 //Enums
 export const ROLE_ENUM = pgEnum("role", [
@@ -75,6 +76,27 @@ export const userSessions = pgTable(
   (table) => [index("user_sessions_user_idx").on(table.userId)]
 );
 
+export const webhookLogs = pgTable(
+  "webhook_logs",
+  {
+    id: uuid("id").primaryKey().notNull().defaultRandom(),
+    eventId: varchar("event_id", { length: 255 }).notNull(),
+    eventType: varchar("event_type", { length: 100 }).notNull(),
+    userId: varchar("user_id", { length: 255 }).notNull(),
+    status: varchar("status", { length: 50 }).notNull().default("received"),
+    errorMessage: text("error_message"),
+    payload: jsonb("payload").$type<Record<string, JSON>>(),
+    processedAt: timestamp("processed_at"),
+    attempId: varchar("attempt_id", { length: 255 }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => [
+    index("webhook_logs_event_idx").on(table.eventId),
+    index("webhook_logs_user_idx").on(table.userId),
+    index("webhook_logs_status_idx").on(table.status),
+  ]
+);
+
 export const userProfiles = pgTable(
   "user_profiles",
   {
@@ -86,7 +108,10 @@ export const userProfiles = pgTable(
     bio: text("bio"),
     location: varchar("location", { length: 255 }),
     skills: jsonb("skills").$type<string[]>(),
-    preferences: jsonb("preferences").$type<{ theme: string; notifications: boolean }>(),
+    preferences: jsonb("preferences").$type<{
+      theme: string;
+      notifications: boolean;
+    }>(),
   },
   (table) => [index("user_profiles_user_idx").on(table.userId)]
 );
@@ -187,3 +212,4 @@ export type InsertProfile = typeof userProfiles.$inferInsert;
 export type SelectProfile = typeof userProfiles.$inferSelect;
 export type InsertedInterview = typeof interviews.$inferInsert;
 export type SelectedInterview = typeof interviews.$inferSelect;
+export type WebhookLog = typeof webhookLogs.$inferSelect;
