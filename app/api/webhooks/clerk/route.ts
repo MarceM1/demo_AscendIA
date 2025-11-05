@@ -5,20 +5,6 @@ import { syncUserWithDatabase } from "@/lib/actions/sync-user.action";
 import { db, users, webhookLogs } from "@/database/db";
 import { eq } from "drizzle-orm";
 
-// Definir la interfaz del evento del webhook
-interface WebhookEvent {
-  id: string;
-  type: string;
-  data: {
-    id: string;
-    email: string;
-    email_addresses?: { email_address: string }[];
-    first_name?: string;
-    last_name?: string;
-    image_url?: string;
-  };
-}
-
 export async function POST(req: Request) {
   // Verificar que la variable de entorno esté configurada
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SIGNING_SECRET!;
@@ -45,6 +31,20 @@ export async function POST(req: Request) {
   // Leer el cuerpo de la solicitud
   const payload = await req.json();
   const body = JSON.stringify(payload);
+
+  // Definir la interfaz del evento del webhook
+  interface WebhookEvent {
+    id: string;
+    type: string;
+    data: {
+      id: string;
+      email: string;
+      email_addresses?: { email_address: string }[];
+      first_name?: string;
+      last_name?: string;
+      image_url?: string;
+    };
+  }
 
   // Verificar la firma del webhook
   let evt: WebhookEvent;
