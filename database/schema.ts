@@ -10,7 +10,6 @@ import {
   varchar,
   jsonb,
 } from "drizzle-orm/pg-core";
-import { use } from "react";
 
 //Enums
 export const ROLE_ENUM = pgEnum("role", [
@@ -35,6 +34,12 @@ export const INTERVIEWER_ENUM = pgEnum("interviewer", [
   "MICHAEL",
   "MANUEL",
   "LUCIANA",
+]);
+
+export const WEBHOOK_STATUS_ENUM = pgEnum("status", [
+  "received",
+  "processed",
+  "failed",
 ]);
 
 //Tablas
@@ -83,7 +88,7 @@ export const webhookLogs = pgTable(
     eventId: varchar("event_id", { length: 255 }).notNull(),
     eventType: varchar("event_type", { length: 100 }).notNull(),
     userId: varchar("user_id", { length: 255 }).notNull(),
-    status: varchar("status", { length: 50 }).notNull().default("received"),
+    status: WEBHOOK_STATUS_ENUM("status").notNull(),
     errorMessage: text("error_message"),
     payload: jsonb("payload").$type<Record<string, JSON>>(),
     processedAt: timestamp("processed_at"),

@@ -114,7 +114,7 @@ export async function POST(req: Request) {
     await db
       .update(webhookLogs)
       .set({
-        status: "error",
+        status: "failed",
         errorMessage: err.message,
         processedAt: new Date(),
       })
