@@ -85,7 +85,7 @@ export const webhookLogs = pgTable(
   "webhook_logs",
   {
     id: uuid("id").primaryKey().notNull().defaultRandom(),
-    eventId: varchar("event_id", { length: 255 }).notNull(),
+    eventId: varchar("event_id", { length: 255 }).unique().notNull(),
     eventType: varchar("event_type", { length: 100 }).notNull(),
     userId: varchar("user_id", { length: 255 }).notNull(),
     status: WEBHOOK_STATUS_ENUM("status").notNull(),
