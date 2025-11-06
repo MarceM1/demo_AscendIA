@@ -67,7 +67,8 @@ export async function POST(req: Request) {
   const userId = data.id;
 
   // Registrar el evento del webhook en la base de datos
-  await db
+  try {
+    await db
     .insert(webhookLogs)
     .values({
       eventId,
@@ -81,6 +82,11 @@ export async function POST(req: Request) {
     })
     .onConflictDoNothing({ target: webhookLogs.eventId })
     .returning();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err:any) {
+    console.error("Error logging webhook event:", err);
+    return new Response("Error logging webhook event", { status: 500 });
+  }
 
   // Procesar el evento del webhook
   try {
