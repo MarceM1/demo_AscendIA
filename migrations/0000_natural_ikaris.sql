@@ -1,6 +1,7 @@
 CREATE TYPE "public"."area" AS ENUM('IT', 'MARKETING', 'SALES', 'HR', 'FINANCE');--> statement-breakpoint
 CREATE TYPE "public"."interviewer" AS ENUM('BOB', 'LIZA', 'MICHAEL', 'MANUEL', 'LUCIANA');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('USER', 'SUBSCRIPTOR', 'ADMIN', 'RECRUITER', 'INSTITUTION');--> statement-breakpoint
+CREATE TYPE "public"."status" AS ENUM('received', 'processed', 'failed');--> statement-breakpoint
 CREATE TABLE "interviews_table" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
@@ -67,12 +68,13 @@ CREATE TABLE "webhook_logs" (
 	"event_id" varchar(255) NOT NULL,
 	"event_type" varchar(100) NOT NULL,
 	"user_id" varchar(255) NOT NULL,
-	"status" varchar(50) DEFAULT 'received' NOT NULL,
+	"status" "status" NOT NULL,
 	"error_message" text,
 	"payload" jsonb,
 	"processed_at" timestamp,
 	"attempt_id" varchar(255),
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "webhook_logs_event_id_unique" UNIQUE("event_id")
 );
 --> statement-breakpoint
 ALTER TABLE "interviews_table" ADD CONSTRAINT "interviews_table_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint

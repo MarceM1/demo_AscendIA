@@ -1,5 +1,5 @@
 {
-  "id": "d779baa2-05f3-4a6a-859f-e2279bd3388d",
+  "id": "81042edf-3459-4b81-8432-8d9c77ba350b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -578,10 +578,10 @@
         },
         "status": {
           "name": "status",
-          "type": "varchar(50)",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": true,
-          "default": "'received'"
+          "notNull": true
         },
         "error_message": {
           "name": "error_message",
@@ -664,7 +664,15 @@
       },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "webhook_logs_event_id_unique": {
+          "name": "webhook_logs_event_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "event_id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -702,6 +710,15 @@
         "ADMIN",
         "RECRUITER",
         "INSTITUTION"
+      ]
+    },
+    "public.status": {
+      "name": "status",
+      "schema": "public",
+      "values": [
+        "received",
+        "processed",
+        "failed"
       ]
     }
   },

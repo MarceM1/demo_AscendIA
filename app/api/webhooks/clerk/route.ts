@@ -62,7 +62,7 @@ export async function POST(req: Request) {
   // Extraer la información del evento
   const eventType = evt.type;
   const data = evt.data;
-  const eventId = evt.id;
+  const eventId = evt.id ?? 'UnknownEventId';
   const attempId = svix_id;
   const userId = data.id;
 
