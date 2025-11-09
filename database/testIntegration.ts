@@ -107,7 +107,7 @@ async function main() {
       .insert(interviews)
       .values({
         userId: user.id,
-        area: "IT",
+        area: "TECNOLOGÍA / IT",
         interviewer: "MICHAEL",
         position: "Desarrollador Fullstack",
         feedback: "Excelente desempeño en la entrevista.",
