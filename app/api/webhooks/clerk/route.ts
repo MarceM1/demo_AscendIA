@@ -1,9 +1,24 @@
+// TODO: Agregar manejo de reintentos y eventos duplicados.
+// TODO: Modularidad:Separar verify, log, process, updateStatus en funciones o servicios.
+// TODO: Seguridad: Validar el payload más allá de la firma (esquema, tipos de datos).
+// TODO: Seguridad: Encriptar la firma.
+// TODO: Validación:Reemplazar WebhookEvent con Zod schema (ej. ClerkWebhookDTO).
+// TODO: Logging: Añadir trace_id + durationMs + logger estructurado.
+// TODO: Observabilidad: Integrar con Sentry (captureException, breadcrumb eventType).
+// TODO: Testing: Agregar pruebas unitarias e integración para cada parte del proceso.
+// TODO: Documentación: Agregar documentación de la API.
+// TODO: Soft delete: Cambiar delete por update users set is_deleted = true.
+// TODO: Idempotency: Agregar validación por eventId antes de procesar (if exists processed) para evitar dobles ejecuciones.
+// TODO: Performance: Evaluar procesamiento asíncrono (colas) para alta carga de webhooks.
+// TODO: Error handling: Asegurar update status en un finally block.
+
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import { syncUserWithDatabase } from "@/lib/actions/sync-user.action";
 import { db, users, webhookLogs } from "@/database/db";
 import { eq } from "drizzle-orm";
+import { randomUUID } from "crypto";
 
 export async function POST(req: Request) {
   // Verificar que la variable de entorno esté configurada
@@ -62,28 +77,28 @@ export async function POST(req: Request) {
   // Extraer la información del evento
   const eventType = evt.type;
   const data = evt.data;
-  const eventId = evt.id ?? 'UnknownEventId';
+  const eventId = evt.id ?? randomUUID();
   const attempId = svix_id;
   const userId = data.id;
 
   // Registrar el evento del webhook en la base de datos
   try {
     await db
-    .insert(webhookLogs)
-    .values({
-      eventId,
-      eventType,
-      userId,
-      status: "received",
-      errorMessage: null,
-      payload: evt as unknown as Record<string, JSON>,
-      processedAt: new Date(),
-      attempId,
-    })
-    .onConflictDoNothing({ target: webhookLogs.eventId })
-    .returning();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err:any) {
+      .insert(webhookLogs)
+      .values({
+        eventId,
+        eventType,
+        userId,
+        status: "received",
+        errorMessage: null,
+        payload: evt as unknown as Record<string, JSON>,
+        processedAt: new Date(),
+        attempId,
+      })
+      .onConflictDoNothing({ target: webhookLogs.eventId })
+      .returning();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     console.error("Error logging webhook event:", err);
     return new Response("Error logging webhook event", { status: 500 });
   }
@@ -116,7 +131,7 @@ export async function POST(req: Request) {
   } catch (err: any) {
     console.error("Webhook error:", err);
 
-    // Actualizar el estado del log del webhook a "error"
+    // Actualizar el estado del log del webhook a "failed"
     await db
       .update(webhookLogs)
       .set({

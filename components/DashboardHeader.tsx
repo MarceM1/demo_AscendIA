@@ -3,13 +3,13 @@
 import { SidebarTrigger } from './ui/sidebar'
 import { Separator } from './ui/separator'
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from './ui/breadcrumb'
-import Image from 'next/image'
 import { useDashboardPath } from '@/hooks/useDashboardPath'
 
-const DashboardHeader = ({ userImg }: DashboardHeaderProps) => {
+const DashboardHeader = () => {
     const {cleanPath:path, cleanSubPath:subPath}= useDashboardPath()
-
-  console.log('path: ', path)
+    console.log(`path: -${path}-`)
+    console.log(`subPath: -${subPath}-`)
+  
   return (
     <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-base-border px-4">
       <div className="flex gap-2 items-center">
@@ -22,25 +22,27 @@ const DashboardHeader = ({ userImg }: DashboardHeaderProps) => {
           <BreadcrumbList>
             <BreadcrumbItem className="hidden md:block">
               <BreadcrumbLink href="#" className='capitalize'>
-                {path}
+                {
+                  path
+                }
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator className="hidden md:block" />
             <BreadcrumbItem>
-              <BreadcrumbPage>Trayendo Datos</BreadcrumbPage>
+              <BreadcrumbPage>{subPath === "" ? ' ' : subPath}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </div>
 
-      <div className=" h-fit w-fit overflow-hidden rounded-full">
+      {/* <div className=" h-fit w-fit overflow-hidden rounded-full">
         <Image
           src={userImg ?? '/user.svg'}
           alt="Profile"
           width={32}
           height={32}
         />
-      </div>
+      </div> */}
 
     </header>
   )

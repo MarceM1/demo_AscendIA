@@ -21,11 +21,15 @@ export const ROLE_ENUM = pgEnum("role", [
 ]);
 
 export const AREA_ENUM = pgEnum("area", [
-  "IT",
+  "TECNOLOGÍA / IT",
+  "VENTAS",
   "MARKETING",
-  "SALES",
-  "HR",
-  "FINANCE",
+  "RECURSOS HUMANOS",
+  "DISEÑO UX/UI",
+  "ATENCIÓN AL CLIENTE",
+  "ADMINISTRACIÓN",
+  "INGENIERÍA",
+  "EDUCACIÓN",
 ]);
 
 export const INTERVIEWER_ENUM = pgEnum("interviewer", [
@@ -154,7 +158,7 @@ export const interviews = pgTable(
     userId: uuid("user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
-    area: AREA_ENUM("area").default("IT"),
+    area: AREA_ENUM("area").default("TECNOLOGÍA / IT"),
     interviewer: INTERVIEWER_ENUM("interviewer").default("LUCIANA"),
     position: varchar("position", { length: 255 }),
     feedback: text("feedback"),

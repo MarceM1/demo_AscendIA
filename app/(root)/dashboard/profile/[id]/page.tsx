@@ -31,7 +31,7 @@ const UserProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
 
       <SidebarInset>
         <Suspense fallback={<Loader/>}>
-          <DashboardHeader userImg={user?.imageUrl || ''} />
+          <DashboardHeader />
         </Suspense>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
