@@ -57,9 +57,6 @@ export const AREAS = [
   },
 ];
 
-
-
-
 export const INTERVIEWERS = [
   {
     id: "BOB",
