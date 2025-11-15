@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import DashboardHeader from '@/components/DashboardHeader'
 import { SidebarInset } from '@/components/ui/sidebar'
-import { currentUser } from '@clerk/nextjs/server'
 
 import React, { Suspense } from 'react'
 import Loader from "@/components/Loader";
@@ -12,7 +11,6 @@ export const metadata: Metadata = {
   authors: [{ name: 'AscendIA', url: 'https://ascendia.ai' }],
 };
 const MisEntrevistas = async () => {
-  const user = await currentUser()
 
   return (
     < section className="w-full h-full pr-2">

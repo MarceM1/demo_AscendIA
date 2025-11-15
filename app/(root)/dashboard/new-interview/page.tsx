@@ -1,7 +1,7 @@
 import DashboardHeader from '@/components/DashboardHeader'
 import Loader from '@/components/Loader'
+import NewInterviewForm from '@/components/NewInterviewForm'
 import { SidebarInset } from '@/components/ui/sidebar'
-import { currentUser } from '@clerk/nextjs/server'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
 
@@ -10,9 +10,8 @@ export const metadata: Metadata = {
   description: "Generar una nueva entrevista en AscendIA",
   authors: [{ name: 'AscendIA', url: 'https://ascendia.ai' }],
 };
-const NuevaEntrevista = async () => {
+const NewInterview = async () => {
 
-  const user = await currentUser()
 
   return (
 
@@ -22,17 +21,12 @@ const NuevaEntrevista = async () => {
         <Suspense fallback={<Loader/>}>
           <DashboardHeader/>
         </Suspense>
-        <div className="flex flex-1 flex-col gap-4 p-4">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-background-base aspect-video rounded-xl" />
-            <div className="bg-background-base aspect-video rounded-xl" />
-            <div className="bg-background-base aspect-video rounded-xl" />
-          </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
-        </div>
+        <Suspense>
+          <NewInterviewForm />
+        </Suspense>  
       </SidebarInset>
     </section >
   )
 }
 
-export default NuevaEntrevista
+export default NewInterview

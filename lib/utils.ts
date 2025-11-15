@@ -16,13 +16,19 @@ import {
   Coins,
 } from "lucide-react";
 
+import z from "zod";
+import { ENUM_AREAS, ENUM_INTERVIEWERS } from "@/types/types";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-
-
-
+export const NewInterviewFormSchema = () =>
+  z.object({
+    area: z.enum(ENUM_AREAS),
+    interviewer: z.enum(ENUM_INTERVIEWERS),
+    position: z.string().max(255)
+  });
 
 // TODO mover a constants.ts
 export const homeSubItems = [

@@ -13,6 +13,7 @@
 ![MVP](https://img.shields.io/badge/Meta-MVP%20Funcional-success)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=nextdotjs)
 ![Clerk](https://img.shields.io/badge/Auth-Clerk-orange)
+![AgentIA](https://img.shields.io/badge/AI-Vapi-green) 
 ![Database](https://img.shields.io/badge/DB-Neon%20%2B%20Drizzle-00c7b7)
 ![Observability](https://img.shields.io/badge/Monitoring-Sentry-red)
 

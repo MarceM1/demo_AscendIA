@@ -26,7 +26,7 @@ export const AREAS = [
       "Práctica para entrevistas relacionadas con selección, clima laboral, gestión de talento y liderazgo organizacional.",
   },
   {
-    id: "DISEÑO UX/UI",
+    id: "DISEÑO UX/U",
     label: "DISEÑO UX/UI",
     description:
       "Enfocado en entrevistas para diseñadores, analizando creatividad, usabilidad, prototipado y comunicación visual.",
@@ -55,7 +55,7 @@ export const AREAS = [
     description:
       "Entrevistas para docentes, capacitadores o formadores; orientadas a comunicación pedagógica y vocación educativa.",
   },
-];
+] as const;
 
 export const INTERVIEWERS = [
   {
@@ -88,7 +88,7 @@ export const INTERVIEWERS = [
     description:
       "Creativa y moderna. Focaliza en innovación, adaptabilidad y pensamiento fuera de lo convencional.",
   },
-];
+] as const;
 
 
 // export const areaColors = {
