@@ -5,7 +5,7 @@ import '@clerk/themes/shadcn.css';
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
-import Script from "next/script";
+import GoogleOneTapScrip from "@/components/GoogleOneTapScrip";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -33,11 +33,7 @@ export default function RootLayout({
     <ClerkProvider  >
       <html lang="en">
         <head>
-          {/* Google Identity Services - One Tap (FedCM ready) */}
-          <Script
-            src="https://accounts.google.com/gsi/client"
-            strategy="afterInteractive"
-          />
+         <GoogleOneTapScrip />
         </head>
         <body
           className={`${interSans.variable} ${kodchasanSans.variable} antialiased`}

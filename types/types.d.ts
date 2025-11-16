@@ -1,4 +1,4 @@
-import { AREA_ENUM, INTERVIEWER_ENUM } from "@/database/schema";
+import { ENUM_AREAS, ENUM_INTERVIEWERS } from "./enums";
 
 interface UserProps {
     firstName?: string;
@@ -13,9 +13,15 @@ interface DashboardHeaderProps {
   subPath?: string;
 }
 
-export const ENUM_AREAS = AREA_ENUM.enumValues as const;
 
-export const ENUM_INTERVIEWERS = INTERVIEWER_ENUM.enumValues as const;
+interface DashSidebarProps {
+   id: string
+  firstName: string | null
+  lastName:string | null
+  imageUrl: string
+  username: string | null
+  emailAddresses: string []
+}
 
 
 export type AreaEnum = (typeof ENUM_AREAS)[number];

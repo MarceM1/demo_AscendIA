@@ -1,5 +1,11 @@
 import type { NextConfig } from "next";
 
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: false,
+});
+
 const clerkImageHost = process.env.NEXT_PUBLIC_CLERK_IMAGE_HOST;
 
 if (!clerkImageHost) {
@@ -16,12 +22,12 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-      protocol: "https",
-      hostname: clerkImageHost,
-      pathname: "/**",
-    },
-    ]
+        protocol: "https",
+        hostname: clerkImageHost,
+        pathname: "/**",
+      },
+    ],
   }
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

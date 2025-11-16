@@ -1,22 +1,23 @@
 import Image from 'next/image'
-import { Card, CardHeader, CardContent, CardAction } from './ui/card';
+import { Card, CardContent } from './ui/card';
 import Link from 'next/link';
 import { User } from 'lucide-react'
+import { DashSidebarProps } from '@/types/types';
 
-type User = {
-    id?: string;
-    imageUrl?: string;
-    username?: string;
-    firstName?: string;
-    lastName?: string;
-    emailAddresses?: { emailAddress: string }[];
-};
+// type User = {
+//     id?: string;
+//     imageUrl?: string;
+//     username?: string;
+//     firstName?: string;
+//     lastName?: string;
+//     emailAddresses?: { emailAddress: string }[];
+// };
 
 // TODO Conventri en dropdown 
 
-const UserNav = ({ user }: { user: User | null }) => {
+const UserNav = ({ user }: { user: DashSidebarProps | null }) => {
     //   console.log('user in userNav: ', user)
-    const { username, imageUrl, emailAddresses, firstName, lastName, id } = user as User
+    const { username, emailAddresses, firstName, lastName, id } = user as DashSidebarProps;
     return (
         <section className='w-full h-fit'>
             <Card className='p-2 !bg-background-light  !border-none shadow-md shadow_sm-hover gradient-hover'>
@@ -34,7 +35,7 @@ const UserNav = ({ user }: { user: User | null }) => {
                         )}
                         <div className='max-w-[75%] text-ellipsis'>
                             <p className='font-kodchasan text-sm text-foreground truncate whitespace-nowrap'>{username ? username : firstName ? firstName + " " + lastName : 'Usuario'}</p>
-                            <p className='font-inter text-xs text-foreground-muted truncate whitespace-nowrap'>{emailAddresses?.[0].emailAddress}</p>
+                            <p className='font-inter text-xs text-foreground-muted truncate whitespace-nowrap'>{emailAddresses}</p>
                         </div>
                     </CardContent>
                 </Link>

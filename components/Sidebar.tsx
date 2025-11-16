@@ -17,10 +17,13 @@ import UserNav from "./UserNav";
 import { useEffect, useState } from "react"
 import { LogOut } from "lucide-react"
 import { SignOutButton } from "@clerk/nextjs";
-export function DashSidebar({ user }: { imgUrl: string | null, user?: string | null }) {
+import { DashSidebarProps } from "../types/types";
+
+export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSidebarProps  }) {
     const [selectedNavItem, setSelectedNavItem] = useState('Inicio')
     const [currentSubItems, setCurrentSubItems] = useState(homeSubItems);
-    const userData = JSON.parse(user || '')
+    console.log(user)
+    // const userData = JSON.parse(user || '')
 
 
     const pathname = usePathname();
@@ -121,7 +124,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: string | n
                 </section>
 
                 <SidebarGroup className="h-fit">
-                    <UserNav user={userData} />
+                    <UserNav user={user || null} />
                 </SidebarGroup>
             </SidebarContent>
 

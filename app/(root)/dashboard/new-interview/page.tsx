@@ -21,7 +21,8 @@ const NewInterview = async () => {
         <Suspense fallback={<Loader/>}>
           <DashboardHeader/>
         </Suspense>
-        <Suspense>
+        <div>NewInterviewForm</div>
+        <Suspense fallback={<Loader/>}>
           <NewInterviewForm />
         </Suspense>  
       </SidebarInset>
