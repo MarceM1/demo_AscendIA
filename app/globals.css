@@ -189,7 +189,7 @@
   --destructive: oklch(0.577 0.245 27.325); */
   --border: var(--color-base-border);
   --input: oklch(0.922 0 0);
-  --ring: var(--color-background-light);
+  --ring: oklch(0.922 0 0);
   /*
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);

@@ -1,3 +1,4 @@
+import DashboardHeader from "@/components/DashboardHeader"
 import Loader from "@/components/Loader"
 import { DashSidebar } from "@/components/Sidebar"
 import { SidebarClientWrapper } from "@/components/SidebarClientWrapper"
@@ -24,10 +25,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <Suspense fallback={<Loader />}>
         <DashSidebar imgUrl={Safeuser.imageUrl} user={Safeuser} />
       </Suspense>
-
-      <main className="w-full min-h-dvh">
+      <section className="flex flex-col w-screen overflow-hidden">
+        <Suspense fallback={<Loader/>}>
+          <DashboardHeader/>
+        </Suspense>
+      <main className="container mx-auto min-h-dvh " >
         {children}
       </main>
+      </section>
     </SidebarClientWrapper>
   )
 }
