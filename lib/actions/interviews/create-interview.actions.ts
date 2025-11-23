@@ -1,13 +1,11 @@
 "use server";
-import { db, users } from "@/database/db";
+import { db} from "@/database/db";
 import { interviews } from "@/database/schema";
+import { getInternalUser } from "@/lib/auth/getInternalUser";
 import { NewInterviewFormSchema } from "@/lib/zod/schema";
-import { auth } from "@clerk/nextjs/server";
-import { eq } from "drizzle-orm";
+import { ActionResult } from "@/types/types";
 
-type ActionResult<T> =
-  | { success: true; data: T }
-  | { success: false; message: string; error?: unknown };
+
 
 export const createNewInterview = async (
   prevState: unknown,
@@ -17,24 +15,12 @@ export const createNewInterview = async (
   try {
     //Auth with clerk
     console.log("Authenticating user...");
-    const { userId: clerkId } = await auth();
-    if (!clerkId) {
+    const user = await getInternalUser();
+    if (!user) {
       return { success: false, message: "Usuario no autenticado" };
     }
+    const { clerkId, internalId:internalUserId } = user;
     console.log("User authenticated with ID:", clerkId);
-
-    //Get internal user ID from DB
-    console.log("Fetching internal user ID from database...");
-    
-    const dbUser = await db.query.users.findFirst({
-      where: eq(users.clerkId, clerkId),
-    });
-
-    if (!dbUser) {
-      return { success: false, message: "Usuario no encontrado en BD" };
-    }
-
-    const internalUserId = dbUser.id; 
 
     // Zod validation in server
     console.log("Parsing and validating form data...");

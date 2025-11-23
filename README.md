@@ -38,7 +38,7 @@
 - [x] Actualizar schema `interviews` con enums `AREA_ENUM` e `INTERVIEWER_ENUM`.
 - [x] Crear formulario `NewInterviewForm` con validaciones (`zod` o `react-hook-form`).
 - [ ] Implementar `createInterviewAction`:
-  - [ ] Recibe datos del form.
+  - [x] Recibe datos del form.
   - [ ] Llama al agente IA (Vapi).
   - [ ] Persiste registro inicial (`status: pending`).
 - [ ] Añadir estados visuales (`loading`, `error`, `success`).

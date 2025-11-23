@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Generar una nueva entrevista en AscendIA",
   authors: [{ name: 'AscendIA', url: 'https://ascendia.ai' }],
 };
-const NewInterview = async () => {
+const NewInterview =  () => {
 
 
   return (
