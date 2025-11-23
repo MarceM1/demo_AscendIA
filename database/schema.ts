@@ -33,11 +33,11 @@ export const AREA_ENUM = pgEnum("area", [
 ]);
 
 export const INTERVIEWER_ENUM = pgEnum("interviewer", [
+  "LUCIANA",
   "BOB",
   "LIZA",
   "MICHAEL",
   "MANUEL",
-  "LUCIANA",
 ]);
 
 export const WEBHOOK_STATUS_ENUM = pgEnum("status", [

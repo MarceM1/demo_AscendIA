@@ -36,7 +36,7 @@
 
 ###  Tareas
 - [x] Actualizar schema `interviews` con enums `AREA_ENUM` e `INTERVIEWER_ENUM`.
-- [ ] Crear formulario `NewInterviewForm` con validaciones (`zod` o `react-hook-form`).
+- [x] Crear formulario `NewInterviewForm` con validaciones (`zod` o `react-hook-form`).
 - [ ] Implementar `createInterviewAction`:
   - [ ] Recibe datos del form.
   - [ ] Llama al agente IA (Vapi).

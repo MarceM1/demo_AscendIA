@@ -1,11 +1,11 @@
-CREATE TYPE "public"."area" AS ENUM('IT', 'MARKETING', 'SALES', 'HR', 'FINANCE');--> statement-breakpoint
-CREATE TYPE "public"."interviewer" AS ENUM('BOB', 'LIZA', 'MICHAEL', 'MANUEL', 'LUCIANA');--> statement-breakpoint
+CREATE TYPE "public"."area" AS ENUM('TECNOLOGÍA / IT', 'VENTAS', 'MARKETING', 'RECURSOS HUMANOS', 'DISEÑO UX/UI', 'ATENCIÓN AL CLIENTE', 'ADMINISTRACIÓN', 'INGENIERÍA', 'EDUCACIÓN');--> statement-breakpoint
+CREATE TYPE "public"."interviewer" AS ENUM('LUCIANA', 'BOB', 'LIZA', 'MICHAEL', 'MANUEL');--> statement-breakpoint
 CREATE TYPE "public"."role" AS ENUM('USER', 'SUBSCRIPTOR', 'ADMIN', 'RECRUITER', 'INSTITUTION');--> statement-breakpoint
 CREATE TYPE "public"."status" AS ENUM('received', 'processed', 'failed');--> statement-breakpoint
 CREATE TABLE "interviews_table" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
-	"area" "area" DEFAULT 'IT',
+	"area" "area" DEFAULT 'TECNOLOGÍA / IT',
 	"interviewer" "interviewer" DEFAULT 'LUCIANA',
 	"position" varchar(255),
 	"feedback" text,

@@ -1,5 +1,5 @@
 {
-  "id": "81042edf-3459-4b81-8432-8d9c77ba350b",
+  "id": "90023820-25c7-4cc9-8d01-80f081a0e88d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -27,7 +27,7 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
-          "default": "'IT'"
+          "default": "'TECNOLOGÍA / IT'"
         },
         "interviewer": {
           "name": "interviewer",
@@ -683,22 +683,26 @@
       "name": "area",
       "schema": "public",
       "values": [
-        "IT",
+        "TECNOLOGÍA / IT",
+        "VENTAS",
         "MARKETING",
-        "SALES",
-        "HR",
-        "FINANCE"
+        "RECURSOS HUMANOS",
+        "DISEÑO UX/UI",
+        "ATENCIÓN AL CLIENTE",
+        "ADMINISTRACIÓN",
+        "INGENIERÍA",
+        "EDUCACIÓN"
       ]
     },
     "public.interviewer": {
       "name": "interviewer",
       "schema": "public",
       "values": [
+        "LUCIANA",
         "BOB",
         "LIZA",
         "MICHAEL",
-        "MANUEL",
-        "LUCIANA"
+        "MANUEL"
       ]
     },
     "public.role": {
