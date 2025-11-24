@@ -1,7 +1,9 @@
 import Image from "next/image"
 import { SignOutButton } from "@clerk/nextjs"
 import { Button } from "./ui/button"
-import {LogOutIcon} from'lucide-react'
+import {LogOutIcon} from 'lucide-react'
+import {UserProps} from '@/types/types'
+
 
 const Navbar = ({ firstName, lastName, userEmail, userImg }: UserProps) => {
     return (
