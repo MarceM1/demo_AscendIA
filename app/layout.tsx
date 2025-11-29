@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Kodchasan } from "next/font/google";
 import "./globals.css";
-import '@clerk/themes/shadcn.css';
+// import '@clerk/themes/shadcn.css';
 import {
   ClerkProvider,
 } from '@clerk/nextjs'
-import GoogleOneTapScrip from "@/components/GoogleOneTapScrip";
+// import GoogleOneTapScrip from "@/components/GoogleOneTapScrip";
 
 const interSans = Inter({
   variable: "--font-inter-sans",
@@ -30,11 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider  >
+    <ClerkProvider appearance={{
+      variables: {
+        fontFamily: "var(--font-inter-sans)",
+      },
+    }} >
       <html lang="en">
-        <head>
-         <GoogleOneTapScrip />
-        </head>
+        {/* <head>
+          <GoogleOneTapScrip />
+        </head> */}
         <body
           className={`${interSans.variable} ${kodchasanSans.variable} antialiased`}
         >

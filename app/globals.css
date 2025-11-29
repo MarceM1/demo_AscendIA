@@ -1,145 +1,76 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-/* @import "./styles/fonts.css"; */
+/* ---------------------------------------
+   LOCAL FONTS (Inter + Kodchasan)
+---------------------------------------- */
 
 /* Kodchasan */
-
 @font-face {
   font-family: "Kodchasan";
-  src: url("../public/types/Kodchasan/Kodchasan-ExtraLight.woff2")
-      format("woff2"),
-    url("../public/types/Kodchasan/Kodchasan-ExtraLight.woff") format("woff");
+  src: url("/types/Kodchasan/Kodchasan-ExtraLight.woff2") format("woff2"),
+       url("/types/Kodchasan/Kodchasan-ExtraLight.woff") format("woff");
   font-weight: 200;
-  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("../public/types/Kodchasan/Kodchasan-Bold.woff2") format("woff2"),
-    url("../public/types/Kodchasan/Kodchasan-Bold.woff") format("woff");
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Kodchasan";
-  src: url("../public/types/Kodchasan/Kodchasan-Light.woff2") format("woff2"),
-    url("../public/types/Kodchasan/Kodchasan-Light.woff") format("woff");
+  src: url("/types/Kodchasan/Kodchasan-Light.woff2") format("woff2"),
+       url("/types/Kodchasan/Kodchasan-Light.woff") format("woff");
   font-weight: 300;
-  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("../public/types/Kodchasan/Kodchasan-Regular.woff2") format("woff2"),
-    url("../public/types/Kodchasan/Kodchasan-Regular.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
+  src: url("/types/Kodchasan/Kodchasan-Regular.woff2") format("woff2"),
+       url("/types/Kodchasan/Kodchasan-Regular.woff") format("woff");
+  font-weight: 400;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("../public/types/Kodchasan/Kodchasan-Medium.woff2") format("woff2"),
-    url("../public/types/Kodchasan/Kodchasan-Medium.woff") format("woff");
+  src: url("/types/Kodchasan/Kodchasan-Medium.woff2") format("woff2"),
+       url("/types/Kodchasan/Kodchasan-Medium.woff") format("woff");
   font-weight: 500;
-  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("../public/types/Kodchasan/Kodchasan-SemiBold.woff2") format("woff2"),
-    url("../public/types/Kodchasan/Kodchasan-SemiBold.woff") format("woff");
+  src: url("/types/Kodchasan/Kodchasan-SemiBold.woff2") format("woff2"),
+       url("/types/Kodchasan/Kodchasan-SemiBold.woff") format("woff");
   font-weight: 600;
-  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kodchasan";
+  src: url("/types/Kodchasan/Kodchasan-Bold.woff2") format("woff2"),
+       url("/types/Kodchasan/Kodchasan-Bold.woff") format("woff");
+  font-weight: 700;
   font-display: swap;
 }
 
 /* Inter */
-
 @font-face {
   font-family: "Inter";
-  src: url("../public/types/Inter/Inter-Regular.woff2") format("woff2"),
-    url("../public/types/Inter/Inter-Regular.woff") format("woff");
+  src: url("/types/Inter/Inter-Regular.woff2") format("woff2"),
+       url("/types/Inter/Inter-Regular.woff") format("woff");
   font-weight: 400;
-  font-style: 75% 125%;
   font-display: swap;
 }
 
-/* @custom-variant dark (&:is(.dark *)); */
-
-@theme inline {
-  /*--color-clerk-color-primary: var(--clerk-color-primary); */
-
-  /* --color-sidebar-ring: var(--sidebar-ring); */
-  /* --color-sidebar-border: var(--sidebar-border); */
-  /* --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground-100: var(--sidebar-foreground-100);
-  --color-sidebar-foreground-300: var(--sidebar-foreground-300);
-  --color-sidebar-foreground-700: var(--sidebar-foreground-700); */
-
-  /*
-  --color-sidebar: var(--bg-base);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);*/
-  --color-ring: var(--ring);
-  /*
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-text-light: var(--text-light);
-  --color-accent: var(--accent); */
-
-  /* --color-muted-foreground: var(--muted-foreground); */
-  /* --color-muted: var(--muted); */
-  /* --color-secondary-foreground: var(--secondary-foreground); */
-  /* --color-secondary: var(--secondary); */
-  /* --color-primary-foreground: var(--primary-foreground); */
-  /* --color-primary: var(--primary); */
-  /* --color-popover-foreground: var(--popover-foreground); */
-  /* --color-popover: var(--popover); */
-  /* --color-card-foreground: var(--card-foreground); */
-  /* --color-card: var(--card); */
-
-  --color-background-base: var(--background-base);
-  --color-background-dark: var(--background-dark);
-  --color-background-light: var(--background-light);
-
-  --color-foreground-base: var(--text-primary);
-  --color-foreground-muted: var(--text-muted);
-
-  --color-highlight: var(--highlight);
-  --color-accent: var(--accent);
-
-  --color-base-border: var(--border-base);
-
-  --color-destructive: var(--destructive-color);
-  --color-warning: var(--warning-color);
-  --color-success: var(--success-color);
-  --color-info: var(--info-color);
-
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-
-  --font-inter: var(--font-inter), sans-serif;
-  --font-kodchasan: var(--font-kodchasan), sans-serif;
-}
+/* ---------------------------------------
+   CSS VARIABLES (theme)
+---------------------------------------- */
 
 :root {
+  --font-inter: "Inter", sans-serif;
+  --font-kodchasan: "Kodchasan", sans-serif;
+
   --radius: 0.625rem;
 
   --text-primary: hsl(0 0% 5%);
@@ -153,135 +84,55 @@
 
   --border-base: hsl(0 0% 75%);
 
-  --primary-color: hsl();
-  --secondary-color: hsl();
-  --accent: hsl(185, 60%, 45%);
+  --accent: hsl(185 60% 45%);
+  --destructive-color: hsl(0 60% 45%);
 
-  --destructive-color: hsl(0, 60%, 45%);
-  --warning-color: hsl();
-  --success-color: hsl();
-  --info-color: hsl();
-
-  --gradient-light: hsl();
-  --gradient: hsl();
-  --gradient-dark: hsl();
-
-  --hover-color: hsl();
-  --active-color: hsl();
-  --disabled-color: hsl();
-
-  /*
-  --clerk-color-primary: oklch(91.08% 0.19 176.36); /* #08FFC8 
-*/
-
-  /* --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0); */
-
-  /* --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325); */
-  --border: var(--color-base-border);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.922 0 0);
-  /*
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08); */
-  --sidebar: var(--color-background-base);
-  /* --sidebar-foreground-100: var(--foreground-100);
-  --sidebar-foreground-300: var(--foreground-300);
-  --sidebar-foreground-700: var(--foreground-700); */
-  /* --sidebar-primary: var(--color-background-800);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: var(--color-background-800); */
-  --sidebar-border: var(--color-base-border);
-  --sidebar-ring: var(--color-highlight);
-  --font-inter: "Inter", sans-serif;
-  --font-kodchasan: "Kodchasan", sans-serif;
+  --color-base-border: var(--border-base);
+  --color-background-dark: var(--background-dark);
+  --color-background-base: var(--background-base);
+  --color-background-light: var(--background-light);
+  --color-foreground-base: var(--text-primary);
+  --color-foreground-muted: var(--text-muted);
+  --color-accent: var(--accent);
 }
 
-/* .dark {
+/* ---------------------------------------
+   BASE STYLES
+---------------------------------------- */
 
---text-base: hsl(0 0% 95%);
-  --text-muted: hsl(0 0% 70%);
+@layer base {
+  * {
+    @apply ring-0 ring-offset-0 outline-none;
+  }
 
-  
+  body {
+    @apply bg-background-dark text-foreground-base font-inter 
+           max-w-screen w-full min-h-dvh overflow-x-hidden scroll-smooth;
+  }
 
-  --bg-dark: hsl(0 0% 0%);
-  --bg-color-base: hsl(0 0% 5%);
-  --light-light: hsl(0 0% 10%);
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
 
-  --primary-color:hsl();
-  --secondary-color:hsl();
-  --accent-color:hsl();
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--color-accent);
+    border-radius: 8px;
+  }
 
-  --destructive-color:hsl();
-  --warning-color:hsl();
-  --success-color:hsl();
-  --info-color:hsl();
-  
-  --border-color: hsl();
-  
-  --gradient-light:hsl();
-  --gradient:hsl();
-  --gradient-dark:hsl();
+  *::-webkit-scrollbar-track {
+    background-color: var(--color-background-dark);
+  }
+}
 
-  --hover-color:hsl();
-  --active-color:hsl();
-  --disabled-color:hsl();
-} */
-
-/* .dark {
-  --background: var(--background-800);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-} */
+/* ---------------------------------------
+   UTILITIES
+---------------------------------------- */
 
 @layer utilities {
-  .font-kodchasan {
-    font-family: "Kodchasan", sans-serif;
-  }
-  .font-inter {
-    font-family: "Inter", sans-serif;
-  }
+  .font-kodchasan { font-family: var(--font-kodchasan); }
+  .font-inter { font-family: var(--font-inter); }
+
   .gradient {
     background: linear-gradient(
       to bottom,
@@ -291,46 +142,16 @@
       var(--background-dark) 100%
     );
   }
-  .gradient-hover:hover {
-    transition: all 0.3s ease-in-out;
-    background: linear-gradient(
-      to bottom,
-      var(--highlight) 0%,
-      var(--highlight) 10%,
-      var(--background-light) 75%,
-      var(--background-dark) 100%
-    );
-  }
+
+  .gradient-hover:hover { @apply gradient; }
+
   .shadow_sm-hover:hover {
     transition: all 0.2s linear;
-
-    box-shadow: 1px 3px 4px hsl(0, 0%, 55%), 1px 8px 8px hsl(0, 0%, 75%);
+    box-shadow: 1px 3px 4px hsl(0,0%,55%), 1px 8px 8px hsl(0,0%,75%);
   }
 
   .bright-hover:hover {
     transition: all 0.2s linear;
-
-    box-shadow: 1px 2px 4px hsl(0, 0%, 60%), 3px 4px 5px hsl(0, 0%, 75%);
-  }
-}
-
-@layer base {
-   * {
-    @apply ring-0 ring-offset-0 outline-none;
-  } 
-  body {
-    @apply bg-background-dark text-foreground-base font-inter box-border max-w-screen w-full min-h-dvh  overflow-x-hidden scroll-smooth;
-  }
-  *::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-  *::-webkit-scrollbar-thumb {
-    background-color: var(--color-accent);
-    border-radius: 8px;
-  }
-  *::-webkit-scrollbar-track {
-    background-color: var(--color-background-dark);
-    @apply ring-0 ring-offset-0 outline-none;
+    box-shadow: 1px 2px 4px hsl(0,0%,60%), 3px 4px 5px hsl(0,0%,75%);
   }
 }
