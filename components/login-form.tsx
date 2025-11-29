@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 
 import { useSignIn, useSignUp } from '@clerk/nextjs'
 
@@ -15,24 +15,22 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSeparator,
-  InputOTPSlot,
-} from "@/components/ui/input-otp"
+
 import CustomGoogleAuth from './CustomGoogleAuth'
 import { useAuthFeedback } from '@/hooks/useAuthFeedback'
 import { AlertCircle } from 'lucide-react'
 import { Spinner } from './ui/spinner'
+// import OTPVerification from './OTPVerification'
+import dynamic from 'next/dynamic'
+import Loader from './Loader'
+
+
+const OTPVerification = dynamic(
+  () => import('@/components/OTPVerification'),
+  {
+    loading: () => <Loader />, 
+  }
+)
 
 export default function LoginForm({
   className,
@@ -121,73 +119,15 @@ export default function LoginForm({
     }
   }
 
-  //Verificación OTP email
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!isLoaded) return
-
-    try {
-      const signUpAttempt = await signUp.attemptEmailAddressVerification({
-        code,
-      })
-
-
-      if (signUpAttempt.status === 'complete') {
-        await setActive({
-          session: signUpAttempt.createdSessionId,
-          navigate: async ({ session }) => {
-            if (session?.currentTask) {
-
-              console.log(session?.currentTask)
-              return
-            }
-
-             router.push('/sso-callback')
-          },
-        })
-      } else {
-
-        console.error('Verification incomplete: ', JSON.stringify(signUpAttempt, null, 2))
-      }
-    } catch (err) {
-      console.error('Verification Error:', JSON.stringify(err, null, 2))
-    }
-  }
 
 
   //UI de verificación (2FA)
   if (verifying) {
 
     return (
-      <form onSubmit={handleVerify}>
-        <Card className='bg-background-dark !outline-foreground-muted'>
-          <CardHeader>
-            <CardTitle className='text-foreground-base'>Verificá tu correo</CardTitle>
-            <CardDescription className='text-foreground-muted'>Ingresa tu código de verificación</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <InputOTP maxLength={6} value={code} id="code" name="code" onChange={(value) => setCode(value)} >
-              <InputOTPGroup className='font-inter font-bold text-accent'>
-                <InputOTPSlot index={0} />
-                <InputOTPSlot index={1} />
-                <InputOTPSlot index={2} />
-              </InputOTPGroup>
-              <InputOTPSeparator />
-              <InputOTPGroup className='font-inter font-bold text-accent-muted'>
-                <InputOTPSlot index={3} />
-                <InputOTPSlot index={4} />
-                <InputOTPSlot index={5} />
-              </InputOTPGroup>
-            </InputOTP>
-          </CardContent>
-          <CardFooter>
-            <Button type="submit" className="w-full text-foreground-base bg-foreground-light hover:bg-background-base transition-all duration-300" aria-labelledby='Verify' aria-label='Verify'>
-              Verify
-            </Button>
-          </CardFooter>
-        </Card>
-      </form>
+      <Suspense fallback={<Loader/>}>
+        <OTPVerification code={code} setCode={setCode}  />
+      </Suspense>
     )
   }
 

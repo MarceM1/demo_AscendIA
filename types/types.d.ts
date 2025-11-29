@@ -23,6 +23,11 @@ interface DashSidebarProps {
   emailAddresses: string[];
 }
 
+interface OTPProps {
+  code: string
+  setCode: React.Dispatch<React.SetStateAction<string>>
+}
+
 export type ActionResult<T> =
   | { success: true; data: T }
   | { success: false; message: string; error?: unknown };
