@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@custom-variant dark (&:is(.dark *));
+/* @import "./styles/fonts.css"; */
+
 /* ---------------------------------------
    LOCAL FONTS (Inter + Kodchasan)
 ---------------------------------------- */
@@ -8,69 +11,103 @@
 /* Kodchasan */
 @font-face {
   font-family: "Kodchasan";
-  src: url("/types/Kodchasan/Kodchasan-ExtraLight.woff2") format("woff2"),
-       url("/types/Kodchasan/Kodchasan-ExtraLight.woff") format("woff");
+  src: url("../public/types/Kodchasan/Kodchasan-ExtraLight.woff2")
+      format("woff2"),
+    url("../public/types/Kodchasan/Kodchasan-ExtraLight.woff") format("woff");
   font-weight: 200;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("/types/Kodchasan/Kodchasan-Light.woff2") format("woff2"),
-       url("/types/Kodchasan/Kodchasan-Light.woff") format("woff");
+  src: url("../public/types/Kodchasan/Kodchasan-Bold.woff2") format("woff2"),
+    url("../public/types/Kodchasan/Kodchasan-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Kodchasan";
+  src: url("../public/types/Kodchasan/Kodchasan-Light.woff2") format("woff2"),
+    url("../public/types/Kodchasan/Kodchasan-Light.woff") format("woff");
   font-weight: 300;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("/types/Kodchasan/Kodchasan-Regular.woff2") format("woff2"),
-       url("/types/Kodchasan/Kodchasan-Regular.woff") format("woff");
-  font-weight: 400;
+  src: url("../public/types/Kodchasan/Kodchasan-Regular.woff2") format("woff2"),
+    url("../public/types/Kodchasan/Kodchasan-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("/types/Kodchasan/Kodchasan-Medium.woff2") format("woff2"),
-       url("/types/Kodchasan/Kodchasan-Medium.woff") format("woff");
+  src: url("../public/types/Kodchasan/Kodchasan-Medium.woff2") format("woff2"),
+    url("../public/types/Kodchasan/Kodchasan-Medium.woff") format("woff");
   font-weight: 500;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: "Kodchasan";
-  src: url("/types/Kodchasan/Kodchasan-SemiBold.woff2") format("woff2"),
-       url("/types/Kodchasan/Kodchasan-SemiBold.woff") format("woff");
+  src: url("../public/types/Kodchasan/Kodchasan-SemiBold.woff2") format("woff2"),
+    url("../public/types/Kodchasan/Kodchasan-SemiBold.woff") format("woff");
   font-weight: 600;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Kodchasan";
-  src: url("/types/Kodchasan/Kodchasan-Bold.woff2") format("woff2"),
-       url("/types/Kodchasan/Kodchasan-Bold.woff") format("woff");
-  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
 
 /* Inter */
 @font-face {
   font-family: "Inter";
-  src: url("/types/Inter/Inter-Regular.woff2") format("woff2"),
-       url("/types/Inter/Inter-Regular.woff") format("woff");
+  src: url("../public/types/Inter/Inter-Regular.woff2") format("woff2"),
+    url("../public/types/Inter/Inter-Regular.woff") format("woff");
   font-weight: 400;
+  font-style: 75% 125%;
   font-display: swap;
+}
+
+/* @custom-variant dark (&:is(.dark *)); */
+
+@theme inline {
+  --color-ring: var(--ring);
+  --color-background-base: var(--background-base);
+  --color-background-dark: var(--background-dark);
+  --color-background-light: var(--background-light);
+
+  --color-foreground-base: var(--text-primary);
+  --color-foreground-muted: var(--text-muted);
+
+  --color-highlight: var(--highlight);
+  --color-accent: var(--accent);
+
+  --color-base-border: var(--border-base);
+
+  --color-destructive: var(--destructive-color);
+  --color-warning: var(--warning-color);
+  --color-success: var(--success-color);
+  --color-info: var(--info-color);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-inter: var(--font-inter), sans-serif;
+  --font-kodchasan: var(--font-kodchasan), sans-serif;
 }
 
 /* ---------------------------------------
    CSS VARIABLES (theme)
 ---------------------------------------- */
-
 :root {
-  --font-inter: "Inter", sans-serif;
-  --font-kodchasan: "Kodchasan", sans-serif;
-
   --radius: 0.625rem;
 
   --text-primary: hsl(0 0% 5%);
@@ -84,44 +121,68 @@
 
   --border-base: hsl(0 0% 75%);
 
-  --accent: hsl(185 60% 45%);
-  --destructive-color: hsl(0 60% 45%);
+  --primary-color: hsl();
+  --secondary-color: hsl();
+  --accent: hsl(185, 60%, 45%);
 
-  --color-base-border: var(--border-base);
-  --color-background-dark: var(--background-dark);
-  --color-background-base: var(--background-base);
-  --color-background-light: var(--background-light);
-  --color-foreground-base: var(--text-primary);
-  --color-foreground-muted: var(--text-muted);
-  --color-accent: var(--accent);
+  --destructive-color: hsl(0, 60%, 45%);
+  --warning-color: hsl();
+  --success-color: hsl();
+  --info-color: hsl();
+
+  --gradient-light: hsl();
+  --gradient: hsl();
+  --gradient-dark: hsl();
+
+  --hover-color: hsl();
+  --active-color: hsl();
+  --disabled-color: hsl();
+
+  --border: var(--color-base-border);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.922 0 0);
+ 
+  --sidebar: var(--color-background-base);
+
+  --sidebar-border: var(--color-base-border);
+  --sidebar-ring: var(--color-highlight);
+  --font-inter: "Inter", sans-serif;
+  --font-kodchasan: "Kodchasan", sans-serif;
 }
+
+/* ---------------------------------------
+   GLOBAL STYLES
+---------------------------------------- */
+/* *,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+} */
 
 /* ---------------------------------------
    BASE STYLES
 ---------------------------------------- */
 
 @layer base {
-  * {
+   * {
     @apply ring-0 ring-offset-0 outline-none;
-  }
-
+  } 
   body {
-    @apply bg-background-dark text-foreground-base font-inter 
-           max-w-screen w-full min-h-dvh overflow-x-hidden scroll-smooth;
+    @apply bg-background-dark text-foreground-base font-inter box-border max-w-screen w-full min-h-dvh  overflow-x-hidden scroll-smooth;
   }
-
   *::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-
   *::-webkit-scrollbar-thumb {
     background-color: var(--color-accent);
     border-radius: 8px;
   }
-
   *::-webkit-scrollbar-track {
     background-color: var(--color-background-dark);
+    @apply ring-0 ring-offset-0 outline-none;
   }
 }
 
@@ -130,9 +191,12 @@
 ---------------------------------------- */
 
 @layer utilities {
-  .font-kodchasan { font-family: var(--font-kodchasan); }
-  .font-inter { font-family: var(--font-inter); }
-
+  .font-kodchasan {
+    font-family: "Kodchasan", sans-serif;
+  }
+  .font-inter {
+    font-family: "Inter", sans-serif;
+  }
   .gradient {
     background: linear-gradient(
       to bottom,
@@ -142,16 +206,29 @@
       var(--background-dark) 100%
     );
   }
-
-  .gradient-hover:hover { @apply gradient; }
-
+  .gradient-hover:hover {
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(
+      to bottom,
+      var(--highlight) 0%,
+      var(--highlight) 10%,
+      var(--background-light) 75%,
+      var(--background-dark) 100%
+    );
+  }
   .shadow_sm-hover:hover {
     transition: all 0.2s linear;
-    box-shadow: 1px 3px 4px hsl(0,0%,55%), 1px 8px 8px hsl(0,0%,75%);
+
+    box-shadow: 1px 3px 4px hsl(0, 0%, 55%), 1px 8px 8px hsl(0, 0%, 75%);
   }
 
   .bright-hover:hover {
     transition: all 0.2s linear;
-    box-shadow: 1px 2px 4px hsl(0,0%,60%), 3px 4px 5px hsl(0,0%,75%);
+
+    box-shadow: 1px 2px 4px hsl(0, 0%, 60%), 3px 4px 5px hsl(0, 0%, 75%);
   }
 }
+
+
+
+
