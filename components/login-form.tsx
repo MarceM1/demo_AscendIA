@@ -34,11 +34,7 @@ import { useAuthFeedback } from '@/hooks/useAuthFeedback'
 import { AlertCircle } from 'lucide-react'
 import { Spinner } from './ui/spinner'
 
-
-
-
-
-export function LoginForm({
+export default function LoginForm({
   className,
   ...props
 }: React.HTMLAttributes<HTMLFormElement>) {
@@ -48,7 +44,7 @@ export function LoginForm({
   // const { authenticateWithGoogleOneTap, handleGoogleOneTapCallback } = useClerk()
 
   const currentPath= usePathname()
-  const IniciarOCrearsessionAccordingToPath = currentPath === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta'
+  // const IniciarOCrearsessionAccordingToPath = currentPath === '/sign-in' ? 'Iniciar Sesión' : 'Crear Cuenta'
 
   const router = useRouter()
 

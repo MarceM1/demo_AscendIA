@@ -1,6 +1,20 @@
+'use client'
+import dynamic from "next/dynamic";
 import AsideLoginForm from '@/components/AsideLoginForm'
 import IconLoginPage from '@/components/IconLoginPage'
-import { LoginForm } from '@/components/login-form'
+// import { LoginForm } from '@/components/login-form'
+import React, { Suspense } from "react";
+import Loader from "@/components/Loader";
+
+
+const LoginForm = dynamic(() => import("@/components/login-form"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full max-w-xs animate-pulse">
+      <div className="h-40 bg-surface/30 rounded" />
+    </div>
+  ),
+});
 
 export default function LoginUI () {
   return (
@@ -16,7 +30,9 @@ export default function LoginUI () {
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <LoginForm />
+             <Suspense fallback={<Loader/>}>
+              <LoginForm />
+            </Suspense>
           </div>
         </div>
       </div>
