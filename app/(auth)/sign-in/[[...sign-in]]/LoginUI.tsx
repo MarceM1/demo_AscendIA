@@ -11,7 +11,7 @@ const LoginForm = dynamic(() => import("@/components/login-form"), {
   ssr: false,
   loading: () => (
     <div className="w-full max-w-xs animate-pulse">
-      <div className="h-40 bg-surface/30 rounded" />
+      <div className="h-40 bg-accent/30 rounded" />
     </div>
   ),
 });

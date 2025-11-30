@@ -1,6 +1,7 @@
 "use server";
 
 import { db, interviews } from "@/database/db";
+import { enrichInterviews } from "@/lib/mappers/interviews";
 import { ActionResult, Interview } from "@/types/types";
 import { desc, eq } from "drizzle-orm";
 
@@ -13,9 +14,12 @@ export const getInterviews = async (
       where: eq(interviews.userId, internalUserId),
       orderBy: desc(interviews.createdAt),
     });
+
+    const  enriched = enrichInterviews(userInterviews as Interview[]);
+
     return {
       success: true,
-      data: { interviews: userInterviews as Interview[] },
+      data: { interviews: enriched },
     };
   } catch (error) {
     return {

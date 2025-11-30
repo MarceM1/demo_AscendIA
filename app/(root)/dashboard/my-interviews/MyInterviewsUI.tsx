@@ -1,77 +1,36 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { getInterviews } from "@/lib/actions/interviews/get-interviews.actions";
-import { getInternalUser } from "@/lib/auth/getInternalUser";
-import Link from "next/link";
+import Loader from "@/components/Loader";
+import { Suspense } from "react";
+import InterviewCard from "@/components/InterviewCard";
 
-
-export default async function MyInterviewsUI(){
-  const user = await getInternalUser();
-
-  if (!user) {
-    return (
-      <p className="p-8 text-red-500">
-        Debes iniciar sesión para ver tus entrevistas.
-      </p>
-    );
-  }
-
-  const {internalId} = user
-  const result = await getInterviews(internalId);
-
-  if (!result.success) {
-    return <p className="p-8">Error: {result.message}</p>;
-  }
-
-  const data = result.data.interviews;
-
+export default function MyInterviewsUI() {
   return (
-    <section className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Mis entrevistas</h1>
+    <section className="p-8 max-w-6xl mx-auto flex flex-col gap-8">
+      <div className="w-full flex flex-col gap-12">
+        <div className="flex flex-col gap-4">
+          <h1 className="text-2xl font-semibold text-foreground-base">
+          Mis Entrevistas
+        </h1>
 
-      {data.length === 0 && (
-        <p className="text-foreground-muted">
-          Todavía no creaste ninguna entrevista.
+        <p className="text-foreground-muted leading-relaxed">
+          Este módulo reúne todas las entrevistas que generaste con AscendIA.
+          Cada simulación está construida a partir de tus skills, tu experiencia real
+          y el tipo de rol que querés alcanzar.
+          Desde aquí podés retomar una práctica, revisar resultados anteriores o
+          iniciar una nueva sesión personalizada.
         </p>
-      )}
+        </div>
 
-      <div className="space-y-4">
-        {data.map((item) => (
-          <article
-            key={item.id}
-            className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between"
-          >
-            <div className="flex flex-col gap-1">
-              <h2 className="font-semibold">{item.position}</h2>
-
-              <div className="flex gap-2 items-center text-sm">
-                <Badge variant="outline">{item.area}</Badge>
-                <Badge variant="secondary">{item.interviewer}</Badge>
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                Creada el: {item.createdAt.toLocaleDateString()}
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-2 items-end justify-center">
-              {item.score === null ? (
-                <Link href={`/dashboard/my-interviews/${item.id}/simulate`}>
-                  <Button size="sm" className="gradient-hover">
-                    Simular
-                  </Button>
-                </Link>
-              ) : (
-                <Link href={`/dashboard/my-interviews/${item.id}`}>
-                  <Button size="sm" variant="outline">
-                    Ver resultado
-                  </Button>
-                </Link>
-              )}
-            </div>
-          </article>
-        ))}
+        <p className="w-4xl mx-auto border-l-4 border-l-accent pl-4 text-xl text-foreground-muted ">
+          Las simulaciones se actualizan cada vez que mejorás tu perfil, así que tus
+          prácticas siempre reflejan tu nivel actual.
+        </p>
       </div>
+
+      <Suspense fallback={<Loader />}>
+        <div className="w-full mt-4">
+          <InterviewCard />
+        </div>
+      </Suspense>
     </section>
   );
 }
