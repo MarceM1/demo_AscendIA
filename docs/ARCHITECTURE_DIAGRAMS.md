@@ -407,3 +407,57 @@ flowchart LR
 ```
 
 - Las constantes front reflejan enums en DB; los cambios en enums se realizan mediante migraciones versionadas — la DB es la fuente de verdad.
+
+<br></br>
+<br></br>
+
+#  13. Diagrama De Aplicación SSG / ISR / PPR
+
+```mermaid
+
+    flowchart TD
+
+%% SECCIÓN: PÁGINAS PÚBLICAS
+subgraph Public["Páginas Públicas - SSG / ISR"]
+    A[Landing /] -->|SSG| B[HTML Estático]
+    C[Pricing] -->|SSG| B
+    D[Features] -->|SSG| B
+    E[Blog] -->|ISR 1h| F[Regeneración Programada]
+end
+
+%% SECCIÓN: DASHBOARD
+subgraph Dashboard["Dashboard - PPR"]
+    G[Layout Estático] -->|Prerender| H[HTML Base]
+    I[User Data] -->|Dynamic RSC| J[Hydration]
+    H --> J
+end
+
+%% SECCIÓN: ENTREVISTAS
+subgraph Interviews["Entrevistas - PPR + RSC Dinámico"]
+    K[Intro UI Estática] -->|Prerender| L[HTML Base]
+    M[Fetch Entrevistas Server Action] --> N[Render Dinámico]
+    L --> N
+end
+
+%% SECCIÓN: SIMULACIÓN
+subgraph Simulation["Simulación - PPR + Streaming"]
+    O[Instructions Estáticas] -->|Prerender| P[HTML Base]
+    Q[Agente VAPI] -->|Streaming Dinámico| R[Simulación en Tiempo Real]
+    P --> R
+end
+
+%% SECCIÓN: RESULTADOS
+subgraph Results["Resultados - PPR"]
+    S[Layout Estático] -->|Prerender| T[HTML Base]
+    U[Consulta DB] --> V[Render Dinámico Resultados]
+    T --> V
+end
+
+%% RELACIONES
+Public --> Dashboard
+Dashboard --> Interviews
+Interviews --> Simulation
+Simulation --> Results
+
+
+```
