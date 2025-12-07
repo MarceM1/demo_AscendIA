@@ -57,7 +57,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSideba
         <Sidebar className="!bg-background-base !border-base-border h-screen" >
             <SidebarContent className="flex flex-col ">
                 <section className="!flex flex-row h-full">
-                    <SidebarGroup className="flex flex-col w-fit  h-full  ml-3 mt-2  pt-2 bg-background-light rounded-xl shadow-xl ">
+                    <SidebarGroup className="flex flex-col w-[68px]  h-full  ml-3 mt-2  pt-2 bg-background-light rounded-xl shadow-xl ">
                         <SidebarGroupContent className="!flex !flex-col items-center justify-between h-full">
                             <SidebarMenu>
                                 {
@@ -101,7 +101,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSideba
                         color="border-base-border"
                     />
 
-                    <SidebarGroup className="mt-2 flex flex-col gap-2">
+                    <SidebarGroup className="mt-2 flex flex-col gap-2 w-[270px]">
                         <SidebarGroupContent className="flex flex-col pl-2 border-b border-base-border pb-4">
                             <h1 className="font-kodchasan text-2xl text-foreground-base">Ascend<span className="text-accent font-semibold">IA</span></h1>
                             <h2 className="text-foreground-muted font-inter text-base">{selectedNavItem}</h2>

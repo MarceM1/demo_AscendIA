@@ -6,7 +6,7 @@ import Link from 'next/link';
 import React from 'react'
 import { cn } from '@/lib/utils';
 
-const InterviewCard = async () => {
+const InterviewsList = async () => {
   const user = await getInternalUser();
 
   if (!user) {
@@ -41,9 +41,9 @@ const InterviewCard = async () => {
       )}
 
       <div className="space-y-4">
-        {data.map((item, index) => (
+        {data.map((item) => (
           <article
-            key={index}
+            key={item.id}
             className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between"
           >
             <div className="flex flex-col gap-1">
@@ -83,4 +83,4 @@ const InterviewCard = async () => {
   );
 }
 
-export default InterviewCard
+export default InterviewsList

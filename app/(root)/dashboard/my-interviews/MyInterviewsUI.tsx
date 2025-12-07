@@ -1,6 +1,6 @@
-import Loader from "@/components/Loader";
 import { Suspense } from "react";
-import InterviewCard from "@/components/InterviewCard";
+import InterviewsList from "@/components/InterviewsList";
+import {InterviewsListSkeleton} from '@/components/skeletons/InterviewsListSkeleton';
 
 export default function MyInterviewsUI() {
   return (
@@ -26,11 +26,11 @@ export default function MyInterviewsUI() {
         </p>
       </div>
 
-      <Suspense fallback={<Loader />}>
         <div className="w-full mt-4">
-          <InterviewCard />
+          <Suspense fallback={<InterviewsListSkeleton />}>
+            <InterviewsList />
+          </Suspense>
         </div>
-      </Suspense>
     </section>
   );
 }

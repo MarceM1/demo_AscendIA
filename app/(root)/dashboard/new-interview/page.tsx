@@ -1,8 +1,8 @@
-import Loader from '@/components/Loader'
 import NewInterviewForm from '@/components/NewInterviewForm'
 import { SidebarInset } from '@/components/ui/sidebar'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
+import { NewInterviewFormSkeleton } from '@/components/skeletons/NewInterviewFormSkeleton'
 
 export const metadata: Metadata = {
   title: "AscendIA | Nueva Entrevista",
@@ -29,7 +29,7 @@ const NewInterview =  () => {
             el trabajo al que apuntás.
           </p>
         </div>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<NewInterviewFormSkeleton />}>
           <NewInterviewForm />
         </Suspense>
         {/* <div className="flex items-center-safe justify-end-safe mt-8">

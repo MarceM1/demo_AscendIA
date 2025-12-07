@@ -1,7 +1,8 @@
 import DashboardHeader from "@/components/DashboardHeader"
-import Loader from "@/components/Loader"
 import { DashSidebar } from "@/components/Sidebar"
 import { SidebarClientWrapper } from "@/components/SidebarClientWrapper"
+import { DashboardHeaderSkeleton } from "@/components/skeletons/DashboardHeaderSkeleton"
+import { DashSidebarSkeleton } from "@/components/skeletons/DashSidebarSkeleton"
 import { auth, currentUser } from "@clerk/nextjs/server"
 import { Suspense } from "react"
 
@@ -22,11 +23,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   return (
     <SidebarClientWrapper>
-      <Suspense fallback={<Loader />}>
+      <Suspense fallback={<DashSidebarSkeleton />}>
         <DashSidebar imgUrl={Safeuser.imageUrl} user={Safeuser} />
       </Suspense>
       <section className="flex flex-col w-screen overflow-hidden">
-        <Suspense fallback={<Loader/>}>
+        <Suspense fallback={<DashboardHeaderSkeleton/>}>
           <DashboardHeader/>
         </Suspense>
       <main className="container mx-auto min-h-dvh " >
