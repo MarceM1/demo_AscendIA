@@ -20,19 +20,25 @@ Enum ROLE_ENUM {
 }
 
 Enum AREA_ENUM {
-  IT
+  TECNOLOGIA_IT
+  VENTAS
   MARKETING
-  SALES
-  HR
-  FINANCE
+  RECURSOS_HUMANOS
+  DISENO_UX_UI
+  ATENCION_AL_CLIENTE
+  ADMINISTRACION
+  INGENIERIA
+  EDUCACION
 }
 
+
 Enum INTERVIEWER_ENUM {
+  LUCIANA
   BOB
   LIZA
   MICHAEL
   MANUEL
-  LUCIANA
+  
 }
 
 Enum WEBHOOK_STATUS_ENUM {
@@ -118,8 +124,8 @@ Table webhooks_logs [headercolor: #543f7e]{
   status WEBHOOK_STATUS_ENUM
   errorMessage text 
   payload jsonb
-  processedAt timestamp (255)
-  createdAt timestamp [not null]
+  processed_at timestamp (6)
+  created_at timestamp [not null]
 }
 
 
@@ -149,8 +155,8 @@ Table metrics [headercolor: #063093] {
 Table interviews_table [headercolor: #1c949f] {
   id uuid [pk, not null, default: `gen_random_uuid()`]
   user_id uuid [not null, ref: > users.id]
-  area AREA_ENUM [default: 'IT']
-  interviewer INTERVIEWER_ENUM [default: 'LUCIANA']
+  area AREA_ENUM [default: 'TECNOLOGIA_IT', ref: > areas.id]
+  interviewer INTERVIEWER_ENUM [default: 'BOB', ref: > interviewers.id]
   position varchar(255)
   feedback text [note: 'Evaluator notes or qualitative feedback']
   score int [note: 'Numeric evaluation score']
@@ -178,16 +184,74 @@ Table feedbacks_table [headercolor: #038799] {
   }
 }
 
+
 //////////////////////////////////////////////////////////
-// RELATIONS
+// INTERVIEWERS (Persist Agents Configurations)
 //////////////////////////////////////////////////////////
+
+Table interviewers {
+  id                INTERVIEWER_ENUM [pk , note: "Identificador del entrevistador (ej: BOB, LIZA, MICHAEL)"]
+  label             text        [not null]
+  description       text        [not null]
+  personality       jsonb       [note: "Rasgos del agente para el prompt dinámico"]
+  color             text        [not null]
+  prompt_template   jsonb       [note: "Plantilla base utilizada para crear el agente en Vapi"]
+  version           int         [not null, default: 1]
+  created_at         timestamp   [not null, default: `now()`]
+  updated_at         timestamp   [not null, default: `now()`]
+
+  Note: 'Configuraciones persistentes de agentes entrevistadores.'
+}
+
+//////////////////////////////////////////////////////////
+// AREAS (Persisted Metadata for Interview Categories)
+//////////////////////////////////////////////////////////
+
+Table areas {
+  id              AREA_ENUM   [pk, note: "Identificador del área (ej: TECNOLOGÍA_IT, VENTAS)"]
+  label           text        [not null, note: "Nombre legible del área"]
+  description     text        [not null, note: "Descripción enriquecida para UI y prompts"]
+  color           text        [not null, note: "Color oficial del área para UI"]
+  version         int         [not null, default: 1]
+  created_at      timestamp   [not null, default: `now()`]
+  updated_at      timestamp   [not null, default: `now()`]
+
+  Note: 'Metadata persistente para clasificación de entrevistas y lógica UI.'
+}
+
+//////////////////////////////////////////////////////////
+// SESSIONS
+//////////////////////////////////////////////////////////
+
+Table interview_sessions {
+  id                uuid        [pk, default: `uuid_generate_v4()`]
+  interview_id       uuid        [not null, ref: > interviews_table.id, note: "La entrevista asociada"]
+  interviewer_id    INTERVIEWER_ENUM        [not null, ref: > interviewers.id]
+  interviewer_version int        [not null, default: 1]
+
+  prompt_used        jsonb       [not null, note: "Snapshot del prompt usado al momento de la simulación"]
+  metrics           jsonb       [note: "Duración, turns, sentimiento, score, etc."]
+  transcript        jsonb       [note: "Conversación completa"]
+
+  created_at         timestamp   [not null, default: `now()`]
+}
+
+
+//////////////////////////////////////////////////////////
+// RELATIONS (summary)
+//////////////////////////////////////////////////////////
+
 
 // Ref: user_profiles.user_id > users.id
 // Ref: user_sessions.user_id > users.id
 // Ref: user_skills.user_id > users.id
 // Ref: metrics.user_id > users.id
 // Ref: interviews_table.user_id > users.id
-// Ref: webhooks_logs.userId > users.clerk_id
+// Ref: webhooks_logs.user_clerk_id > users.clerk_id
+// Ref: interview_sessions.interviewer_id > interviewers.id
+// Ref: interview_sessions.interview_id > interviews_table.id
+// Ref: feedbacks_table.interview_id > interviews_table.id
+// Ref: areas.id > interviews_table.area
 
 
 //////////////////////////////////////////////////////////

@@ -1,8 +1,9 @@
 import "dotenv/config";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
-import { InsertUser, users } from "./schema";
 import { eq } from "drizzle-orm";
+import { InsertUser } from "../types";
+import { users } from "../schema/users";
 
 async function main() {
   console.log("Iniciando ejecucion del test");

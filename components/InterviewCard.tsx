@@ -25,7 +25,7 @@ const InterviewCard = async () => {
   }
 
   const data = result.data.interviews;
-  console.log(data);
+  console.log('data: ', data);
 
   return (
     <section className="w-4xl mx-auto">
@@ -41,22 +41,22 @@ const InterviewCard = async () => {
       )}
 
       <div className="space-y-4">
-        {data.map((item) => (
+        {data.map((item, index) => (
           <article
-            key={item.id}
+            key={index}
             className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between"
           >
             <div className="flex flex-col gap-1">
               <h2 className="font-medium text-foreground-muted text-2xl mb-2">{item.position}</h2>
 
               <div className="flex gap-2 items-center text-sm">
-                <Badge style={{ backgroundColor: `${item.areaData.color}`}} className={` py-1 px-3 flex items-center justify-center `}><p className='text-xs text-background-base'>{item.area}</p></Badge>
-                <Badge className='bg-background-dark py-1 px-3 flex items-center justify-center  '><p style={{ color: item.interviewerData.color }} className='font-bold text-xs '>{item.interviewer}</p></Badge>
+                <Badge style={{ backgroundColor: `${item.areaDetails?.color}`}} className={` py-1 px-3 flex items-center justify-center `}><p className='text-xs text-background-base'>{item.areaDetails?.label}</p></Badge>
+                <Badge className='bg-background-dark py-1 px-3 flex items-center justify-center  '><p style={{ color: item.interviewerDetails?.color }} className='font-bold text-xs '>{item.interviewerDetails?.label}</p></Badge>
               </div>
               
               <div className="flex items-center gap-5 mt-2">
                 <p className="text-xs text-foreground-base ">
-                Creada el: <span className='text-foreground-muted'>{item.createdAt.toLocaleDateString()}</span>
+                Creada el: <span className='text-foreground-muted'>{item.createdAt?.toLocaleDateString()}</span>
               </p>
               <p className='text-xs text-foreground-base'>Score general: <span className='text-foreground-muted'>{item.score=== null ? '- -' : <Badge className={cn('py-1 px-3 flex items-center justify-center', item.score <= 29 ? 'bg-red-300' : item.score >= 30 && item.score <= 69 ? 'bg-yellow-300' : 'bg-green-300')}>{item.score}</Badge>}</span></p>
               </div>

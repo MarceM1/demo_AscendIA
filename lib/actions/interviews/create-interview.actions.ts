@@ -1,6 +1,6 @@
 "use server";
 import { db} from "@/database/db";
-import { interviews } from "@/database/schema";
+import { interviews } from "@/database/schema/interviews";
 import { getInternalUser } from "@/lib/auth/getInternalUser";
 import { NewInterviewFormSchema } from "@/lib/zod/schema";
 import { ActionResult } from "@/types/types";

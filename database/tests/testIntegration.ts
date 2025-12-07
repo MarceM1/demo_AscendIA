@@ -1,17 +1,14 @@
 import "dotenv/config";
 // import { drizzle } from "drizzle-orm/node-postgres";
 // import { Pool } from "pg";
-import { db, pool } from "./db";
+import { db, pool } from "../db";
 import { eq } from "drizzle-orm";
-import {
-  users,
-  userProfiles,
-  userSessions,
-  userSkills,
-  metrics,
-  type InsertUser,
-  interviews,
-} from "./schema";
+import { InsertUser } from "../types";
+import { userProfiles, users, userSessions, userSkills } from "../schema/users";
+import { interviews } from "../schema/interviews";
+import { metrics } from "../schema/metrics";
+
+
 
 async function main() {
   console.log("🚀 Iniciando test de integración de base de datos...");
@@ -107,7 +104,7 @@ async function main() {
       .insert(interviews)
       .values({
         userId: user.id,
-        area: "TECNOLOGÍA / IT",
+        area: "TECNOLOGIA_IT",
         interviewer: "MICHAEL",
         position: "Desarrollador Fullstack",
         feedback: "Excelente desempeño en la entrevista.",
@@ -144,14 +141,51 @@ async function main() {
       },
     });
 
-    const userDTO = {
-      ...fullUser,
-      metrics: fullUser?.metrics?.[0],
-      interviews: fullUser?.interviews?.map((i) => ({
+    interface UserMetricsDTO {
+      userId: number;
+      totalInterviews: number;
+      avgScore: number;
+      lastImprovement: Date;
+    }
+
+    interface InterviewDTO {
+      position: string;
+      score: number;
+    }
+
+    interface UserDTO {
+      id: string |number ;
+      clerkId: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      imgUrl: string;
+      createdAt: Date;
+      updatedAt: Date;
+      profile: object | null;
+      sessions: object[];
+      skills: string[];
+      metrics: UserMetricsDTO | undefined;
+      interviews: InterviewDTO[];
+    }
+
+    const userDTO: UserDTO = {
+      id: fullUser?.id ?? 0 as number,
+      clerkId: fullUser?.clerkId ?? "",
+      email: fullUser?.email ?? "",
+      firstName: fullUser?.firstName ?? "",
+      lastName: fullUser?.lastName ?? "",
+      imgUrl: fullUser?.imgUrl ?? "",
+      createdAt: fullUser?.createdAt ?? new Date(),
+      updatedAt: fullUser?.updatedAt ?? new Date(),
+      profile: fullUser?.profile ?? null,
+      sessions: fullUser?.sessions ?? [],
+      skills: fullUser?.skills?.map((s: { skill: string }) => s.skill) as string[] ?? [],
+      metrics: fullUser?.metrics?.[0] ? { ...fullUser.metrics[0], userId: Number(fullUser.metrics[0].userId) } as UserMetricsDTO : undefined,
+      interviews: fullUser?.interviews?.map((i)=> ({
         position: i.position,
         score: i.score,
-      })),
-      skills: fullUser?.skills?.map((s) => s.skill),
+      })) as InterviewDTO[] ?? [],
     };
 
     console.log("Datos combinados del usuario:", fullUser);

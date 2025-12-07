@@ -1,4 +1,4 @@
-import { AREA_ENUM, INTERVIEWER_ENUM } from "@/database/schema";
+import { AREA_ENUM, INTERVIEWER_ENUM } from "@/database/schema/enums";
 
 export const ENUM_AREAS = AREA_ENUM.enumValues;
 
