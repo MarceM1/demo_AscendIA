@@ -1,23 +1,37 @@
-import { INTERVIEWERS } from "@/constants";
+// database/seeds/interviewers.ts
 import { db } from "../db";
 import { interviewers } from "../schema/interviewers";
-import { eq } from "drizzle-orm";
+import { INTERVIEWERS } from "@/constants";
 
 export async function seedInterviewers() {
   console.log("🌱 Seeding interviewers...");
 
   for (const interviewer of INTERVIEWERS) {
-    const exists = await db.query.interviewers.findFirst({
-      where: eq(interviewers.id, interviewer.id),
-    });
+    await db
+      .insert(interviewers)
+      .values({
+        id: interviewer.id,
+        label: interviewer.label,
+        description: interviewer.description,
+        color: interviewer.color,
+        personality: interviewer.personality,
+        promptTemplate: interviewer.promptTemplate,
+        version: interviewer.version,
+      })
+      .onConflictDoUpdate({
+        target: interviewers.id,
+        set: {
+          label: interviewer.label,
+          description: interviewer.description,
+          color: interviewer.color,
+          personality: interviewer.personality,
+          promptTemplate: interviewer.promptTemplate,
+          version: interviewer.version,
+        },
+      });
 
-    if (!exists) {
-      await db.insert(interviewers).values(interviewer);
-      console.log(` → Inserted interviewer: ${interviewer.label}`);
-    } else {
-      console.log(` → Skipped (exists): ${interviewer.label}`);
-    }
+    console.log(`   → Interviewer ${interviewer.id} insertado/actualizado`);
   }
 
-  console.log("✓ Seeding interviewers completed");
+  console.log("✅ Interviewers seeded.\n");
 }

@@ -7,63 +7,72 @@ export const AREAS = [
     label: "TECNOLOGÍA / IT",
     description:
       "Entrevistas orientadas a roles técnicos: desarrollo web, backend, QA, data, infraestructura y software en general.",
-    color: "#2563EB"  
+    color: "#2563EB" ,
+    version: 1 
   },
   {
     id: "VENTAS",
     label: "VENTAS",
     description:
       "Simula entrevistas para puestos comerciales y de ventas, enfocados en persuasión, objetivos y gestión de clientes.",
-    color: "#EA580C"  
+    color: "#EA580C",
+    version: 1  
   },
   {
     id: "MARKETING",
     label: "MARKETING",
     description:
       "Evalúa perfiles en marketing digital, estrategias de marca, contenido y análisis de métricas de rendimiento.",
-    color: "#A21CAF"  
+    color: "#A21CAF",
+    version: 1  
   },
   {
     id: "RECURSOS_HUMANOS",
     label: "RECURSOS HUMANOS",
     description:
       "Práctica para entrevistas relacionadas con selección, clima laboral, gestión de talento y liderazgo organizacional.",
-    color: "#0D9488"  
+    color: "#0D9488",
+    version: 1  
   },
   {
     id: "DISENO_UX_UI",
     label: "DISEÑO UX/UI",
     description:
       "Enfocado en entrevistas para diseñadores, analizando creatividad, usabilidad, prototipado y comunicación visual.",
-    color: "#9333EA"  
+    color: "#9333EA",
+    version: 1  
   },
   {
     id: "ATENCION_AL_CLIENTE",
     label: "ATENCIÓN AL CLIENTE",
     description:
       "Ideal para puestos de soporte, call centers o atención personalizada; evalúa empatía y comunicación efectiva.",
-    color: "#0284C7"  
+    color: "#0284C7",
+    version: 1  
   },
   {
     id: "ADMINISTRACION",
     label: "ADMINISTRACIÓN",
     description:
       "Simula entrevistas para puestos administrativos, financieros o contables; enfocados en organización y precisión.",
-    color: "#4B5563"  
+    color: "#4B5563",
+    version: 1  
   },
   {
     id: "INGENIERIA",
     label: "INGENIERÍA",
     description:
       "Dirigido a entrevistas técnicas en áreas de ingeniería civil, industrial, electrónica o mecánica.",
-    color: "#15803D"  
+    color: "#15803D",
+    version: 1  
   },
   {
     id: "EDUCACION",
     label: "EDUCACIÓN",
     description:
       "Entrevistas para docentes, capacitadores o formadores; orientadas a comunicación pedagógica y vocación educativa.",
-    color: "#B45309"  
+    color: "#B45309",
+    version: 1  
   },
 ] as const;
 
@@ -76,7 +85,12 @@ export const INTERVIEWERS = [
     description:
       "Estructurado y técnico. Preciso en sus preguntas, orientado a resultados y profundidad técnica.",
     color: "#1E3A8A",
-    prompt_template: {
+    personality: {
+      style: "estructurado",
+      tone: "profesional",
+      traits: ["técnico", "analítico", "directo"],
+    },
+    promptTemplate: {
       system:
         "Eres BOB, un entrevistador técnico extremadamente estructurado. " +
         "Formulas preguntas precisas, profundas y orientadas a evaluar conocimientos reales, " +
@@ -91,7 +105,12 @@ export const INTERVIEWERS = [
     description:
       "Empática y comunicativa. Enfoca la entrevista en habilidades blandas, motivación y pensamiento colaborativo.",
     color: "#BE185D",
-    prompt_template: {
+    personality: {
+      style: "empática",
+      tone: "cálida",
+      traits: ["comunicativa", "colaborativa", "amable"],
+    },
+    promptTemplate: {
       system:
         "Eres LIZA, una entrevistadora empática, cálida y comunicativa. " +
         "Te enfocás en habilidades blandas, motivaciones personales, comunicación y trabajo colaborativo. " +
@@ -105,7 +124,12 @@ export const INTERVIEWERS = [
     description:
       "Directo y exigente. Evalúa con firmeza la claridad, la lógica y la solidez profesional del candidato.",
     color: "#B91C1C",
-    prompt_template: {
+    personality: {
+      style: "directo",
+      tone: "serio",
+      traits: ["exigente", "crítico", "rígido"],
+    },
+    promptTemplate: {
       system:
         "Eres MICHAEL, un entrevistador directo, exigente y de estándares altos. " +
         "Vas al grano, cuestionás supuestos y evaluás la claridad del pensamiento, la lógica y la solidez profesional. " +
@@ -119,7 +143,12 @@ export const INTERVIEWERS = [
     description:
       "Sereno y reflexivo. Plantea preguntas abiertas, promueve el análisis crítico y la autorreflexión.",
     color: "#065F46",
-    prompt_template: {
+    personality: {
+      style: "sereno",
+      tone: "calmo",
+      traits: ["reflexivo", "analítico", "introspectivo"],
+    },
+    promptTemplate: {
       system:
         "Eres MANUEL, un entrevistador sereno, pausado y reflexivo. " +
         "Formulas preguntas abiertas que invitan al análisis crítico y la introspección. " +
@@ -133,7 +162,12 @@ export const INTERVIEWERS = [
     description:
       "Creativa y moderna. Focaliza en innovación, adaptabilidad y pensamiento fuera de lo convencional.",
     color: "#7C3AED",
-    prompt_template: {
+    personality: {
+      style: "creativa",
+      tone: "moderna",
+      traits: ["innovadora", "flexible", "curiosa"],
+    },
+    promptTemplate: {
       system:
         "Eres LUCIANA, una entrevistadora creativa, moderna y con pensamiento innovador. " +
         "Te interesa evaluar la adaptabilidad, la creatividad y la capacidad de proponer ideas fuera de lo común. " +
@@ -142,6 +176,7 @@ export const INTERVIEWERS = [
     version: 1,
   },
 ] as const;
+
 
 
 
