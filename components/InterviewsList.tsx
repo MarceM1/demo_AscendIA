@@ -65,13 +65,13 @@ const InterviewsList = async () => {
             <div className="flex flex-col gap-2 items-end justify-center">
               
                 <Link href={`/dashboard/my-interviews/${item.id}/simulate`}   className='cursor-pointer'>
-                  <Button size="sm" className="w-[95px] bg-background-base border border-base-border font-semibold text-foreground-base  gradient-hover shadow_sm-hover cursor-pointer">
+                  <Button aria-label="Simular entrevista" size="sm" className="w-[95px] bg-background-base border border-base-border font-semibold text-foreground-base  gradient-hover shadow_sm-hover cursor-pointer">
                     Simular
                   </Button>
                 </Link>
               
                 <Link href={`/dashboard/my-interviews/${item.id}`}  >
-                  <Button size="sm"  disabled={item.score === null} className="w-[95px] font-semibold text-foreground-base  hover:bg-accent cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 border border-base-border">
+                  <Button aria-label="Ver feedback de la entrevista" size="sm"  disabled={item.score === null} className="w-[95px] font-semibold text-foreground-base  hover:bg-accent cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 border border-base-border">
                     Feedback
                   </Button>
                 </Link> 

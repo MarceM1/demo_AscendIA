@@ -64,7 +64,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSideba
                                     navItems.map((item) => (
                                         <SidebarMenuItem key={item.id} className={`flex flex-col gap-4 items-center justify-center text-foreground-base ${selectedNavItem === item.id ? 'text-accent' : ''}`}>
                                             <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
-                                                <Link aria-hidden='false' aria-label={item.title} href={item.href} className="">
+                                                <Link  aria-label={item.title} href={item.href} className="">
                                                     <item.icon className="!size-6 " />
                                                 </Link>
                                             </SidebarMenuButton>
@@ -76,8 +76,8 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSideba
                                 {
                                     lowNavItems.map((item) => (
                                         <SidebarMenuItem key={item.id} className={`flex flex-col gap-4 items-center justify-center text-foreground-base ${selectedNavItem === item.id ? 'text-accent' : ''}`}>
-                                            <SidebarMenuButton className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
-                                                <Link aria-hidden='false' aria-label={item.title} href={item.href} className="">
+                                            <SidebarMenuButton  className="flex items-center justify-center hover:text-accent gradient-hover shadow_sm-hover" onClick={() => setSelectedNavItem(item.id)} asChild>
+                                                <Link  aria-label={item.title} href={item.href} className="">
                                                     <item.icon className="!size-6 " />
                                                 </Link>
                                             </SidebarMenuButton>
@@ -86,8 +86,8 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSideba
                                 }
                                 <SidebarMenuItem className="flex flex-col gap-4 items-center justify-center text-foreground-base">
                                     <SignOutButton>
-                                        <SidebarMenuButton className="flex items-center justify-center hover:text-destructive gradient-hover shadow_sm-hover">
-                                            <LogOut className="!size-6" />
+                                        <SidebarMenuButton aria-label="Cerrar sesión" className="flex items-center justify-center hover:text-destructive gradient-hover shadow_sm-hover">
+                                            <LogOut className="!size-6" aria-hidden="true"/>
                                         </SidebarMenuButton>
                                     </SignOutButton>
                                 </SidebarMenuItem>
@@ -111,7 +111,7 @@ export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSideba
                                 {currentSubItems.map((item) => (
                                     <SidebarMenuItem key={item.title} className=" text-foreground-base font-inter rounded-lg shadow_sm-hover  gradient-hover ">
                                         <SidebarMenuButton asChild className="">
-                                            <a aria-hidden='false' aria-label={item.title} aria-labelledby={item.title} href={item.href} className="flex items-center">
+                                            <a  href={item.href} className="flex items-center">
                                                 <item.icon className="" />
                                                 <span>{item.title}</span>
                                             </a>

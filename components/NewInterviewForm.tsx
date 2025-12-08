@@ -158,10 +158,10 @@ export default function NewInterviewForm() {
                 {/* ACTIONS */}
                 <div className="flex w-full flex-col gap-2 place-items-end-safe justify-center-safe">
                     <div className="flex gap-2 w-fit">
-                        <Button type="submit" disabled={isLoading} className="w-fit bg-background-light flex items-center justify-center gradient-hover hover:text-foreground-muted">
+                        <Button  type="submit" disabled={isLoading} className="w-fit bg-background-light flex items-center justify-center gradient-hover hover:text-foreground-muted">
                             {isLoading ? (
                                 <div className="flex items-center justify-center gap-1">
-                                    <Spinner />
+                                    <Spinner aria-hidden="true"/>
                                     <p className="text-foreground-muted">Estamos creando tu entrevista...</p>
                                 </div>
                             ) : (

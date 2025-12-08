@@ -177,7 +177,7 @@ export default function LoginForm({
             className='!bg-background-base border-base-border'
           />
         </div>
-        <Button type="submit" className="w-full text-foreground-base bg-background-light gradient-hover shadow_sm-hover" aria-label='Esperando inicio de sesión o creación de cuenta' aria-labelledby='Esperando inicio de sesion o creacion de cuenta'>
+        <Button type="submit" className="w-full text-foreground-base bg-background-light gradient-hover shadow_sm-hover"  >
           {isLoading ? (currentPath === '/sign-in' ?
             <>
               <Spinner />
@@ -206,7 +206,7 @@ export default function LoginForm({
 
       <div className="text-center text-sm text-foreground-muted">
         {currentPath === '/sign-in' ? '¿No tienés una cuenta?' : '¿Ya tenés una cuenta?'}{" "}
-        <Link aria-hidden='false' aria-labelledby={currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'} aria-label={currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'} href={currentPath ==='/sign-in' ? '/sign-up' : '/sign-in'} className="underline underline-offset-4  hover:text-foreground-base">
+        <Link   href={currentPath ==='/sign-in' ? '/sign-up' : '/sign-in'} className="underline underline-offset-4  hover:text-foreground-base">
           {currentPath ==='/sign-in' ? 'Regístrate aqui' : 'Iniciar sesión'}
         </Link>
       </div>

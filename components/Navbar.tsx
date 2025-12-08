@@ -25,8 +25,8 @@ const Navbar = ({ firstName, lastName, userEmail, userImg }: UserProps) => {
                 
             </div>
             <SignOutButton >
-                    <Button className="group flex items-center  cursor-pointer text-foreground-100 !bg-foreground-tertiary hover:!bg-background-600 hover:text-foreground-300 transition-all duration-300" variant="outline" aria-label="Boton para cerrar sesión" aria-labelledby="Botón para cerrar sesión">
-                        <LogOutIcon  className="group-hover:text-red-400 transition-all duration-300"/>
+                    <Button className="group flex items-center  cursor-pointer text-foreground-100 !bg-foreground-tertiary hover:!bg-background-600 hover:text-foreground-300 transition-all duration-300" variant="outline" aria-label="Cerrar sesión">
+                        <LogOutIcon aria-hidden="true" className="group-hover:text-red-400 transition-all duration-300"/>
                         
                     </Button>               
             </SignOutButton>

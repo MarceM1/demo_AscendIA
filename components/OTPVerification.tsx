@@ -66,7 +66,7 @@ export default function OTPVerification({ code, setCode }: OTPProps) {
         </CardContent>
 
         <CardFooter>
-          <Button type="submit" className="w-full">Verify</Button>
+          <Button  type="submit" className="w-full">Verify</Button>
         </CardFooter>
       </Card>
     </form>
