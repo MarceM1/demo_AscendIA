@@ -28,6 +28,11 @@ interface OTPProps {
   setCode: React.Dispatch<React.SetStateAction<string>>
 }
 
+interface RouteParams {
+  params: Promise<Record<string, string>>;
+  searchParams: Promise<Record<string, string>>;
+}
+
 export type ActionResult<T> =
   | { success: true; data: T }
   | { success: false; message: string; error?: unknown };

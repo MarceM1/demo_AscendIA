@@ -64,7 +64,7 @@ const InterviewsList = async () => {
 
             <div className="flex flex-col gap-2 items-end justify-center">
               
-                <Link href={`/dashboard/my-interviews/${item.id}/simulate`}   className='cursor-pointer'>
+                <Link href={`/dashboard/my-interviews/simulation/${item.id}`}   className='cursor-pointer'>
                   <Button aria-label="Simular entrevista" size="sm" className="w-[95px] bg-background-base border border-base-border font-semibold text-foreground-base  gradient-hover shadow_sm-hover cursor-pointer">
                     Simular
                   </Button>
