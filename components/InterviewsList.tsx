@@ -25,10 +25,10 @@ const InterviewsList = async () => {
   }
 
   const data = result.data.interviews;
-  console.log('data: ', data);
+  // console.log('data: ', data);
 
   return (
-    <section className="w-4xl mx-auto">
+    <section className="max-w-full w-4xl mx-auto">
 
 
       {data.length === 0 && (
@@ -44,10 +44,10 @@ const InterviewsList = async () => {
         {data.map((item) => (
           <article
             key={item.id}
-            className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between"
+            className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between max-w-full"
           >
             <div className="flex flex-col gap-1">
-              <h2 className="font-medium text-foreground-muted text-2xl mb-2">{item.position}</h2>
+              <h2 className="font-medium text-foreground-muted text-2xl mb-2 text-ellipsis">{item.position}</h2>
 
               <div className="flex gap-2 items-center text-sm">
                 <Badge style={{ backgroundColor: `${item.areaDetails?.color}`}} className={` py-1 px-3 flex items-center justify-center `}><p className='text-xs text-background-base'>{item.areaDetails?.label}</p></Badge>

@@ -11,7 +11,7 @@ export default async function SsoCallbackPage() {
 
 
     try {
-        console.log('Iniciando Sincronizacion de usuario SSO...');
+        console.log('[SsoCallback] Iniciando Sincronizacion de usuario SSO...');
 
         await syncUserWithDatabase({
             clerkId: user.id,

@@ -102,7 +102,7 @@ export default function LoginForm({
           session: signInAttempt.createdSessionId,
           navigate: async ({ session }) => {
             if (session?.currentTask) {
-              console.log(session?.currentTask)
+              console.log('[login-form]',session?.currentTask)
               return
             }
             await router.push('/sso-callback')

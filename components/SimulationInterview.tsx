@@ -3,6 +3,7 @@ import React from 'react'
 
 const SimulationInterview = ({interview}: {interview: EnrichedInterview}) => {
     
+  // console.log('interview: ', interview)
 
   return (
     <div >

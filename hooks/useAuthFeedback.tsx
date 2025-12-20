@@ -18,7 +18,7 @@ export function useAuthFeedback() {
         const errorCode = clerkError?.code || 'unknown_error'
         const errorMessage = clerkError?.longMessage || clerkError?.message || 'An unknown error occurred.'
 
-        console.log('Error recibido:', errorCode, '-', errorMessage)
+        console.log('[useAuthFeedback] Error recibido:', errorCode, '-', errorMessage)
 
         let uiMessage: string
         switch (errorCode) {

@@ -3,6 +3,8 @@ import { notFound, redirect } from 'next/navigation'
 import { getInternalUser } from '@/lib/auth/getInternalUser'
 import { getInterviewById } from '@/lib/actions/interviews/get-interviewById.actions'
 import { EnrichedInterview } from '@/database/types'
+import { Suspense } from 'react'
+import SimulationSkeleton from '@/components/skeletons/SimulationSkeleton'
 
 interface SimulationUIProps {
   interviewId: string
@@ -33,7 +35,7 @@ const SimulationUI = async ({ interviewId }: SimulationUIProps) => {
     }
 
     interview = result.data.interview as unknown as EnrichedInterview
-    
+
 
   } catch (err) {
     console.error('[SimulationUI] Error fetching interview:', err)
@@ -51,7 +53,9 @@ const SimulationUI = async ({ interviewId }: SimulationUIProps) => {
 
   // ---------- Render client component ----------
   return (
-    <SimulationInterview  interview={interview}/> 
+    <Suspense fallback={<SimulationSkeleton/>}>
+      <SimulationInterview interview={interview} />
+    </Suspense>
   )
 }
 

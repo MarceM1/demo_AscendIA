@@ -11,27 +11,27 @@ export const createNewInterview = async (
   prevState: unknown,
   data: { area: string; interviewer: string; position: string }
 ): Promise<ActionResult<{ interviewId: string }>> => {
-  console.log("createNewInterview called with data:", data);
+  // console.log("createNewInterview called with data:", data);
   try {
     //Auth with clerk
-    console.log("Authenticating user...");
+    console.log("[createNewInterview] Authenticating user...");
     const user = await getInternalUser();
     if (!user) {
       return { success: false, message: "Usuario no autenticado" };
     }
     const { clerkId, internalId:internalUserId } = user;
-    console.log("User authenticated with ID:", clerkId);
+    console.log("[createNewInterview] User authenticated with ID:", clerkId);
 
     // Zod validation in server
-    console.log("Parsing and validating form data...");
+    console.log("[createNewInterview] Parsing and validating form data...");
     const parsedData = NewInterviewFormSchema().parse(data);
     if (!parsedData) {
       return { success: false, message: "Payload inválido o ausente" };
     }
-    console.log("Form data parsed and validated:", parsedData);
+    console.log("[createNewInterview] Form data parsed and validated:", parsedData);
 
     //Insercion en DB
-    console.log("Inserting new interview into database...");
+    console.log("[createNewInterview] Inserting new interview into database...");
     const [createdInterview] = await db
       .insert(interviews)
       .values({
@@ -47,11 +47,11 @@ export const createNewInterview = async (
     if (!createdInterview) {
       return { success: false, message: "Error al crear entrevista" };
     }
-    console.log("Interview created with ID:", createdInterview.id);
+    console.log("[createNewInterview] Interview created with ID:", createdInterview.id);
 
     return { success: true, data: { interviewId: createdInterview.id } };
   } catch (error) {
-    console.error("Error en createNewInterview:", error);
+    console.error("[createNewInterview] Error en createNewInterview:", error);
     return {
       success: false,
       message: "Error al crear entrevista",

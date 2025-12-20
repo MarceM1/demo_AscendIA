@@ -1,8 +1,19 @@
+import { RouteParams } from '@/types/types'
+import { Metadata } from 'next';
 import React from 'react'
 
-const page = () => {
+export const metadata: Metadata = {
+  title: "AscendIA | Entrevista seleccionada",
+  description: "Registro de la entrevista seleccionada por el usuario.",
+};
+
+
+const page = async ({params}:RouteParams) => {
+
+  const {id} = await params
+
   return (
-    <div>page</div>
+    <div>Interview ID : {id}</div>
   )
 }
 

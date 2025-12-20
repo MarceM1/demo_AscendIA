@@ -7,8 +7,8 @@ import { useDashboardPath } from '@/hooks/useDashboardPath'
 
 const DashboardHeader = () => {
     const {cleanPath:path, cleanSubPath:subPath}= useDashboardPath()
-    console.log(`path: -${path}-`)
-    console.log(`subPath: -${subPath}-`)
+    // console.log(`path: -${path}-`)
+    // console.log(`subPath: -${subPath}-`)
   
   return (
     <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b border-base-border px-4">

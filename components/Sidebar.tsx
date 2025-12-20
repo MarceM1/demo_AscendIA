@@ -22,7 +22,7 @@ import { DashSidebarProps } from "../types/types";
 export function DashSidebar({ user }: { imgUrl: string | null, user?: DashSidebarProps  }) {
     const [selectedNavItem, setSelectedNavItem] = useState('Inicio')
     const [currentSubItems, setCurrentSubItems] = useState(homeSubItems);
-    console.log(user)
+    // console.log(user)
     // const userData = JSON.parse(user || '')
 
 

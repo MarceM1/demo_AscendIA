@@ -17,7 +17,7 @@ export async function syncUserWithDatabase(user: ClerkUserPayload) {
   try {
 
     if (!user.email) {
-      console.warn(`Intento de sync sin email válido: ${user.clerkId}`);
+      console.warn(`[sync-user] Intento de sync sin email válido: ${user.clerkId}`);
       return { status: "invalid", message: "missing_email" };
     }
 
@@ -49,15 +49,15 @@ export async function syncUserWithDatabase(user: ClerkUserPayload) {
     const updatedUser = result?.[0];
 
     if (updatedUser) {
-      console.log(`Usuario sincronizado: ${user.email}`);
+      console.log(`[sync-user] Usuario sincronizado: ${user.email}`);
       return { status: "sync", userId: updatedUser.id };
     }
 
-    console.log("No se pudo sincronizar el usuario:", user.email);
+    console.log("[sync-user] No se pudo sincronizar el usuario:", user.email);
     return { status: "no_change", userId: null };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    console.error("Error al sincronizar el usuario:", error);
+    console.error("[sync-user] Error al sincronizar el usuario:", error);
     return { status: "error", message: error.message };
   }
 }

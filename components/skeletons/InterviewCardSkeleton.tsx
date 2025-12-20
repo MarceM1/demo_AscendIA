@@ -3,7 +3,7 @@ import { Skeleton } from '../ui/skeleton'
 
 const InterviewCardSkeleton = () => {
   return (
-    <div className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between">
+    <div className="border border-base-border bg-background-light p-4 rounded-xl flex justify-between max-w-full">
       
       {/* LEFT SIDE */}
       <div className="flex flex-col gap-3">
