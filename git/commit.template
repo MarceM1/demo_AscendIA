@@ -1,0 +1,31 @@
+# Tipo(scope): resumen claro y accionable
+#
+# Tipos permitidos:
+# feat | fix | refactor | perf | docs | test | chore | build | ci
+# product | architecture | infra | observability | security
+# ai | domain | milestone
+#
+# Scopes comunes:
+# auth | interviews | simulation | agents | vapi | db | enums
+# dashboard | metrics | infra | docs
+#
+# Ejemplo:
+# architecture(simulation): consolida wrapper server-first para entrevistas
+
+Contexto:
+# ¿Qué problema de producto, arquitectura o dominio motivó este cambio?
+# ¿Qué limitación, riesgo o necesidad se está resolviendo?
+
+Decisiones:
+# - Decisión técnica o de producto clave
+# - Trade-offs asumidos
+# - Qué se decidió NO hacer (si aplica)
+
+Impacto:
+# - Qué habilita este cambio
+# - Qué mejora en términos de seguridad, performance, UX o escalabilidad
+# - Cómo prepara el sistema para el próximo paso
+
+Notas:
+# (Opcional)
+# Referencias a módulos, futuros pasos, deuda técnica o relación con el dossier
