@@ -46,7 +46,7 @@ flowchart TB
     subgraph DB["Neon PostgreSQL"]
         USERS["users"]
         PROFILES["user_profiles"]
-        INTERVIEWS["interviews_table"]
+        INTERVIEWS["interviews"]
         METRICS["metrics"]
         WEBHOOKS["webhook_logs"]
     end
@@ -200,7 +200,7 @@ erDiagram
     %% ============================================================
     %% INTERVIEWS
     %% ============================================================
-    interviews_table {
+    interviews {
         uuid id PK
         uuid userId FK
         area_enum area
@@ -234,9 +234,9 @@ erDiagram
     users ||--|{ user_sessions : "1 to many"
     users ||--|{ user_skills : "1 to many"
     users ||--|{ metrics : "1 to many (en tu caso 1:1 lógico)"
-    users ||--|{ interviews_table : "1 to many"
+    users ||--|{ interviews : "1 to many"
 
-    interviews_table ||--|{ user_sessions : "many sessions per interview (lógica futura opcional)"
+    interviews ||--|{ user_sessions : "many sessions per interview (lógica futura opcional)"
 ```
 
 <br></br>
@@ -250,7 +250,7 @@ sequenceDiagram
     participant SA as createNewInterview() (Server Action)
     participant Z as Zod Schema
     participant GET as getInternalUser()
-    participant DB as Neon / interviews_table
+    participant DB as Neon / interviews
 
     UI->>SA: Submit(data)
     SA->>Z: Validación (server-side)

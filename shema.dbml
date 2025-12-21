@@ -47,7 +47,23 @@ processed
 failed
 }
 
+Enum SPEAKER_ENUM {
+  AGENT
+  USER
+}
 
+Enum SESSION_STATUS_ENUM {
+  CREATED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+Enum LANGUAGE_SIMULATION_ENUM {
+  es
+  // en
+  // fr
+}
 //////////////////////////////////////////////////////////
 // GROUP: AUTHENTICATION & USERS
 //////////////////////////////////////////////////////////
@@ -167,7 +183,7 @@ Table metrics [headercolor: #063093] {
 // GROUP: INTERVIEWS & EVALUATIONS
 //////////////////////////////////////////////////////////
 
-Table interviews_table [headercolor: #1c949f] {
+Table interviews[headercolor: #1c949f] {
 
   id uuid [pk, not null, default: `gen_random_uuid()`]
   user_id uuid [not null, ref: > users.id]
@@ -187,10 +203,10 @@ Table interviews_table [headercolor: #1c949f] {
   }
 }
 
-Table feedbacks_table [headercolor: #038799] {
+Table feedbacks[headercolor: #0e8696] {
 
   id uuid [pk, not null, default: `gen_random_uuid()`]
-  interview_id uuid [not null, ref: > interviews_table.id]
+  interview_id uuid [not null, ref: > interviews.id]
 
   position varchar(255)
   feedback text [note: 'Evaluator notes or qualitative feedback']
@@ -204,6 +220,27 @@ Table feedbacks_table [headercolor: #038799] {
     interviews_user_idx [name: 'interviews_user_idx']
   }
 }
+
+Table interview_transcripts [headercolor: #038799]{
+
+  id                  uuid        [pk, default: `uuid_generate_v4()`]
+
+  session_id          uuid        [not null, ref: > interview_sessions.id, note: "Sesión a la que pertenece"]
+  
+  speaker             SPEAKER_ENUM [not null, note: "agent | user"]
+  
+  content             text        [not null, note: "Texto transcripto"]
+  
+  confidence          float       [note: "Confidence score (si Vapi lo provee)"]
+  
+  started_at          timestamp   [note: "Inicio del segmento"]
+  ended_at            timestamp   [note: "Fin del segmento"]
+
+  sequence_index      int         [not null, note: "Orden dentro de la conversación"]
+
+  created_at          timestamp   [not null, default: `now()`]
+}
+
 
 
 //////////////////////////////////////////////////////////
@@ -250,19 +287,44 @@ Table areas {
 // SESSIONS
 //////////////////////////////////////////////////////////
 
+// Table interview_sessions {
+  
+//   id                uuid        [pk, default: `uuid_generate_v4()`]
+  
+//   interview_id       uuid        [not null, ref: > interviews.id, note: "La entrevista asociada"]
+//   interviewer_id    INTERVIEWER_ENUM        [not null, ref: > interviewers.id]
+//   interviewer_version int        [not null, default: 1]
+
+//   prompt_snapshot        jsonb       [not null, note: "Snapshot del prompt usado al momento de la simulación"]
+//   metrics           jsonb       [note: "Duración, turns, sentimiento, score, etc."]
+//   transcript        jsonb       [note: "Conversación completa"]
+
+//   created_at         timestamp   [not null, default: `now()`]
+// }
+
 Table interview_sessions {
-  
-  id                uuid        [pk, default: `uuid_generate_v4()`]
-  
-  interview_id       uuid        [not null, ref: > interviews_table.id, note: "La entrevista asociada"]
-  interviewer_id    INTERVIEWER_ENUM        [not null, ref: > interviewers.id]
-  interviewer_version int        [not null, default: 1]
 
-  prompt_used        jsonb       [not null, note: "Snapshot del prompt usado al momento de la simulación"]
-  metrics           jsonb       [note: "Duración, turns, sentimiento, score, etc."]
-  transcript        jsonb       [note: "Conversación completa"]
+  id                  uuid        [pk, default: `uuid_generate_v4()`]
 
-  created_at         timestamp   [not null, default: `now()`]
+  interview_id        uuid        [not null, ref: > interviews.id, note: "Entrevista base asociada"]
+  user_id             uuid        [not null, ref: > users.id, note: "Usuario que realiza la simulación"]
+
+  interviewer_id      INTERVIEWER_ENUM [not null, note: "Entrevistador utilizado"]
+  interviewer_version int         [not null, default: 1, note: "Versión del prompt del entrevistador"]
+
+  status              SESSION_STATUS_ENUM [not null, default: 'created', note: "Estado de la sesión"]
+
+  language            LANGUAGE_SIMULATION_ENUM     [default: 'es', note: "Idioma de la simulación"]
+
+  prompt_snapshot     jsonb       [not null, note: "Prompt completo utilizado (snapshot inmutable)"]
+  context_snapshot    jsonb       [note: "CV, JD, seniority y contexto inyectado"]
+
+  metrics             jsonb       [note: "Métricas agregadas post-sesión"]
+
+  started_at          timestamp   [note: "Inicio efectivo de la llamada"]
+  ended_at            timestamp   [note: "Fin de la llamada"]
+
+  created_at          timestamp   [not null, default: `now()`]
 }
 
 
@@ -275,12 +337,16 @@ Table interview_sessions {
 // Ref: user_sessions.user_id > users.id
 // Ref: user_skills.user_id > users.id
 // Ref: metrics.user_id > users.id
-// Ref: interviews_table.user_id > users.id
+// Ref: interviews.user_id > users.id
 // Ref: webhooks_logs.user_clerk_id > users.clerk_id
 // Ref: interview_sessions.interviewer_id > interviewers.id
-// Ref: interview_sessions.interview_id > interviews_table.id
-// Ref: feedbacks_table.interview_id > interviews_table.id
-// Ref: areas.id > interviews_table.area
+// Ref: interview_sessions.interview_id > interviews.id
+// Ref: interview_sessions.user_id > users.id
+// Ref: feedbacks.interview_id > interviews.id
+// Ref: areas.id > interviews.area
+// Ref: interviewers.id > interviews.interviewer
+// Ref: interview_transcripts.session_id > interview_sessions.id
+// Ref: feedbacks.interview_id > interviews.id
 
 
 //////////////////////////////////////////////////////////

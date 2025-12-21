@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { feedbacksTable, interviews } from "./interviews";
+import { feedbacksTable, interview_transcripts, interviews } from "./interviews";
 import { metrics } from "./metrics";
 import { users, userProfiles, userSessions, userSkills } from "./users";
 import { interviewSessions } from "./sessions";
@@ -42,7 +42,7 @@ export const userSkillsRelations = relations(userSkills, ({ one }) => ({
 
 export const interviewSessionsRelations = relations(
   interviewSessions,
-  ({ one }) => ({
+  ({ one, many }) => ({
     interview: one(interviews, {
       fields: [interviewSessions.interviewId],
       references: [interviews.id],
@@ -52,6 +52,11 @@ export const interviewSessionsRelations = relations(
       fields: [interviewSessions.interviewerId],
       references: [interviewers.id],
     }),
+    user: one(users, {
+      fields: [interviewSessions.userId],
+      references: [users.id],
+    }),
+    transcripts: many(interview_transcripts),
   })
 );
 
@@ -89,6 +94,16 @@ export const feedbacksRelations = relations(feedbacksTable, ({ one }) => ({
     references: [interviews.id],
   }),
 }));
+
+export const interviewTranscriptsRelations = relations(
+  interview_transcripts,
+  ({ one }) => ({
+    session: one(interviewSessions, {
+      fields: [interview_transcripts.sessionId],
+      references: [interviewSessions.id],
+    }),
+  })
+);
 
  export const interviewerRelations = relations(interviewers, ({ many }) => ({
     sessions: many(interviewers),

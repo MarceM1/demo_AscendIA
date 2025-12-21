@@ -29,8 +29,23 @@ export const INTERVIEWER_ENUM = pgEnum("interviewer", [
   "MANUEL",
 ]);
 
+export const SESSION_STATUS_ENUM = pgEnum("session_status", [
+  "CREATED",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "FAILED",
+]);
+
+export const SPEAKER_ENUM = pgEnum('speaker', ['agent', 'user']);
+
+export const LANGUAGE_SIMULATION_ENUM = pgEnum('language_simulation', [
+  'es',
+  // 'en',
+  // 'fr',
+]);
+
 export const WEBHOOK_STATUS_ENUM = pgEnum("status", [
-  "received",
-  "processed",
-  "failed",
+  "RECEIVED",
+  "PROCESSED",
+  "FAILED",
 ]);

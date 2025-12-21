@@ -1,5 +1,5 @@
 {
-  "id": "929809cb-85e4-4b34-a106-f0b5df7dace2",
+  "id": "e5f0ce0b-1b4b-4e70-b64d-c2b1355c3067",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -374,8 +374,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.feedbacks_table": {
-      "name": "feedbacks_table",
+    "public.feedbacks": {
+      "name": "feedbacks",
       "schema": "",
       "columns": {
         "id": {
@@ -419,10 +419,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "feedbacks_table_interview_id_interviews_table_id_fk": {
-          "name": "feedbacks_table_interview_id_interviews_table_id_fk",
-          "tableFrom": "feedbacks_table",
-          "tableTo": "interviews_table",
+        "feedbacks_interview_id_interviews_id_fk": {
+          "name": "feedbacks_interview_id_interviews_id_fk",
+          "tableFrom": "feedbacks",
+          "tableTo": "interviews",
           "columnsFrom": [
             "interview_id"
           ],
@@ -439,8 +439,102 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.interviews_table": {
-      "name": "interviews_table",
+    "public.interview_transcripts": {
+      "name": "interview_transcripts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "speaker": {
+          "name": "speaker",
+          "type": "speaker",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "confidence": {
+          "name": "confidence",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ended_at": {
+          "name": "ended_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "transcript_session_idx": {
+          "name": "transcript_session_idx",
+          "columns": [
+            {
+              "expression": "session_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "interview_transcripts_session_id_interview_sessions_id_fk": {
+          "name": "interview_transcripts_session_id_interview_sessions_id_fk",
+          "tableFrom": "interview_transcripts",
+          "tableTo": "interview_sessions",
+          "columnsFrom": [
+            "session_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.interviews": {
+      "name": "interviews",
       "schema": "",
       "columns": {
         "id": {
@@ -516,9 +610,9 @@
         }
       },
       "foreignKeys": {
-        "interviews_table_user_id_users_id_fk": {
-          "name": "interviews_table_user_id_users_id_fk",
-          "tableFrom": "interviews_table",
+        "interviews_user_id_users_id_fk": {
+          "name": "interviews_user_id_users_id_fk",
+          "tableFrom": "interviews",
           "tableTo": "users",
           "columnsFrom": [
             "user_id"
@@ -889,6 +983,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
         "interviewer_id": {
           "name": "interviewer_id",
           "type": "interviewer",
@@ -903,11 +1003,33 @@
           "notNull": true,
           "default": 1
         },
-        "prompt_used": {
-          "name": "prompt_used",
+        "status": {
+          "name": "status",
+          "type": "session_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'CREATED'"
+        },
+        "language": {
+          "name": "language",
+          "type": "language_simulation",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'es'"
+        },
+        "prompt_snapshot": {
+          "name": "prompt_snapshot",
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true
+        },
+        "context_snapshot": {
+          "name": "context_snapshot",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
         },
         "metrics": {
           "name": "metrics",
@@ -915,9 +1037,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "transcript": {
-          "name": "transcript",
-          "type": "jsonb",
+        "started_at": {
+          "name": "started_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ended_at": {
+          "name": "ended_at",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": false
         },
@@ -931,12 +1059,25 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "interview_sessions_interview_id_interviews_table_id_fk": {
-          "name": "interview_sessions_interview_id_interviews_table_id_fk",
+        "interview_sessions_interview_id_interviews_id_fk": {
+          "name": "interview_sessions_interview_id_interviews_id_fk",
           "tableFrom": "interview_sessions",
-          "tableTo": "interviews_table",
+          "tableTo": "interviews",
           "columnsFrom": [
             "interview_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "interview_sessions_user_id_users_id_fk": {
+          "name": "interview_sessions_user_id_users_id_fk",
+          "tableFrom": "interview_sessions",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -992,6 +1133,13 @@
         "MANUEL"
       ]
     },
+    "public.language_simulation": {
+      "name": "language_simulation",
+      "schema": "public",
+      "values": [
+        "es"
+      ]
+    },
     "public.role": {
       "name": "role",
       "schema": "public",
@@ -1003,13 +1151,31 @@
         "INSTITUTION"
       ]
     },
+    "public.session_status": {
+      "name": "session_status",
+      "schema": "public",
+      "values": [
+        "CREATED",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "FAILED"
+      ]
+    },
+    "public.speaker": {
+      "name": "speaker",
+      "schema": "public",
+      "values": [
+        "agent",
+        "user"
+      ]
+    },
     "public.status": {
       "name": "status",
       "schema": "public",
       "values": [
-        "received",
-        "processed",
-        "failed"
+        "RECEIVED",
+        "PROCESSED",
+        "FAILED"
       ]
     }
   },
