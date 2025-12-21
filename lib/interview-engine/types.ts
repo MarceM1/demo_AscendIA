@@ -44,6 +44,13 @@ export interface AxisScore {
   senioritySignals?: number;
 }
 
+export type EvaluationAxis =
+  | "fundamentals"
+  | "reasoning"
+  | "communication"
+  | "architecture"
+  | "senioritySignals";
+
 export interface InterviewEngineState {
   phase: InterviewPhase;
   signals?: CandidateSignalVector;
@@ -80,3 +87,36 @@ export type AgentMarker =
       type: "SUGGEST_PHASE_ADVANCE";
       to: InterviewPhase;
     };
+
+export type HardConstraints = 
+
+  | "Never break character"
+
+  | "Never mention AscendIA internals"
+
+  | "Never mention 'AI', 'model', or 'prompt'"
+
+  | "Never skip phases"
+
+  | "Never ask irrelevant or generic questions"
+
+  | "Never optimize for friendliness over clarity"
+
+  | "You are an evaluator, not a cheerleader.";
+
+
+
+  export interface WeaknessDetected {
+    label: string;
+  }
+  
+  export interface StrengthDetected {
+    label: string;
+  }
+  
+  export interface BuildInterviewPolicyConfig {
+    phases: InterviewPhase[];
+    axes: EvaluationAxis[];
+    constraints?: HardConstraints[];
+  }
+

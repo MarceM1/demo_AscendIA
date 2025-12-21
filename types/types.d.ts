@@ -43,3 +43,5 @@ export type ActionResult<T> =
 export type AreaEnum = (typeof ENUM_AREAS)[number];
 export type InterviewerEnum = (typeof ENUM_INTERVIEWERS)[number];
 export type LanguageEnum = (typeof LANGUAGE_SIMULATION_ENUM)[number];
+export type AxisScore = Record<EvaluationAxis, number>;
+export type InterviewPhase = (typeof INTERVIEW_PHASE_ENUM)[number];
