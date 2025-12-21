@@ -1,5 +1,6 @@
 import { InferSelectModel } from "drizzle-orm";
 import { ENUM_AREAS, ENUM_INTERVIEWERS } from "./enums";
+import { LANGUAGE_SIMULATION_ENUM } from "@/database/schema";
 
 interface UserProps {
   firstName?: string;
@@ -41,3 +42,4 @@ export type ActionResult<T> =
 
 export type AreaEnum = (typeof ENUM_AREAS)[number];
 export type InterviewerEnum = (typeof ENUM_INTERVIEWERS)[number];
+export type LanguageEnum = (typeof LANGUAGE_SIMULATION_ENUM)[number];
