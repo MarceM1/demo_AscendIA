@@ -89,7 +89,7 @@ export async function POST(req: Request) {
         eventId,
         eventType,
         userId,
-        status: "received",
+        status: "RECEIVED",
         errorMessage: null,
         payload: evt as unknown as Record<string, JSON>,
         processedAt: new Date(),
@@ -122,7 +122,7 @@ export async function POST(req: Request) {
     await db
       .update(webhookLogs)
       .set({
-        status: "processed",
+        status: "PROCESSED",
         processedAt: new Date(),
       })
       .where(eq(webhookLogs.eventId, eventId));
@@ -135,7 +135,7 @@ export async function POST(req: Request) {
     await db
       .update(webhookLogs)
       .set({
-        status: "failed",
+        status: "FAILED",
         errorMessage: err.message,
         processedAt: new Date(),
       })
