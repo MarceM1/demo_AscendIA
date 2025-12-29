@@ -1,0 +1,47 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+
+# Root level settings
+tone_instructions: "Focus on correctness, architecture, performance, security, and maintainability. Be strict and concise."
+
+reviews:
+  profile: "assertive" 
+  path_filters:
+    - "app/runtime/**"
+    - "app/engine/**"
+    - "app/domain/**"
+    - "app/infra/**"
+    - "**/lib/**"
+    - "**/types/**"
+    - "**/constants/**"
+    - "**/database/**"
+    - "!app/ui/**"
+    - "!app/components/**"
+    - "!app/styles/**"
+    - "!**/ui/**"
+    - "!**/components/**"
+    - "!**/styles/**"
+    - "!**/*.md"
+    - "!**/*.stories.*"
+    - "!**/*.test.*"
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    base_branches:
+      - main
+      - develop
+      - "^release/.*$"
+      - "^infra/.*$"
+      - "^architecture/.*$"
+      - "^engine/.*$"
+      - "^domain/.*$"
+      - "^runtime/.*$"
+
+chat:
+  auto_reply: false
+
+knowledge_base:
+  opt_out: false
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
