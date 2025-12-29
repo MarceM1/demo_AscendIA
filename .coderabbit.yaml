@@ -1,71 +1,47 @@
 # yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
 
+# Root level settings
+tone_instructions: "Focus on correctness, architecture, performance, security, and maintainability. Be strict and concise."
 
 reviews:
-
+  profile: "assertive" 
+  path_filters:
+    - "app/runtime/**"
+    - "app/engine/**"
+    - "app/domain/**"
+    - "app/infra/**"
+    - "**/lib/**"
+    - "**/types/**"
+    - "**/constants/**"
+    - "**/database/**"
+    - "!app/ui/**"
+    - "!app/components/**"
+    - "!app/styles/**"
+    - "!**/ui/**"
+    - "!**/components/**"
+    - "!**/styles/**"
+    - "!**/*.md"
+    - "!**/*.stories.*"
+    - "!**/*.test.*"
   auto_review:
     enabled: true
-
     auto_incremental_review: true
+    base_branches:
+      - main
+      - develop
+      - release/**
+      - infra/**
+      - architecture/**
+      - engine/**
+      - domain/**
+      - runtime/**
 
-    branches:
-      include:
-        - main
-        - develop
-        - release/**
-        - feature/**
-        - infra/**
-        - architecture/**
-        - engine/**
-        - runtime/**
+chat:
+  auto_reply: false
 
-      exclude:
-        - spike/**
-        - experiment/**
-        - hotfix/**
-        - temp/**
-
-    paths:
-      include:
-        - app/runtime/**
-        - app/engine/**
-        - app/domain/**
-        - app/infra/**
-        - "**/lib/**"
-        - "**/types/**"
-        - "**/constants/**"
-        - "**/database/**"
-
-
-      exclude:
-        - app/ui/**
-        - app/components/**
-        - app/styles/**
-        - "**/ui/**"
-        - "**/components/**"
-        - "**/styles/**"
-        - "**/*.md"
-        - "**/*.stories.*"
-        - "**/*.test.*"
-
-    focus:
-      - correctness
-      - architecture
-      - performance
-      - security
-      - maintainability
-
-    tone:
-      strict: true
-      verbosity: concise
-      suggestions_only: false
-
-      chat:
-        enabled: true
-        model: gpt-4
-        knowledge_base:
-        opt_out: false
-        learnings:
-          scope: auto
-        issues:
-          scope: auto
+knowledge_base:
+  opt_out: false
+  learnings:
+    scope: auto
+  issues:
+    scope: auto
