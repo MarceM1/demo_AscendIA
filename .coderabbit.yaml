@@ -29,12 +29,12 @@ reviews:
     base_branches:
       - main
       - develop
-      - release/**
-      - infra/**
-      - architecture/**
-      - engine/**
-      - domain/**
-      - runtime/**
+      - "^release/.*$"
+      - "^infra/.*$"
+      - "^architecture/.*$"
+      - "^engine/.*$"
+      - "^domain/.*$"
+      - "^runtime/.*$"
 
 chat:
   auto_reply: false
