@@ -2,7 +2,7 @@ import { InterviewEngineState, InterviewPhase, InterviewSessionContext } from ".
 
 export interface RuntimeInput {
     session: InterviewSessionContext;
-    state: InterviewEngineState
+    state: InterviewEngineState,
     agentMessage: string;
 }
 

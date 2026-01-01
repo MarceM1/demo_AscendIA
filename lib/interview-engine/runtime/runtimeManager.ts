@@ -1,3 +1,4 @@
+import { InterviewEngineState } from "../types";
 import { parseMarkers } from "./markerParser";
 import { canAdvancePhase } from "./phaseGuards";
 import { RuntimeInput, RuntimeManager, RuntimeOutput } from "./types";
@@ -6,7 +7,11 @@ export class InterviewRuntimeManager implements RuntimeManager {
   handle(input: RuntimeInput): RuntimeOutput {
     const markers = parseMarkers(input.agentMessage);
 
-    const nextState = { ...input.state };
+    const nextState = {
+      ...input.state,
+      meta: { ...input.state.meta },
+    } as InterviewEngineState;
+
     let suggestedPhase: RuntimeOutput["suggestedPhase"];
 
     for (const marker of markers) {
@@ -39,12 +44,12 @@ export class InterviewRuntimeManager implements RuntimeManager {
           ];
           break;
 
-          case "SUGGEST_PHASE_ADVANCE":
-            if (canAdvancePhase(nextState.phase, marker.to)) {
-              suggestedPhase = marker.to;
-              nextState.phase = marker.to;
-            }
-            break;
+        case "SUGGEST_PHASE_ADVANCE":
+          if (canAdvancePhase(nextState.phase, marker.to)) {
+            suggestedPhase = marker.to;
+            nextState.phase = marker.to;
+          }
+          break;
       }
     }
     return {
