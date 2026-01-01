@@ -88,35 +88,25 @@ export type AgentMarker =
       to: InterviewPhase;
     };
 
-export type HardConstraints = 
-
+export type HardConstraints =
   | "Never break character"
-
   | "Never mention AscendIA internals"
-
   | "Never mention 'AI', 'model', or 'prompt'"
-
   | "Never skip phases"
-
   | "Never ask irrelevant or generic questions"
-
   | "Never optimize for friendliness over clarity"
-
   | "You are an evaluator, not a cheerleader.";
 
+export interface WeaknessDetected {
+  label: string;
+}
 
+export interface StrengthDetected {
+  label: string;
+}
 
-  export interface WeaknessDetected {
-    label: string;
-  }
-  
-  export interface StrengthDetected {
-    label: string;
-  }
-  
-  export interface BuildInterviewPolicyConfig {
-    phases: InterviewPhase[];
-    axes: EvaluationAxis[];
-    constraints?: HardConstraints[];
-  }
-
+export interface BuildInterviewPolicyConfig {
+  phases: InterviewPhase[];
+  axes: EvaluationAxis[];
+  constraints?: HardConstraints[];
+}
