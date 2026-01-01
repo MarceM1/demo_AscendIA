@@ -12,6 +12,16 @@ import { AgentMarker } from "../types";
 
 const MARKER_REGEX = /\{([A-Z_]+)\s*([\s\S]*?)\}/g;
 
+/**
+ * Extracts agent markers encoded in the input string and converts them to AgentMarker objects.
+ *
+ * The function scans for markers of the form `{TYPE payload}` where `payload` is expected to be JSON.
+ * Markers with empty payloads or invalid JSON payloads are skipped; invalid payloads trigger a warning
+ * via `console.warn`.
+ *
+ * @param message - The input string that may contain agent markers.
+ * @returns An array of parsed AgentMarker objects for markers with valid JSON payloads.
+ */
 export function parseMarkers(message: string): AgentMarker[] {
   const markers: AgentMarker[] = [];
 
