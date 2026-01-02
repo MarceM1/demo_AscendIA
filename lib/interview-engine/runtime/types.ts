@@ -8,7 +8,6 @@ export interface RuntimeInput {
 
 export interface RuntimeOutput {
     nextState: InterviewEngineState;
-    emittedMarker: string;
     markers: AgentMarker[];
     suggestedPhase?: InterviewPhase
     
