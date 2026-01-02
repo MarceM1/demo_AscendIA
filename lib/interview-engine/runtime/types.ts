@@ -1,4 +1,4 @@
-import { InterviewEngineState, InterviewPhase, InterviewSessionContext } from "../types";
+import { AgentMarker, InterviewEngineState, InterviewPhase, InterviewSessionContext } from "../types";
 
 export interface RuntimeInput {
     session: InterviewSessionContext;
@@ -9,6 +9,7 @@ export interface RuntimeInput {
 export interface RuntimeOutput {
     nextState: InterviewEngineState;
     emittedMarker: string;
+    markers: AgentMarker[];
     suggestedPhase?: InterviewPhase
     
 }

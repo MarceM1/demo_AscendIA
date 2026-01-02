@@ -1,4 +1,3 @@
-import { parseMarkers } from "../runtime/markerParser";
 import { isFinalPhase } from "../runtime/phaseGuards";
 import { InterviewRuntimeManager } from "../runtime/runtimeManager";
 import { SessionRuntimeInput, SessionRuntimeResult } from "./types";
@@ -19,9 +18,7 @@ export function runSessionRuntime(
 
   return {
     nextState: result.nextState,
-    markers: result.emittedMarker
-      ? parseMarkers(result.emittedMarker) // Derivado del runtime-emitted agent output
-      : [],
+    markers: result.markers,
     control: {
       phaseAdvanced,
       interviewCompleted,
