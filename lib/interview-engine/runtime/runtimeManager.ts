@@ -56,6 +56,7 @@ export class InterviewRuntimeManager implements RuntimeManager {
       nextState,
       emittedMarker: input.agentMessage,
       suggestedPhase,
+      markers,
     };
   }
 }
