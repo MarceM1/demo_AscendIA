@@ -1,20 +1,20 @@
+import { isFinalPhase } from "../runtime/phaseGuards";
 import { AgentBridgeInput, BuildAgentInputParams } from "./types";
 
 export function buildAgentBridgeInput(
-  params: BuildAgentInputParams
+  params: BuildAgentInputParams,
+  
 ): AgentBridgeInput {
-  const { session, state, agentConfig, policy, lastUserMessage } = params;
+  const { session, state, agentConfig, policy, lastUserMessage, } = params;
 
   return {
-    sessionId: session.sessionId,
+    session,
     agentConfig,
     policy,
-    state: {
-      phase: state.phase,
-      signals: state.signals,
-      axisScores: state.axisScores,
-      detectedStrengths: state.detectedStrengths,
-      detectedWeaknesses: state.detectedWeaknesses,
+    state,
+    instructions:{
+      currentPhase: state.phase,
+      canSuggestPhaseAdvance: !isFinalPhase(state.phase),
     },
     userMessage: lastUserMessage ? lastUserMessage : undefined,
   };

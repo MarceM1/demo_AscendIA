@@ -5,7 +5,9 @@ import { RuntimeInput, RuntimeManager, RuntimeOutput } from "./types";
 
 export class InterviewRuntimeManager implements RuntimeManager {
   handle(input: RuntimeInput): RuntimeOutput {
+    // console.log("Received Agent Message:", input.agentMessage);
     const markers = parseMarkers(input.agentMessage);
+    // console.log("Parsed Markers:", markers);
 
     const nextState = {
       ...input.state,

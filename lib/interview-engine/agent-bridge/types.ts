@@ -1,13 +1,19 @@
-import { AxisScore, CandidateSignalVector, InterviewAgentConfig, InterviewEngineState, InterviewPhase, InterviewSessionContext } from "../types";
+import { AxisScore, CandidateSignalVector, InterviewAgentConfig, InterviewPhase, InterviewSessionContext } from "../types";
 
 export interface AgentBridgeInput {
-  sessionId: string;
+  session: InterviewSessionContext;
 
   agentConfig: InterviewAgentConfig;
 
   policy: string;
 
   state: AgentCognitiveState;
+  
+  instructions:{
+    currentPhase: InterviewPhase;
+    canSuggestPhaseAdvance: boolean;
+    evaluationAxes?: string[];
+  }
 
   userMessage?: string;
 }
