@@ -14,11 +14,22 @@ console.log("Building initial state...");
   // Estado inicial
   const initialState: InterviewEngineState = {
     phase: "EXPLORATION",
+   signals: [
+     {
+       confidence: 0.7,
+     },
+   ],
+    axisScores: {
+      communication: 65,
+    },
+    detectedWeaknesses: [],
+    detectedStrengths: [],
     meta: {
       dificultyAdjusted: false,
       followUpsTriggered: 0,
       deepDiveTriggered: false,
     },
+    
   };
 
   console.log('Building Agent Bridge Input...');

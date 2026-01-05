@@ -30,7 +30,7 @@ export interface InterviewAgentConfig {
 }
 
 export interface CandidateSignalVector {
-  clarity?: number;
+  confidence: number;
   structure?: number;
   technicalPrecision?: number;
   senioritySignals?: number;
@@ -53,7 +53,7 @@ export type EvaluationAxis =
 
 export interface InterviewEngineState {
   phase: InterviewPhase;
-  signals?: CandidateSignalVector;
+  signals: CandidateSignalVector[];
   axisScores?: AxisScore;
   detectedWeaknesses?: string[];
   detectedStrengths?: string[];

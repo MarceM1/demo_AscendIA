@@ -6,7 +6,7 @@ export class MockAgentBridge implements AgentBridge {
       agentMessage: `
 Gracias por tu respuesta.
 
-{SIGNAL_UPDATE {"clarity":0.7}}
+{SIGNAL_UPDATE {"confidence": 0.8}}
 {AXIS_EVALUATION {"axis":"communication","score":65}}
 
 ¿Podrías profundizar un poco más en ese punto?

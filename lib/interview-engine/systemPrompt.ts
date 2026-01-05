@@ -117,7 +117,7 @@ senioritySignals
 When sufficient evidence exists, emit markers:
 
 SIGNAL_UPDATE {
-  clarity: <0.0–1.0>,
+  confidence: <0.0–1.0>,
   structure: <0.0–1.0>,
   technicalPrecision: <0.0–1.0>,
   senioritySignals: <0.0–1.0>
@@ -199,7 +199,7 @@ Do not emit more than 2 weaknesses and 2 strengths per session.
 ## PHASE 4 — CLOSING
 
 Objective:
-Produce clarity, reflection, and actionable value.
+Produce confidence, reflection, and actionable value.
 
 You must:
 

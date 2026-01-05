@@ -1,0 +1,169 @@
+import { buildAgentBridgeInput } from "../agent-bridge/buildAgentBridgeInput";
+import { MockAgentBridge } from "../agent-bridge/mockAgentBridge";
+import { DecisionEngine } from "../decision/decisionEngine";
+import { DecisionReason } from "../decision/phase/types";
+import {
+  explorationToEvaluationRuleSet,
+  evaluationToDecisionRuleSet,
+  decisionToClosureRuleSet,
+} from "../decision/rules/phaseRuleSet";
+import { InterviewRuntimeManager } from "../runtime/runtimeManager";
+import {
+  InterviewAgentConfig,
+  InterviewEngineState,
+  InterviewPhase,
+  InterviewSessionContext,
+} from "../types";
+
+const decisionEngine = new DecisionEngine();
+
+const phaseRules = [
+  explorationToEvaluationRuleSet,
+  evaluationToDecisionRuleSet,
+  decisionToClosureRuleSet,
+];
+
+class TestSessionRuntimeAdapter {
+  constructor(private state: InterviewEngineState) {}
+
+  getState(): InterviewEngineState {
+    return this.state;
+  }
+
+  transitionTo(phase: InterviewPhase, reasons: DecisionReason[]) {
+    console.log("=== DECISION: PHASE TRANSITION ===");
+    console.log({
+      from: this.state.phase,
+      to: phase,
+      reasons,
+    });
+
+    this.state = {
+      ...this.state,
+      phase,
+    };
+  }
+
+  getCurrentState() {
+    return this.state;
+  }
+}
+
+async function runInterviewEngineEndToEndDecisionFlowTest() {
+  console.log("Starting Interview Engine Test...");
+  console.log("Building initial state...");
+  // Estado inicial
+  const initialState: InterviewEngineState = {
+    phase: "EXPLORATION",
+    signals: [
+      {
+        confidence: 0.7,
+      },
+    ],
+    axisScores: {
+      communication: 65,
+    },
+    detectedWeaknesses: [],
+    detectedStrengths: [],
+    meta: {
+      dificultyAdjusted: false,
+      followUpsTriggered: 0,
+      deepDiveTriggered: false,
+    },
+  };
+
+  console.log("Building Agent Bridge Input...");
+  //Construir el input para el agente
+  const agentInput = buildAgentBridgeInput({
+    session: {
+      sessionId: "session_123",
+      interviewId: "interview_456",
+      userId: "user_789",
+      area: "TECNOLOGIA_IT",
+      position: "Desarrollador de Software",
+      interviewer: "LUCIANA",
+    } as InterviewSessionContext,
+
+    state: initialState,
+
+    agentConfig: {
+      agentId: "agent_001",
+      prompt:
+        "Eres un agente de entrevista que ayuda a evaluar candidatos para roles técnicos.",
+      version: 1,
+      createdBy: "SYSTEM",
+    } as InterviewAgentConfig,
+
+    policy: "default-policy-v1",
+    lastUserMessage: "Hola, me gustaría saber más sobre el puesto.",
+  });
+
+  console.log("=== Agent Bridge input ===");
+  console.log(agentInput);
+
+  //Ejecutar el agente (mock)
+  console.log("Running Mock Agent Bridge...");
+  const agentBridge = new MockAgentBridge();
+  const agentOutput = await agentBridge.run(agentInput);
+
+  console.log("=== Agent Bridge output ===");
+  console.log(agentOutput);
+
+  //Procesar la respuesta del agente en el runtime
+  const runtime = new InterviewRuntimeManager();
+
+  const runtimeResult = await runtime.handle({
+    session: agentInput.session,
+    state: initialState,
+    agentMessage: agentOutput.agentMessage,
+  });
+
+  console.log("=== Runtime output ===");
+  console.log(runtimeResult);
+
+  // Validaciones simples
+  if (!runtimeResult.nextState) {
+    throw new Error("El runtime no devolvió un nextState válido.");
+  }
+
+ 
+
+  console.log("=== Running Decision Engine ===");
+
+  const adapter = new TestSessionRuntimeAdapter(runtimeResult.nextState);
+
+  const decisionOutcome = decisionEngine.decide(adapter.getState(), phaseRules);
+
+  console.log("=== Decision Outcome ===");
+  console.log(decisionOutcome);
+
+  // Given initial state is EXPLORATION and we have MinimumSignalsCondition(1)
+  // and SignalConfidenceCondition(0.7) satisfied, expect EVALUATION
+  const expectedPhase: InterviewPhase = "EVALUATION";
+  if (
+    decisionOutcome.type === "ADVANCE_PHASE" &&
+    decisionOutcome.to !== expectedPhase
+  ) {
+    throw new Error(
+      `Expected transition to ${expectedPhase}, got ${decisionOutcome.to}`
+    );
+  }
+
+  if (decisionOutcome.type === "ADVANCE_PHASE") {
+    adapter.transitionTo(decisionOutcome.to, decisionOutcome.reasons);
+  }
+
+  if (decisionOutcome.type === "COMPLETE_INTERVIEW") {
+    console.log("Interview completed.");
+  }
+
+  console.log("=== Final State ===");
+  console.log(adapter.getCurrentState());
+  console.log(adapter.getState());
+
+  console.log("Test completed successfully.");
+}
+
+runInterviewEngineEndToEndDecisionFlowTest().catch((err) => {
+  console.error("Test failed with error:", err);
+});
