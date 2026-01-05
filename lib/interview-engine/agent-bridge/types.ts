@@ -44,7 +44,7 @@ export interface BuildAgentInputParams {
 
 export interface AgentCognitiveState {
   phase: InterviewPhase;
-  signals?: CandidateSignalVector;
+  signals: CandidateSignalVector[];
   axisScores?: AxisScore;
   detectedWeaknesses?: string[];
   detectedStrengths?: string[];

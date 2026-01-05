@@ -42,7 +42,68 @@ export function parseMarkers(message: string): AgentMarker[] {
       // console.log(`Parsed payload data:`, data);
 
       // TODO: Validar data por marker (zod, superstruct, etc.)
-      markers.push({ type, ...data } as AgentMarker);
+      switch (type) {
+  case "SIGNAL_UPDATE": {
+    if (!Array.isArray(data.signals)) {
+      console.warn("Invalid SIGNAL_UPDATE payload:", data);
+      continue;
+    }
+
+    markers.push({
+      type: "SIGNAL_UPDATE",
+      signals: data.signals,
+    });
+    break;
+  }
+
+  case "AXIS_EVALUATION": {
+    if (
+      typeof data.axis !== "string" ||
+      typeof data.score !== "number"
+    ) {
+      console.warn("Invalid AXIS_EVALUATION payload:", data);
+      continue;
+    }
+
+    markers.push({
+      type: "AXIS_EVALUATION",
+      axis: data.axis,
+      score: data.score,
+    });
+    break;
+  }
+
+  case "WEAKNESS_DETECTED": {
+    if (typeof data.label !== "string") continue;
+
+    markers.push({
+      type: "WEAKNESS_DETECTED",
+      label: data.label,
+    });
+    break;
+  }
+
+  case "STRENGTH_DETECTED": {
+    if (typeof data.label !== "string") continue;
+
+    markers.push({
+      type: "STRENGTH_DETECTED",
+      label: data.label,
+    });
+    break;
+  }
+
+  case "SUGGEST_PHASE_ADVANCE": {
+    if (typeof data.to !== "string") continue;
+
+    markers.push({
+      type: "SUGGEST_PHASE_ADVANCE",
+      to: data.to,
+    });
+    break;
+  }
+}
+
     } catch (error) {
       console.warn("Invalid agent marker payload:", error);
       continue;

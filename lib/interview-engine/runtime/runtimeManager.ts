@@ -9,7 +9,7 @@ export class InterviewRuntimeManager implements RuntimeManager {
     const markers = parseMarkers(input.agentMessage);
     // console.log("Parsed Markers:", markers);
 
-    const nextState = {
+    let nextState = {
       ...input.state,
       meta: { ...input.state.meta },
     } as InterviewEngineState;
@@ -19,10 +19,14 @@ export class InterviewRuntimeManager implements RuntimeManager {
     for (const marker of markers) {
       switch (marker.type) {
         case "SIGNAL_UPDATE":
-          nextState.signals = {
-            ...nextState.signals,
-            ...marker.signals,
-          };
+          console.log("SIGNAL_UPDATE marker:", marker);
+          console.log("marker.signals:", marker.signals);
+          {
+            nextState = {
+              ...nextState,
+              signals: [...(nextState.signals ?? []), marker.signals],
+            };
+          }
           break;
 
         case "AXIS_EVALUATION":

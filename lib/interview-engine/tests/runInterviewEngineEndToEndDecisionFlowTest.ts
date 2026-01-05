@@ -1,24 +1,66 @@
 import { buildAgentBridgeInput } from "../agent-bridge/buildAgentBridgeInput";
 import { MockAgentBridge } from "../agent-bridge/mockAgentBridge";
+import { DecisionEngine } from "../decision/decisionEngine";
+import { DecisionReason } from "../decision/phase/types";
+import {
+  explorationToEvaluationRuleSet,
+  evaluationToDecisionRuleSet,
+  decisionToClosureRuleSet,
+} from "../decision/rules/phaseRuleSet";
 import { InterviewRuntimeManager } from "../runtime/runtimeManager";
 import {
   InterviewAgentConfig,
   InterviewEngineState,
+  InterviewPhase,
   InterviewSessionContext,
 } from "../types";
 
-async function runAgentBridgeFlowTest() {
+const decisionEngine = new DecisionEngine();
 
-console.log("Starting Agent Bridge Flow Test...");
-console.log("Building initial state...");
+const phaseRules = [
+  explorationToEvaluationRuleSet,
+  evaluationToDecisionRuleSet,
+  decisionToClosureRuleSet,
+];
+
+class TestSessionRuntimeAdapter {
+  constructor(private state: InterviewEngineState) {}
+
+  getState(): InterviewEngineState {
+    return this.state;
+  }
+
+  transitionTo(phase: InterviewPhase, reasons: DecisionReason[]) {
+    console.log("=== DECISION: PHASE TRANSITION ===");
+    console.log({
+      from: this.state.phase,
+      to: phase,
+      reasons,
+    });
+
+    this.state = {
+      ...this.state,
+      phase,
+    };
+  }
+
+  getCurrentState() {
+    return this.state;
+  }
+}
+
+async function runInterviewEngineEndToEndDecisionFlowTest() {
+  console.log("Starting Agent Bridge Flow Test...");
+  console.log("Building initial state...");
   // Estado inicial
   const initialState: InterviewEngineState = {
     phase: "EXPLORATION",
-   signals: [
-     {
-       confidence: 0.7,
-     },
-   ],
+    signals: [
+      {
+        confidence: 0.7,
+      },
+      
+    ],
     axisScores: {
       communication: 65,
     },
@@ -29,10 +71,9 @@ console.log("Building initial state...");
       followUpsTriggered: 0,
       deepDiveTriggered: false,
     },
-    
   };
 
-  console.log('Building Agent Bridge Input...');
+  console.log("Building Agent Bridge Input...");
   //Construir el input para el agente
   const agentInput = buildAgentBridgeInput({
     session: {
@@ -85,10 +126,43 @@ console.log("Building initial state...");
   if (!runtimeResult.nextState) {
     throw new Error("El runtime no devolvió un nextState válido.");
   }
+
+console.log("STATE BEFORE DECISION");
+console.log(runtimeResult.nextState);
+console.log("signals type:", typeof runtimeResult.nextState.signals);
+console.log("signals value:", runtimeResult.nextState.signals);
+
+
+  console.log("=== Running Decision Engine ===");
+
+  const adapter = new TestSessionRuntimeAdapter(runtimeResult.nextState);
+
+  const decisionOutcome = decisionEngine.decide(adapter.getState(), phaseRules);
+
+  console.log("=== Decision Outcome ===");
+  console.log(decisionOutcome);
+
+  if (
+    decisionOutcome.type === "ADVANCE_PHASE" &&
+    decisionOutcome.to !== "EVALUATION"
+  ) {
+    throw new Error("Unexpected phase transition");
+  }
+
+  if (decisionOutcome.type === "ADVANCE_PHASE") {
+    adapter.transitionTo(decisionOutcome.to, decisionOutcome.reasons);
+  }
+
+  if (decisionOutcome.type === "COMPLETE_INTERVIEW") {
+    console.log("Interview completed.");
+  }
+
+  console.log("=== Final State ===");
+  console.log(adapter.getCurrentState());
+
   console.log("Test completed successfully.");
 }
 
-// Ejecutar la prueba
-runAgentBridgeFlowTest().catch((err) => {
+runInterviewEngineEndToEndDecisionFlowTest().catch((err) => {
   console.error("Test failed with error:", err);
 });
