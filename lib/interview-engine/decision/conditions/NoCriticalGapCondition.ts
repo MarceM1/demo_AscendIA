@@ -3,7 +3,7 @@ import { PhaseCondition, PhaseConditionResult } from "../phase/phaseCondition";
 
 export class NoCriticalGapsCondition implements PhaseCondition {
   evaluate(state: InterviewEngineState): PhaseConditionResult {
-    const hasGaps = state.detectedWeaknesses?.length || 0 > 0;
+    const hasGaps = (state.detectedWeaknesses?.length ?? 0) > 0;
 
     return {
       passed: !hasGaps,

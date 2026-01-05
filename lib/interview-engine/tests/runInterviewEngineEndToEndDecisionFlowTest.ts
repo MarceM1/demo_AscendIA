@@ -50,7 +50,7 @@ class TestSessionRuntimeAdapter {
 }
 
 async function runInterviewEngineEndToEndDecisionFlowTest() {
-  console.log("Starting Agent Bridge Flow Test...");
+  console.log("Starting Interview Engine Test...");
   console.log("Building initial state...");
   // Estado inicial
   const initialState: InterviewEngineState = {
@@ -59,7 +59,6 @@ async function runInterviewEngineEndToEndDecisionFlowTest() {
       {
         confidence: 0.7,
       },
-      
     ],
     axisScores: {
       communication: 65,
@@ -127,11 +126,7 @@ async function runInterviewEngineEndToEndDecisionFlowTest() {
     throw new Error("El runtime no devolvió un nextState válido.");
   }
 
-console.log("STATE BEFORE DECISION");
-console.log(runtimeResult.nextState);
-console.log("signals type:", typeof runtimeResult.nextState.signals);
-console.log("signals value:", runtimeResult.nextState.signals);
-
+ 
 
   console.log("=== Running Decision Engine ===");
 
@@ -142,11 +137,16 @@ console.log("signals value:", runtimeResult.nextState.signals);
   console.log("=== Decision Outcome ===");
   console.log(decisionOutcome);
 
+  // Given initial state is EXPLORATION and we have MinimumSignalsCondition(1)
+  // and SignalConfidenceCondition(0.7) satisfied, expect EVALUATION
+  const expectedPhase: InterviewPhase = "EVALUATION";
   if (
     decisionOutcome.type === "ADVANCE_PHASE" &&
-    decisionOutcome.to !== "EVALUATION"
+    decisionOutcome.to !== expectedPhase
   ) {
-    throw new Error("Unexpected phase transition");
+    throw new Error(
+      `Expected transition to ${expectedPhase}, got ${decisionOutcome.to}`
+    );
   }
 
   if (decisionOutcome.type === "ADVANCE_PHASE") {
@@ -159,6 +159,7 @@ console.log("signals value:", runtimeResult.nextState.signals);
 
   console.log("=== Final State ===");
   console.log(adapter.getCurrentState());
+  console.log(adapter.getState());
 
   console.log("Test completed successfully.");
 }
